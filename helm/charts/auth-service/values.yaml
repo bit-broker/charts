@@ -1,0 +1,26 @@
+## Docker image
+##
+docker:
+  imageTag: "latest"
+  imagePullPolicy: "Always"
+  imagePullSecret: "regcred"
+
+  ## If private registry
+  ##
+  registry: "registry.hub.docker.com"
+
+## Number of replicas
+##
+replicaCount: 1
+
+## Token's issuer
+##
+issuer: "bit-broker.io"
+
+## Debug tools
+##
+logLevel: "info"
+
+## JWKS
+##
+JWKS: "JWKS"

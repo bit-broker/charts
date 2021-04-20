@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rate-service
+  namespace: '{{ .Release.Namespace }}'
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: rate-service
+  template:
+    metadata:
+      labels:
+        app: rate-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.docker.imagePullSecret }}
+      containers:
+      - name: rate-service
+        imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
+        image: "{{ .Values.docker.registry }}/bbkr/rate-service:{{ .Values.docker.imageTag }}"
+        ports:
+        - containerPort: 4000
+        - containerPort: 7000
+        envFrom:
+          - configMapRef:
+              name: {{ .Release.Name }}-configmap
+        env:
+          - name: SERVER_HTTP_HOST
+            value: "localhost:4000"
+          - name: SERVER_GRPC_HOST
+            value: "0.0.0.0:7000"
+          - name: GO_ENV
+            value: "production"
+          - name: REDIS_ADDR
+            value: "localhost:6379"
+          - name: REDIS_PASSWORD
+            value: ""
+          - name: REDIS_DB
+            value: "0"
+      - name: redis
+        image: "redis:latest"
+{{- if .Values.persistentVolume.enabled }}
+        volumeMounts:
+          - name: {{ .Release.Name }}-data
+            mountPath: '{{ .Values.persistentVolume.mountPath }}'
+      volumes:
+      - name: {{ .Release.Name }}-data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-pvc
+{{- end }}

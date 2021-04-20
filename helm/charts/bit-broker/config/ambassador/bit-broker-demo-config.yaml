@@ -1,0 +1,52 @@
+---
+apiVersion: getambassador.io/v2
+kind: AuthService
+metadata:
+  name: authentication
+spec:
+  auth_service: "oathkeeper-api:4456"
+  timeout_ms: 5000
+  failure_mode_allow: false
+  path_prefix: "/decisions/bbk"
+  allowed_request_headers:
+  - "x-bbk-auth-token"
+  allowed_authorization_headers:
+  - "x-bbk-policy"
+---
+apiVersion: getambassador.io/v2
+kind: RateLimitService
+metadata:
+  name: ratelimit
+spec:
+  service: "rate-service:7000"
+  protocol_version: v2
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: bbk-consume
+spec:
+  prefix: /consume/
+  rewrite: /api/v1/consume/
+  service: bit-broker:8080
+  labels:
+    ambassador:
+      - consume:
+        - remote_address
+        - x-bbk-policy:
+            header: "x-bbk-policy"
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: bbk-contribute
+spec:
+  prefix: /contribute/
+  rewrite: /api/v1/contribute/
+  service: bit-broker:8080
+  labels:
+    ambassador:
+      - contribute:
+        - remote_address
+        - x-bbk-policy:
+            header: "x-bbk-policy"

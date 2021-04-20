@@ -1,0 +1,10 @@
+
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+Here is how to test the mockup service:
+
+  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }} 8080:8080
+  $ curl -i http://localhost:8080/api/v1/consume/data
+  $ curl -i http://localhost:8080/api/v1/contribute/data

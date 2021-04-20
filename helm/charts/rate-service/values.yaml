@@ -1,0 +1,39 @@
+## Docker image
+##
+docker:
+  imageTag: "latest"
+  imagePullPolicy: "Always"
+  imagePullSecret: "regcred"
+
+  ## If private registry
+  ##
+  registry: "registry.hub.docker.com"
+
+## Number of replicas
+##
+replicaCount: 1
+
+## Debug tools
+##
+logLevel: "InfoLevel"
+
+persistentVolume:
+  ## whether or not persistence is enabled
+  ##
+  enabled: false
+
+  ## Redis data Persistent Volume mount root path
+  ##
+  mountPath: /data
+
+  ## Redis data Persistent Volume size
+  ##
+  size: 10Gi
+
+  ## Redis data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ## storageClass: "-"

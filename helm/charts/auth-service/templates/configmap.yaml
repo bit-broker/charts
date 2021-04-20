@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+  namespace: '{{ .Release.Namespace }}'
+data:
+  LOG_LEVEL: "{{ .Values.logLevel }}"
+  ISSUER: "{{ .Values.issuer }}"
