@@ -1,0 +1,60 @@
+[
+  {
+    "id": "bbk-consume-auth",
+    "match": {
+      "url": "<http|https>://<.*>/bbk/consume/<.*>",
+      "methods": ["GET", "HEAD"]
+    },
+    "authenticators": [
+      {
+        "handler": "jwt",
+        "config": {
+          "scope_strategy": "exact",
+          "required_scope": ["consume"],
+          "trusted_issuers": ["bit-broker.io"],
+          "allowed_algorithms": ["RS256"]
+        }
+      }
+    ],
+    "authorizer": {
+      "handler": "allow"
+    },
+    "mutators": [
+      {
+        "handler": "hydrator"
+      },
+      {
+        "handler": "header"
+      }
+    ]
+  },
+  {
+    "id": "bbk-contribute-auth",
+    "match": {
+      "url": "<http|https>://<.*>/bbk/contribute/<.*>",
+      "methods": ["GET", "HEAD"]
+    },
+    "authenticators": [
+      {
+        "handler": "jwt",
+        "config": {
+          "scope_strategy": "exact",
+          "required_scope": ["contribute"],
+          "trusted_issuers": ["bit-broker.io"],
+          "allowed_algorithms": ["RS256"]
+        }
+      }
+    ],
+    "authorizer": {
+      "handler": "allow"
+    },
+    "mutators": [
+      {
+        "handler": "hydrator"
+      },
+      {
+        "handler": "header"
+      }
+    ]
+  }
+]

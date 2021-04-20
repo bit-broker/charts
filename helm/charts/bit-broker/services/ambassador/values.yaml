@@ -1,0 +1,4 @@
+image:
+  repository: docker.io/datawire/ambassador
+  tag: 1.13.1
+enableAES: false
