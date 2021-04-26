@@ -33,7 +33,7 @@ spec:
     ambassador:
       - consume:
         - remote_address
-        - x-bbk-policy:
+        - uid:
             header: "x-bbk-policy"
 ---
 apiVersion: getambassador.io/v2
@@ -48,5 +48,5 @@ spec:
     ambassador:
       - contribute:
         - remote_address
-        - x-bbk-policy:
+        - uid:
             header: "x-bbk-policy"
