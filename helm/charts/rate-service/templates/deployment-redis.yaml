@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rate-service-redis
+  namespace: '{{ .Release.Namespace }}'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rate-service-redis
+  template:
+    metadata:
+      labels:
+        app: rate-service-redis
+    spec:
+      containers:
+      - name: redis
+        image: "redis:latest"
+        ports:
+        - containerPort: 6379
+{{- if .Values.persistentVolume.enabled }}
+        volumeMounts:
+          - name: {{ .Release.Name }}-data
+            mountPath: '{{ .Values.persistentVolume.mountPath }}'
+      volumes:
+      - name: {{ .Release.Name }}-data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-pvc
+{{- end }}
+---
