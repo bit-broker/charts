@@ -1,4 +1,4 @@
-dimage: bbk/bit-broker
+dimage: bbkr/bit-broker
 tagversion: latest
 replicas: 1
 domainPrefix: api
