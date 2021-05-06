@@ -1,11 +1,11 @@
-dimage: bbkr/bit-broker
+dimage: bit-broker
 tagversion: latest
 replicas: 1
 domainPrefix: api
 cluster:
   apiDomainName: bit-broker.eti-rolle-s1.ciscolabs.com
 docker:
-  GeneralFullImagePreamble: registry.eti-rolle.ciscolabs.com:5000/
+  GeneralFullImagePreamble: public.ecr.aws/y1v9w5g2/
 
 # ConfigMap values
 node_env: 'development'

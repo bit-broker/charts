@@ -7,7 +7,7 @@ docker:
 
   ## If private registry
   ##
-  registry: "registry.hub.docker.com"
+  registry: "public.ecr.aws/y1v9w5g2"
 
 ## Number of replicas
 ##
