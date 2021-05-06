@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-mockup
   namespace: '{{ .Release.Namespace }}'
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Release.Name }}-mockup
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Release.Name }}-mockup
     spec:
       imagePullSecrets:
       - name: regcred
@@ -22,4 +22,4 @@ spec:
         - containerPort: 8080
         envFrom:
           - configMapRef:
-              name: {{ .Release.Name }}-configmap
+              name: {{ .Release.Name }}-mockup-configmap

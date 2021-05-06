@@ -25,6 +25,6 @@ spec:
       volumes:
       - name: {{ .Release.Name }}-data
         persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-pvc
+          claimName: {{ .Release.Name }}rate-service-pvc
 {{- end }}
 ---
