@@ -27,6 +27,6 @@ spec:
         - containerPort: 8080
         envFrom:
           - configMapRef:
-              name: {{ .Release.Name }}-configmap
+              name: {{ .Release.Name }}-auth-service-configmap
           - secretRef:
               name: {{ .Release.Name }}-secret
