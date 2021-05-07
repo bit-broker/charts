@@ -1,6 +1,7 @@
 #######################################################################################
 # Set global values
 global:
+  # ory global values (Standard values from ory releases)
   ory:
     oathkeeper:
       maester:
@@ -9,17 +10,20 @@ global:
 
 #######################################################################################
 # coordinator  values
+# Values for bitbroker coordinator.
+
 coordinator:
   replicaCount: 1
   bbcoordinator:
     name: coordinator
     group: app
+    # Refer to coordinator Dockerfile for user creation and ID. Services run as user bitbroker.
     securityContext:
       runAsUser: 1392
       fsGroup: 1392
     container:
       image: public.ecr.aws/y1v9w5g2/bitbroker-coordinator:latest
-      name: coordinator
+      name: bitbroker-coordinator
       port: 8001
     imagePullSecrets: ecrcred
     imagePullPolicy: Always
@@ -40,6 +44,7 @@ coordinator:
 
 #######################################################################################
 # contributor  values
+# Values for bitbroker contributor
 
 bitbroker-contributor:
   enabled: true
@@ -48,6 +53,7 @@ bitbroker-contributor:
     name: contributor
     group: app
     securityContext:
+      # User ID and Group ID for user bitbroker
       runAsUser: 1392
       fsGroup: 1392
     container:
@@ -62,6 +68,7 @@ bitbroker-contributor:
     volume:
       name: bibroker-contributor-storage
       kind: PersistentVolumeClaim
+      # Persisting logs
       mountPath: /home/node/app/services/contributor/logs
       pvc:
         name: bibroker-contributor-volume-claim
@@ -74,6 +81,7 @@ bitbroker-contributor:
 
 #######################################################################################
 # consumer  values
+# Values for bitbroker consumer
 
 consumer:
   enabled: true
@@ -82,6 +90,7 @@ consumer:
     name: consumer
     group: app
     securityContext:
+      # User and group ID for bitbroker user
       runAsUser: 1392
       fsGroup: 1392
     container:
@@ -239,8 +248,11 @@ bbk-mockup-api:
 
 #######################################################################################
 
+#######################################################################################
 # ambasadoor values
+#  Values copied from ambasadoor helm repo values.yaml
 ambassador:
+  # Dependency enabler
   enabled: true
   # Default values for ambassador.
   # This is a YAML-formatted file.
@@ -569,6 +581,7 @@ ambassador:
   # Go to https://{ambassador-host}/edge_stack/admin/#dashboard to register
   # for a community license key.
 
+  # Disable AES for bitbroker.
   enableAES: false
 
   # Set createSecret: false is installing multiple releases of The Ambassador
