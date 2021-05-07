@@ -30,5 +30,21 @@ dependencies:
     version: "1.0"
     repository: file://../bit-broker-mockup
     condition: bbk-mockup-api.enabled
+  - name: coordinator
+    version: "1.0"
+    repository: file://../coordinator
+    condition: coordinator.enabled
+  - name: contributor
+    version: "1.0"
+    repository: file://../contributor
+    condition: contributor.enabled
+  - name: consumer
+    version: "1.0"
+    repository: file://../consumer
+    condition: consumer.enabled
+  - name: bitbroker-db
+    version: "1.0"
+    repository: file://../bitbroker-db
+    condition: bitbroker-db.enabled
 
 
