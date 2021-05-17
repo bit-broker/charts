@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: {{ .Values.bbconsumer.volume.kind }}
+metadata:
+  name: {{ .Values.bbconsumer.volume.pvc.name }}
+spec:
+  accessModes:
+    - {{ .Values.bbconsumer.volume.pvc.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.bbconsumer.volume.pvc.storage }}

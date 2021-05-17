@@ -1,0 +1,24 @@
+replicaCount: 1
+bbconsumer:
+  name: consumer
+  group: app
+  securityContext:
+    runAsUser: 1392
+    fsGroup: 1392
+  container:
+    image: public.ecr.aws/y1v9w5g2/bitbroker-consumer:latest
+    name: bitbroker-consumer
+    port: 8001
+  imagePullSecrets: ecrcred
+  imagePullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 8002
+  volume:
+    name: bibroker-consumer-storage
+    kind: PersistentVolumeClaim
+    mountPath: /home/node/app/services/consumer/logs
+    pvc:
+      name: bibroker-consumer-volume-claim
+      accessMode: ReadWriteOnce
+      storage: 4Gi

@@ -1,0 +1,1014 @@
+#######################################################################################
+# Set global values
+global:
+  # ory global values (Standard values from ory releases)
+  ory:
+    oathkeeper:
+      maester:
+        # Two possible modes are: controller or sidecar
+        mode: controller
+
+#######################################################################################
+# coordinator  values
+# Values for bitbroker coordinator.
+
+coordinator:
+  replicaCount: 1
+  enabled: true
+  bbcoordinator:
+    name: coordinator
+    group: app
+    # Refer to coordinator Dockerfile for user creation and ID. Services run as user bitbroker.
+    securityContext:
+      runAsUser: 1392
+      fsGroup: 1392
+    container:
+      image: public.ecr.aws/y1v9w5g2/bitbroker-coordinator:latest
+      name: bitbroker-coordinator
+      port: 8001
+    imagePullSecrets: ecrcred
+    imagePullPolicy: Always
+    service:
+      type: ClusterIP
+      port: 8001
+    volume:
+      name: bibroker-coordinator-storage
+      kind: PersistentVolumeClaim
+      mountPath: /home/node/app/services/coordinator/logs
+      pvc:
+        name: bibroker-coordinator-volume-claim
+        accessMode: ReadWriteOnce
+        storage: 4Gi
+
+# End of coordinator values
+#######################################################################################
+
+#######################################################################################
+# contributor  values
+# Values for bitbroker contributor
+
+bitbroker-contributor:
+  enabled: true
+  replicaCount: 1
+  bbcontributor:
+    name: contributor
+    group: app
+    securityContext:
+      # User ID and Group ID for user bitbroker
+      runAsUser: 1392
+      fsGroup: 1392
+    container:
+      image: public.ecr.aws/y1v9w5g2/bitbroker-contributor:latest
+      name: bitbroker-contributor
+      port: 8001
+    imagePullSecrets: ecrcred
+    imagePullPolicy: Always
+    service:
+      type: ClusterIP
+      port: 8002
+    volume:
+      name: bibroker-contributor-storage
+      kind: PersistentVolumeClaim
+      # Persisting logs
+      mountPath: /home/node/app/services/contributor/logs
+      pvc:
+        name: bibroker-contributor-volume-claim
+        accessMode: ReadWriteOnce
+        storage: 4Gi
+
+
+# End of contributor values
+#######################################################################################
+
+#######################################################################################
+# consumer  values
+# Values for bitbroker consumer
+
+consumer:
+  enabled: true
+  replicaCount: 1
+  bbconsumer:
+    name: consumer
+    group: app
+    securityContext:
+      # User and group ID for bitbroker user
+      runAsUser: 1392
+      fsGroup: 1392
+    container:
+      image: public.ecr.aws/y1v9w5g2/bitbroker-consumer:latest
+      name: consumer
+      port: 8001
+    imagePullSecrets: ecrcred
+    imagePullPolicy: Always
+    service:
+      type: ClusterIP
+      port: 8002
+    volume:
+      name: bibroker-consumer-storage
+      kind: PersistentVolumeClaim
+      mountPath: /home/node/app/services/consumer/logs
+      pvc:
+        name: bibroker-consumer-volume-claim
+        accessMode: ReadWriteOnce
+        storage: 4Gi
+
+# End of consumer values
+#######################################################################################
+
+
+# bitbroker-db values
+
+bitbroker-db:
+  enabled: true
+  replicaCount: 1
+  postgres:
+    name: bitbroker-db
+    group: db
+    container:
+      image: public.ecr.aws/y1v9w5g2/bitbroker-db:latest
+      name: bitbroker-db
+      port: 5432
+    imagePullSecrets: ecrcred
+    service:
+      type: ClusterIP
+      port: 5432
+    volume:
+      name: postgres-storage
+      kind: PersistentVolumeClaim
+      mountPath: /var/lib/postgresql/data
+      subPath: postgres
+      pvc:
+        name: postgres-persistent-volume-claim
+        accessMode: ReadWriteOnce
+        storage: 4Gi
+
+  postgres_password: 'bitbr0ker'
+
+# End of bitbroker-db values
+#######################################################################################
+
+
+#######################################################################################
+# auth-service  values
+
+auth-service:
+  enabled: true
+    ## If private registry
+    ##
+  registry: "public.ecr.aws/y1v9w5g2"
+
+  ## Number of replicas
+  ##
+  replicaCount: 1
+
+  ## Token's issuer
+  ##
+  issuer: "bit-broker.io"
+
+  ## Debug tools
+  ##
+  logLevel: "info"
+
+  ## JWKS
+  ##
+  JWKS: "JWKS"
+  ## Docker image
+  ##
+
+# End of auth-services values
+
+#######################################################################################
+# rate-service  values
+
+rate-service:
+  enabled: true
+  ## Docker image
+  ##
+  docker:
+    imageTag: "latest"
+    imagePullPolicy: "Always"
+    imagePullSecret: "regcred"
+
+    ## If private registry
+    ##
+    registry: "public.ecr.aws/y1v9w5g2"
+
+  ## Number of replicas
+  ##
+  replicaCount: 1
+
+  ## Debug tools
+  ##
+  logLevel: "InfoLevel"
+
+  persistentVolume:
+    ## whether or not persistence is enabled
+    ##
+    enabled: false
+
+    ## Redis data Persistent Volume mount root path
+    ##
+    mountPath: /data
+
+    ## Redis data Persistent Volume size
+    ##
+    size: 10Gi
+
+    ## Redis data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ## storageClass: "-"
+
+# End of rate-service values
+
+#######################################################################################
+
+# bbk mockup values
+
+bbk-mockup-api:
+  enabled: true
+  dimage: bit-broker
+  tagversion: latest
+  replicas: 1
+  domainPrefix: api
+  cluster:
+    apiDomainName: bit-broker.eu-west-2.compute.amazonaws.com
+  docker:
+    GeneralFullImagePreamble: public.ecr.aws/y1v9w5g2/
+
+  # ConfigMap values
+  node_env: 'development'
+  log_level: 'debug'
+  server_port: '8080'
+  ui_url: 'https://ui.bit-broker.eti-rolle-s1.ciscolabs.com'
+
+# End of bbk mockup values
+
+#######################################################################################
+
+#######################################################################################
+# ambasadoor values
+#  Values copied from ambasadoor helm repo values.yaml
+ambassador:
+  # Dependency enabler
+  enabled: true
+  # Default values for ambassador.
+  # This is a YAML-formatted file.
+  # Declare variables to be passed into your templates.
+
+  # Manually set metadata for the Release.
+  #
+  # Defaults to .Chart.Name
+  nameOverride: ""
+  # Defaults to .Release.Name-.Chart.Name unless .Release.Name contains "ambassador"
+  fullnameOverride: ""
+  # Defaults to .Release.Namespace
+  namespaceOverride: ""
+
+  replicaCount: 3
+  daemonSet: false
+
+  # This will enable the test-ready Pod (https://github.com/datawire/ambassador-chart/blob/master/templates/tests/test-ready.yaml).
+  # It will spawn a busybox container to call Ambassador's check_ready endpoint to validate it is working correctly.
+  test:
+    enabled: true
+    image: busybox
+
+  # Enable autoscaling using HorizontalPodAutoscaler
+  # daemonSet: true, autoscaling will be disabled
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 5
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 60
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 60
+
+  podDisruptionBudget: { }
+
+  # namespace:
+  # name: default
+
+  # Additional container environment variable
+  # Uncomment or add additional environment variables for the container here.
+  env: { }
+    # Exposing statistics via StatsD
+    # STATSD_ENABLED: true
+    # STATSD_HOST: statsd-sink
+    # sets the minimum number of seconds between Envoy restarts
+    # AMBASSADOR_RESTART_TIME: 15
+    # sets the number of seconds that the Envoy will wait for open connections to drain on a restart
+    # AMBASSADOR_DRAIN_TIME: 5
+    # sets the number of seconds that Ambassador will wait for the old Envoy to clean up and exit on a restart
+    # AMBASSADOR_SHUTDOWN_TIME: 10
+  # labels Ambassador with an ID to allow for configuring multiple Ambassadors in a cluster
+  # AMBASSADOR_ID: default
+
+  # Additional container environment variable in raw YAML format
+  # Uncomment or add additional environment variables for the container here.
+  envRaw: { }
+  # - name: REDIS_PASSWORD
+  #   value: password
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: redis-password
+  #       key: password
+  # - name: POD_IP
+  #   valueFrom:
+  #     fieldRef:
+  #       fieldPath: status.podIP
+
+  imagePullSecrets: [ ]
+
+  security:
+    # Security Context for all containers in the pod.
+    # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podsecuritycontext-v1-core
+    podSecurityContext:
+      runAsUser: 8888
+    # Security Context for the Ambassador container specifically
+    # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#securitycontext-v1-core
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+    # A basic PodSecurityPolicy to ensure Ambassador is running with appropriate security permissions
+    # https://kubernetes.io/docs/concepts/policy/pod-security-policy/
+    #
+    # A set of reasonable defaults is outlined below. This is not created by default as it should only
+    # be created by a one Release. If you want to use the PodSecurityPolicy in the chart, create it in
+    # the "master" Release and then leave it unset in all others. Set the `rbac.podSecurityPolicies`
+    # in all non-"master" Releases.
+    podSecurityPolicy: { }
+      # # Add AppArmor and Seccomp annotations
+      # # https://kubernetes.io/docs/concepts/policy/pod-security-policy/#apparmor
+      # annotations:
+      # spec:
+      #   seLinux:
+      #     rule: RunAsAny
+      #   supplementalGroups:
+      #     rule: 'MustRunAs'
+      #     ranges:
+      #       # Forbid adding the root group.
+      #       - min: 1
+      #         max: 65535
+      #   fsGroup:
+      #     rule: 'MustRunAs'
+      #     ranges:
+      #       # Forbid adding the root group.
+      #       - min: 1
+      #         max: 65535
+      #   privileged: false
+      #   allowPrivilegeEscalation: false
+    #   runAsUser:
+    #     rule: MustRunAsNonRoot
+
+  image:
+    repository: docker.io/datawire/aes
+    tag: 1.13.1
+    pullPolicy: IfNotPresent
+
+  dnsPolicy: "ClusterFirst"
+  hostNetwork: false
+
+  service:
+    type: LoadBalancer
+
+    # Note that target http ports need to match your ambassador configurations service_port
+    # https://www.getambassador.io/reference/modules/#the-ambassador-module
+    ports:
+      - name: http
+        port: 80
+        targetPort: 8080
+        # protocol: TCP
+        # nodePort: 30080
+        # hostPort: 80
+      - name: https
+        port: 443
+        targetPort: 8443
+        # protocol: TCP
+        # nodePort: 30443
+        # hostPort: 443
+        # TCPMapping_Port
+        # port: 2222
+        # targetPort: 2222
+        # protocol: TCP
+        # nodePort: 30222
+
+    externalTrafficPolicy:
+
+    sessionAffinity:
+
+    sessionAffinityConfig:
+
+    externalIPs: [ ]
+
+    annotations: { }
+
+    # Manually set the name of the generated Service
+    nameOverride:
+    #############################################################################
+    ## Ambassador should be configured using CRD definition. If you want
+    ## to use annotations, the following is an example of annotating the
+    ## Ambassador service with global configuration manifest.
+    ##
+    ## See https://www.getambassador.io/reference/core/ambassador and
+    ## https://www.getambassador.io/reference/core/tls for more info
+    #############################################################################
+    #
+    #  getambassador.io/config: |
+    #    ---
+    #    apiVersion: ambassador/v1
+    #    kind: TLSContext
+    #    name: ambassador
+    #    secret: ambassador-certs
+    #    hosts: ["*"]
+    #    ---
+    #    apiVersion: ambassador/v1
+    #    kind: Module
+    #    name: ambassador
+    #    config:
+    #      admin_port: 8001
+    #      diag_port: 8877
+    #      diagnostics:
+    #        enabled: true
+    #      enable_grpc_http11_bridge: false
+    #      enable_grpc_web: false
+    #      enable_http10: false
+    #      enable_ipv4: true
+    #      enable_ipv6: false
+    #      liveness_probe:
+    #        enabled: true
+    #      lua_scripts:
+    #      readiness_probe:
+    #        enabled: true
+    #      server_name: envoy
+    #      service_port: 8080
+    #      use_proxy_proto: false
+    #      use_remote_address: true
+    #      xff_num_trusted_hops: 0
+    #      x_forwarded_proto_redirect: false
+    #      load_balancer:
+    #        policy: round_robin
+    #      circuit_breakers:
+    #        max_connections: 2048
+    #      retry_policy:
+    #        retry_on: "5xx"
+    #      cors:
+
+  adminService:
+    create: true
+    type: ClusterIP
+    port: 8877
+    snapshotPort: 8005
+    # NodePort used if type is NodePort
+    # nodePort: 38877
+    annotations:
+      { }
+
+  rbac:
+    # Specifies whether RBAC resources should be created
+    create: true
+    # List of Pod Security Policies to use on the container.
+    # If security.podSecurityPolicy is set, it will be appended to the list
+    podSecurityPolicies: [ ]
+    # Name of the RBAC resources defaults to the name of the release.
+    # Set nameOverride when installing Ambassador with cluster-wide scope in
+    # different namespaces with the same release name to avoid conflicts.
+    nameOverride:
+
+  scope:
+    # tells Ambassador to only use resources in the namespace or namespace set by namespace.name
+    singleNamespace: false
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+  deploymentStrategy:
+    type: RollingUpdate
+
+  restartPolicy:
+
+  terminationGracePeriodSeconds:
+
+  initContainers: [ ]
+
+  sidecarContainers: [ ]
+
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 3
+    failureThreshold: 3
+
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 3
+    failureThreshold: 3
+
+
+  volumes: [ ]
+
+  volumeMounts: [ ]
+
+  podLabels:
+    { }
+
+  podAnnotations:
+    { }
+  # prometheus.io/scrape: "true"
+  # prometheus.io/port: "9102"
+
+  deploymentLabels:
+    { }
+
+  deploymentAnnotations:
+    { }
+  # configmap.reloader.stakater.com/auto: "true"
+
+  resources:
+    # Recommended resource requests and limits for Ambassador
+    limits:
+      cpu: 1000m
+      memory: 600Mi
+    requests:
+      cpu: 200m
+      memory: 300Mi
+
+  priorityClassName: ""
+
+  nodeSelector: { }
+
+  tolerations: [ ]
+
+  affinity: { }
+
+  topologySpreadConstraints: [ ]
+
+  ambassadorConfig: ""
+
+  crds:
+    enabled: true
+    create: true
+    keep: true
+
+  # Prometheus Operator ServiceMonitor configuration
+  # See documentation: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#servicemonitor
+  metrics:
+    serviceMonitor:
+      enabled: false
+      # interval: 30s
+      # scrapeTimeout: 30s
+      # selector: {}
+
+  ################################################################################
+  ## Ambassador Edge Stack Configuration                                        ##
+  ################################################################################
+
+  # The Ambassador Edge Stack is free for limited use without a license key.
+  # Go to https://{ambassador-host}/edge_stack/admin/#dashboard to register
+  # for a community license key.
+
+  # Disable AES for bitbroker.
+  enableAES: false
+
+  # Set createSecret: false is installing multiple releases of The Ambassador
+  # Edge Stack in the same namespace.
+  licenseKey:
+    value:
+    createSecret: true
+    secretName:
+    # Annotations to attach to the license-key-secret.
+    annotations:
+      { }
+
+  # The DevPortal is exposed at /docs/ endpoint in the AES container.
+  # Setting this to true will automatically create routes for the DevPortal.
+  createDevPortalMappings: true
+  devportal:
+    docsPrefix: "/documentation/"
+
+  # The Ambassador Edge Stack uses a redis instance for managing authentication,
+  # rate limiting, and sharing minor configuration details between pods for
+  # centralized management. These values configure the redis instance that ships
+  # by default with The Ambassador Edge Stack.
+  #
+  # URL of your redis instance. Defaults to redis instance created below.
+  redisURL:
+
+  # Ambassador ships with a basic redis instance. Configure the deployment with the options below.
+  redis:
+    create: true
+    image:
+      repository: redis
+      tag: 5.0.1
+      pullPolicy: IfNotPresent
+    # Annotations for Ambassador Pro's redis instance.
+    annotations:
+      deployment:
+        { }
+      service:
+        { }
+    resources: { }
+    # If you want to specify resources, uncomment the following
+    # lines and remove the curly braces after 'resources:'.
+    # These are placeholder values and must be tuned.
+    #   limits:
+    #     cpu: 100m
+    #     memory: 256Mi
+    #   requests:
+    #     cpu: 50m
+    #     memory: 128Mi
+    nodeSelector: { }
+    affinity: { }
+    tolerations: { }
+
+
+  # Configures the AuthService that ships with the Ambassador Edge Stack.
+  # Setting authService.create: false will not install the AES AuthService and
+  # allow you to define your own.
+  #
+  # Typically when using the AES, you will want to keep this set to true and use
+  # the External Filter to communicate with a custom authentication service.
+  # https://www.getambassador.io/reference/filter-reference/#filter-type-external
+  authService:
+    deploymentExtraName: auth
+    create: true
+    # Set additional configuration options. See https://www.getambassador.io/reference/services/auth-service for more information
+    optional_configurations: { }
+      # include_body:
+      #   max_bytes: 4096
+      #   allow_partial: true
+      # status_on_error:
+      #   code: 403
+      # failure_mode_allow: false
+      # retry_policy:
+      #   retry_on: "5xx"
+      #   num_retries: 2
+    # add_linkerd_headers: true
+    # timeout_ms: 30000
+
+
+  # Configures the RateLimitService in the Ambassador Edge Stack.
+  # Keep this enabled to configure RateLimits in AES.
+  rateLimit:
+    create: true
+    deploymentExtraName: ratelimit
+
+  # Projects are a beta feature of Ambassador that allow developers to stage and
+  # deploy code with nothing more than a Github repository.
+  # See: https://www.getambassador.io/docs/edge-stack/latest/topics/using/projects/
+  registry:
+    create: false
+
+  # Resolvers are used to configure the discovery service strategy for Ambasador Edge Stack.
+  # See: https://www.getambassador.io/docs/edge-stack/latest/topics/running/resolvers/
+  resolvers:
+    endpoint:
+      create: false
+      name: "endpoint"
+    consul:
+      create: false
+      name: "consul-dc1"
+      spec: { }
+      # Configuration for a Consul Resolver
+      #   address: consul-server.default.svc.cluster.local:8500
+      #   datacenter: dc1
+
+  ################################################################################
+  ## DEPRECATED configuration objects                                           ##
+  ################################################################################
+
+  # DEPRECATED: Ambassador now exposes the /metrics endpoint in Envoy.
+  # DEPRECATED: See https://www.getambassador.io/user-guide/monitoring#deployment for more information on how to use the /metrics endpoint
+  #
+  # DEPRECATED: Enabling the prometheus exporter creates a sidecar and configures ambassador to use it
+  prometheusExporter:
+    enabled: false
+    repository: prom/statsd-exporter
+    tag: v0.8.1
+    pullPolicy: IfNotPresent
+    resources: { }
+    # If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    #   limits:
+    #     cpu: 100m
+    #     memory: 256Mi
+    #   requests:
+    #     cpu: 50m
+    #     memory: 128Mi
+    # You can configure the statsd exporter to modify the behavior of mappings and other features.
+    # See documentation: https://github.com/prometheus/statsd_exporter/tree/v0.8.1#metric-mapping-and-configuration
+    # Uncomment the following line if you wish to specify a custom configuration:
+    # configuration: |
+    #   ---
+    #   mappings:
+    #   - match: 'envoy.cluster.*.upstream_cx_connect_ms'
+    #     name: "envoy_cluster_upstream_cx_connect_time"
+    #     timer_type: 'histogram'
+    #     labels:
+    #       cluster_name: "$1"
+
+  # DEPRECATED: Use security.podSecurityContext
+  # securityContext:
+  #   runAsUser: 8888
+
+
+  # Configures Service Preview that ships with the Ambassador Edge Stack and edgectl.
+  # Setting servicePreview.enabled: true will install the Traffic Agent Service Account, Traffic Manager with RBAC, and ambassador-injector
+  servicePreview:
+    enabled: false
+    trafficManager:
+      image:
+        # Leave blank to use image.repository and image.tag
+        repository:
+        tag:
+      serviceAccountName: "traffic-manager"
+    trafficAgent:
+      image:
+        # Leave blank to use image.repository and image.tag
+        repository:
+        tag:
+      singleNamespace: true
+      serviceAccountName: "traffic-agent"
+      port: 9900
+
+      # Configure the ambassador-injector webhook for Service Preview Traffic Agent automatic sidecar injection.
+      injector:
+        enabled: true
+
+        # If no injector.crtPEM and injector.keyPEM are provided, a self-signed certificate will be issued
+        # for the Common Name (CN) of `<ambassador-injector>.<namespace>.svc`, which is the cluster-internal DNS name
+        # for the service.
+        crtPEM: ""
+        keyPEM: ""
+
+  # Configure the ambassador agent
+  agent:
+    enabled: true
+    # this will be empty when it first gets applied, then the user will edit the agent to
+    # make it start reporting
+    cloudConnectToken: ""
+    rpcAddress: https://app.getambassador.io/
+    createArgoRBAC: true
+    image:
+      # Leave blank to use image.repository and image.tag
+      tag:
+      repository:
+
+  deploymentTool: ""
+
+  # configure docker to pull from private registry
+  docker: { }
+  createNamespace: false
+  enableTestService: false
+
+# End od ambasadoor values
+
+#######################################################################################
+
+# oathkeeper values
+
+oathkeeper-bbk:
+  # Number of ORY Oathkeeper members
+  enabled: true
+  replicaCount: 1
+
+  image:
+    # ORY Oathkeeper image
+    repository: oryd/oathkeeper
+    # ORY Oathkeeper version
+    tag: v0.38.5
+    # Image pull policy
+    pullPolicy: IfNotPresent
+
+  # Options for the sidecar
+  sidecar:
+    image:
+      repository: oryd/oathkeeper-maester
+      tag: v0.1.0
+    envs: { }
+
+  # Image pull secrets
+  imagePullSecrets: [ ]
+  # Chart name override
+  nameOverride: ""
+  # Full chart name override
+  fullnameOverride: ""
+
+  # If enabled, a demo deployment with exemplary access rules
+  # and JSON Web Key Secrets will be generated.
+  demo: false
+
+  # Configures the Kubernetes service
+  service:
+    # Configures the Kubernetes service for the proxy port.
+    proxy:
+      # En-/disable the service
+      enabled: true
+      # The service type
+      type: ClusterIP
+      # The service port
+      port: 4455
+      # If you do want to specify annotations, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
+      annotations: { }
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      labels: { }
+      #      If you do want to specify additional labels, uncomment the following
+      #      lines, adjust them as necessary, and remove the curly braces after 'labels:'.
+      #      e.g.  app: oathkeeper
+
+    # Configures the Kubernetes service for the api port.
+    api:
+      # En-/disable the service
+      enabled: true
+      # The service type
+      type: ClusterIP
+      # The service port
+      port: 4456
+      # If you do want to specify annotations, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
+      annotations: { }
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      labels: { }
+      #      If you do want to specify additional labels, uncomment the following
+      #      lines, adjust them as necessary, and remove the curly braces after 'labels:'.
+      #      e.g.  app: oathkeeper
+
+  # Configure ingress
+  ingress:
+    # Configure ingress for the proxy port.
+    proxy:
+      # En-/Disable the proxy ingress.
+      enabled: false
+      annotations: { }
+      #     kubernetes.io/ingress.class: nginx
+      #     kubernetes.io/tls-acme: "true"
+      hosts:
+        - host: proxy.oathkeeper.localhost
+          paths: [ "/" ]
+    #    tls: []
+    #        hosts:
+    #          - proxy.oathkeeper.local
+    #      - secretName: oathkeeper-proxy-example-tls
+
+    api:
+      # En-/Disable the api ingress.
+      enabled: false
+
+      annotations: { }
+      #      If you do want to specify annotations, uncomment the following
+      #      lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
+      #      kubernetes.io/ingress.class: nginx
+      #      kubernetes.io/tls-acme: "true"
+      hosts:
+        - host: api.oathkeeper.localhost
+          paths: [ "/" ]
+  #    tls: []
+  #      hosts:
+  #        - api.oathkeeper.local
+  #      - secretName: oathkeeper-api-example-tls
+
+  # Configure ORY Oathkeeper itself
+  oathkeeper:
+    # The ORY Oathkeeper configuration. For a full list of available settings, check:
+    #   https://github.com/ory/oathkeeper/blob/master/docs/config.yaml
+    config:
+      access_rules:
+        repositories:
+          - file://./files/access_rules.json
+      serve:
+        proxy:
+          port: 4455
+        api:
+          port: 4456
+
+      authenticators:
+        jwt:
+          enabled: true
+          config:
+            jwks_urls:
+              - http://auth-service:8080/api/v1/.well-known/jwks.json
+            token_from:
+              header: x-bbk-auth-token
+      mutators:
+        hydrator:
+          enabled: true
+          config:
+            api:
+              url: http://bit-broker:8080/api/v1/check
+              retry:
+                give_up_after: 2s
+                max_delay: 100ms
+            cache:
+              ttl: 60s
+        header:
+          enabled: true
+          config:
+            headers:
+              x-bbk-policy: "{{ print .Extra.policy }}"
+      ## DEMO: To delete
+      authorizers:
+        allow:
+          enabled: true
+  ## DEMO: To delete
+
+  #  If set, uses the given JSON Web Key Set as the signing key for the ID Token Mutator.
+  #  mutatorIdTokenJWKs: {}
+  #  If set, uses the given access rules.
+  #  accessRules: {}
+
+  deployment:
+    resources: { }
+    #  We usually recommend not to specify default resources and to leave this as a conscious
+    #  choice for the user. This also increases chances charts run on environments with little
+    #  resources, such as Minikube. If you do want to specify resources, uncomment the following
+    #  lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    #  limits:
+    #    cpu: 100m
+    #    memory: 128Mi
+    #  requests:
+    #    cpu: 100m
+    #  memory: 128Mi
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      allowPrivilegeEscalation: false
+      privileged: false
+
+    # Node labels for pod assignment.
+    nodeSelector: { }
+    # If you do want to specify node labels, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
+    #   foo: bar
+
+    extraEnv: [ ]
+
+    # Configuration for tracing providers. Only datadog is currently supported through this block.
+    # If you need to use a different tracing provider, please manually set the configuration values
+    # via "oathkeeper.config" or via "deployment.extraEnv".
+    tracing:
+      datadog:
+        enabled: false
+
+        # Sets the datadog DD_ENV environment variable. This value indicates the environment where oathkeeper is running.
+        # Default value: "none".
+        # env: production
+
+        # Sets the datadog DD_VERSION environment variable. This value indicates the version that oathkeeper is running.
+        # Default value: .Values.image.tag (i.e. the tag used for the docker image).
+        # version: X.Y.Z
+
+        # Sets the datadog DD_SERVICE environment variable. This value indicates the name of the service running.
+        # Default value: "ory/oathkeeper".
+        # service: ory/oathkeeper
+
+        # Sets the datadog DD_AGENT_HOST environment variable. This value indicates the host address of the datadog agent.
+        # If set to true, this configuration will automatically set DD_AGENT_HOST to the field "status.hostIP" of the pod.
+        # Default value: false.
+        # useHostIP: true
+
+    # Configure node tolerations.
+    tolerations: [ ]
+
+    labels: { }
+    #      If you do want to specify additional labels, uncomment the following
+    #      lines, adjust them as necessary, and remove the curly braces after 'labels:'.
+    #      e.g.  type: app
+
+    annotations: { }
+    #      If you do want to specify annotations, uncomment the following
+    #      lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
+    #      e.g.  sidecar.istio.io/rewriteAppHTTPProbers: "true"
+
+
+  # Configure node affinity
+  affinity: { }
+
+  # Configures controller setup
+  maester:
+    enabled: true
+
+    # End of oathkeeper values.
+
+    #######################################################################################
