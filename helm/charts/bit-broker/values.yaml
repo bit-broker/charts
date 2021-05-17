@@ -14,6 +14,7 @@ global:
 
 coordinator:
   replicaCount: 1
+  enabled: true
   bbcoordinator:
     name: coordinator
     group: app
@@ -780,9 +781,10 @@ ambassador:
 #######################################################################################
 
 # oathkeeper values
-oathKeeper:
-  enabled: true
+
+oathkeeper-bbk:
   # Number of ORY Oathkeeper members
+  enabled: true
   replicaCount: 1
 
   image:
@@ -890,7 +892,7 @@ oathKeeper:
     config:
       access_rules:
         repositories:
-          - inline://access_rules.json
+          - file://./files/access_rules.json
       serve:
         proxy:
           port: 4455
@@ -1007,6 +1009,6 @@ oathKeeper:
   maester:
     enabled: true
 
-# End of oathkeeper values.
+    # End of oathkeeper values.
 
-#######################################################################################
+    #######################################################################################
