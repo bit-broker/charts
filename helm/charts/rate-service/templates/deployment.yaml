@@ -22,13 +22,13 @@ spec:
       containers:
       - name: rate-service
         imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
-        image: "{{ .Values.docker.registry }}/bbkr/rate-service:{{ .Values.docker.imageTag }}"
+        image: "{{ .Values.docker.registry }}/rate-service:{{ .Values.docker.imageTag }}"
         ports:
         - containerPort: 4000
         - containerPort: 7000
         envFrom:
           - configMapRef:
-              name: {{ .Release.Name }}-configmap
+              name: {{ .Release.Name }}-rate-service-configmap
         env:
           - name: SERVER_HTTP_HOST
             value: "localhost:4000"
