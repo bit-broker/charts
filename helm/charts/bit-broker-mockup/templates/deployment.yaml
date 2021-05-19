@@ -17,7 +17,8 @@ spec:
       - name: regcred
       containers:
       - name: {{ .Release.Name }}
-        image: "{{ .Values.docker.GeneralFullImagePreamble }}{{ .Values.dimage }}:{{ .Values.tagversion }}"
+        imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
+        image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/auth-service:{{ .Values.docker.imageTag }}"
         ports:
         - containerPort: 8080
         envFrom:

@@ -9,6 +9,7 @@ metadata:
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
   annotations:
     helm.sh/hook: pre-install
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded,hook-failed
 spec:
   backoffLimit: 0
   template:
@@ -21,5 +22,5 @@ spec:
       containers:
       - name: pre-install-job
         imagePullPolicy: Always
-        image: {{ .Values.docker.registry }}/auth-service:{{ .Values.docker.imageTag }}
+        image: {{ .Values.docker.registry | default .Values.global.docker.registry }}/auth-service:{{ .Values.docker.imageTag }}
         command: ['npm', 'run', 'check-jwks', '{{ .Values.JWKS }}', '--silent']
