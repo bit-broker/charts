@@ -1,20 +1,37 @@
 #######################################################################################
-# Set global values
+# Global Values
+
 global:
-  # ory global values (Standard values from ory releases)
-  ory:
-    oathkeeper:
-      maester:
-        # Two possible modes are: controller or sidecar
-        mode: controller
+  ## Allowed headers
+  ##
+  headers:
+    ## Header containing the authentication token
+    ##
+    authToken: "x-bbk-auth-token"
+    ## Header containing the policy id
+    ##
+    policy: "x-bbk-policy"
+
+  ## Docker image
+  ##
+  docker:
+    ## If private registry
+    ##
+    #registry: ""
+
+  ## Token's issuer
+  ##
+  issuer: "bit-broker.io"
+
+# End of Global Values
+#######################################################################################
 
 #######################################################################################
-# coordinator  values
-# Values for bitbroker coordinator.
+# Coordinator Values
 
 coordinator:
   replicaCount: 1
-  enabled: true
+  enabled: false
   bbcoordinator:
     name: coordinator
     group: app
@@ -40,15 +57,14 @@ coordinator:
         accessMode: ReadWriteOnce
         storage: 4Gi
 
-# End of coordinator values
+# End of Coordinator Values
 #######################################################################################
 
 #######################################################################################
-# contributor  values
-# Values for bitbroker contributor
+# Contributor Values
 
-bitbroker-contributor:
-  enabled: true
+contributor:
+  enabled: false
   replicaCount: 1
   bbcontributor:
     name: contributor
@@ -77,15 +93,14 @@ bitbroker-contributor:
         storage: 4Gi
 
 
-# End of contributor values
+# End of Contributor Values
 #######################################################################################
 
 #######################################################################################
-# consumer  values
-# Values for bitbroker consumer
+# Consumer Values
 
 consumer:
-  enabled: true
+  enabled: false
   replicaCount: 1
   bbconsumer:
     name: consumer
@@ -112,14 +127,12 @@ consumer:
         accessMode: ReadWriteOnce
         storage: 4Gi
 
-# End of consumer values
+# End of Consumer Values
 #######################################################################################
-
-
-# bitbroker-db values
+# Database Values
 
 bitbroker-db:
-  enabled: true
+  enabled: false
   replicaCount: 1
   postgres:
     name: bitbroker-db
@@ -144,26 +157,23 @@ bitbroker-db:
 
   postgres_password: 'bitbr0ker'
 
-# End of bitbroker-db values
+# End of Database Values
 #######################################################################################
 
-
 #######################################################################################
-# auth-service  values
+# Auth Service Values
 
 auth-service:
   enabled: true
-    ## If private registry
-    ##
-  registry: "public.ecr.aws/y1v9w5g2"
+
+  docker:
+    imageTag: "1.0.0"
+    imagePullPolicy: Always
+    imagePullSecret: regcred
 
   ## Number of replicas
   ##
   replicaCount: 1
-
-  ## Token's issuer
-  ##
-  issuer: "bit-broker.io"
 
   ## Debug tools
   ##
@@ -175,23 +185,21 @@ auth-service:
   ## Docker image
   ##
 
-# End of auth-services values
+# End of Auth Service Values
+#######################################################################################
 
 #######################################################################################
-# rate-service  values
+# Rate Service Values
 
 rate-service:
   enabled: true
+
   ## Docker image
   ##
   docker:
-    imageTag: "latest"
+    imageTag: "1.0.0"
     imagePullPolicy: "Always"
     imagePullSecret: "regcred"
-
-    ## If private registry
-    ##
-    registry: "public.ecr.aws/y1v9w5g2"
 
   ## Number of replicas
   ##
@@ -222,37 +230,33 @@ rate-service:
     ##   GKE, AWS & OpenStack)
     ## storageClass: "-"
 
-# End of rate-service values
-
+# End of Rate Service Values
 #######################################################################################
-
-# bbk mockup values
+# Bbk Mockup Values
 
 bbk-mockup-api:
   enabled: true
-  dimage: bit-broker
-  tagversion: latest
-  replicas: 1
-  domainPrefix: api
-  cluster:
-    apiDomainName: bit-broker.eu-west-2.compute.amazonaws.com
-  docker:
-    GeneralFullImagePreamble: public.ecr.aws/y1v9w5g2/
 
-  # ConfigMap values
+  ## Docker image
+  ##
+  docker:
+    imageTag: "1.0.0"
+    imagePullPolicy: "Always"
+    imagePullSecret: "regcred"
+
+  ## ConfigMap values
   node_env: 'development'
   log_level: 'debug'
   server_port: '8080'
-  ui_url: 'https://ui.bit-broker.eti-rolle-s1.ciscolabs.com'
+  ui_url: 'https://ui.com'
 
-# End of bbk mockup values
-
+# End of Bbk Mockup Values
 #######################################################################################
 
 #######################################################################################
-# ambasadoor values
-#  Values copied from ambasadoor helm repo values.yaml
-ambassador:
+# Ambassador Values
+
+ambassador-bbk:
   # Dependency enabler
   enabled: true
   # Default values for ambassador.
@@ -417,54 +421,6 @@ ambassador:
 
     # Manually set the name of the generated Service
     nameOverride:
-    #############################################################################
-    ## Ambassador should be configured using CRD definition. If you want
-    ## to use annotations, the following is an example of annotating the
-    ## Ambassador service with global configuration manifest.
-    ##
-    ## See https://www.getambassador.io/reference/core/ambassador and
-    ## https://www.getambassador.io/reference/core/tls for more info
-    #############################################################################
-    #
-    #  getambassador.io/config: |
-    #    ---
-    #    apiVersion: ambassador/v1
-    #    kind: TLSContext
-    #    name: ambassador
-    #    secret: ambassador-certs
-    #    hosts: ["*"]
-    #    ---
-    #    apiVersion: ambassador/v1
-    #    kind: Module
-    #    name: ambassador
-    #    config:
-    #      admin_port: 8001
-    #      diag_port: 8877
-    #      diagnostics:
-    #        enabled: true
-    #      enable_grpc_http11_bridge: false
-    #      enable_grpc_web: false
-    #      enable_http10: false
-    #      enable_ipv4: true
-    #      enable_ipv6: false
-    #      liveness_probe:
-    #        enabled: true
-    #      lua_scripts:
-    #      readiness_probe:
-    #        enabled: true
-    #      server_name: envoy
-    #      service_port: 8080
-    #      use_proxy_proto: false
-    #      use_remote_address: true
-    #      xff_num_trusted_hops: 0
-    #      x_forwarded_proto_redirect: false
-    #      load_balancer:
-    #        policy: round_robin
-    #      circuit_breakers:
-    #        max_connections: 2048
-    #      retry_policy:
-    #        retry_on: "5xx"
-    #      cors:
 
   adminService:
     create: true
@@ -585,202 +541,9 @@ ambassador:
   # Disable AES for bitbroker.
   enableAES: false
 
-  # Set createSecret: false is installing multiple releases of The Ambassador
-  # Edge Stack in the same namespace.
-  licenseKey:
-    value:
-    createSecret: true
-    secretName:
-    # Annotations to attach to the license-key-secret.
-    annotations:
-      { }
-
-  # The DevPortal is exposed at /docs/ endpoint in the AES container.
-  # Setting this to true will automatically create routes for the DevPortal.
-  createDevPortalMappings: true
-  devportal:
-    docsPrefix: "/documentation/"
-
-  # The Ambassador Edge Stack uses a redis instance for managing authentication,
-  # rate limiting, and sharing minor configuration details between pods for
-  # centralized management. These values configure the redis instance that ships
-  # by default with The Ambassador Edge Stack.
-  #
-  # URL of your redis instance. Defaults to redis instance created below.
-  redisURL:
-
-  # Ambassador ships with a basic redis instance. Configure the deployment with the options below.
-  redis:
-    create: true
-    image:
-      repository: redis
-      tag: 5.0.1
-      pullPolicy: IfNotPresent
-    # Annotations for Ambassador Pro's redis instance.
-    annotations:
-      deployment:
-        { }
-      service:
-        { }
-    resources: { }
-    # If you want to specify resources, uncomment the following
-    # lines and remove the curly braces after 'resources:'.
-    # These are placeholder values and must be tuned.
-    #   limits:
-    #     cpu: 100m
-    #     memory: 256Mi
-    #   requests:
-    #     cpu: 50m
-    #     memory: 128Mi
-    nodeSelector: { }
-    affinity: { }
-    tolerations: { }
-
-
-  # Configures the AuthService that ships with the Ambassador Edge Stack.
-  # Setting authService.create: false will not install the AES AuthService and
-  # allow you to define your own.
-  #
-  # Typically when using the AES, you will want to keep this set to true and use
-  # the External Filter to communicate with a custom authentication service.
-  # https://www.getambassador.io/reference/filter-reference/#filter-type-external
-  authService:
-    deploymentExtraName: auth
-    create: true
-    # Set additional configuration options. See https://www.getambassador.io/reference/services/auth-service for more information
-    optional_configurations: { }
-      # include_body:
-      #   max_bytes: 4096
-      #   allow_partial: true
-      # status_on_error:
-      #   code: 403
-      # failure_mode_allow: false
-      # retry_policy:
-      #   retry_on: "5xx"
-      #   num_retries: 2
-    # add_linkerd_headers: true
-    # timeout_ms: 30000
-
-
-  # Configures the RateLimitService in the Ambassador Edge Stack.
-  # Keep this enabled to configure RateLimits in AES.
-  rateLimit:
-    create: true
-    deploymentExtraName: ratelimit
-
-  # Projects are a beta feature of Ambassador that allow developers to stage and
-  # deploy code with nothing more than a Github repository.
-  # See: https://www.getambassador.io/docs/edge-stack/latest/topics/using/projects/
-  registry:
-    create: false
-
-  # Resolvers are used to configure the discovery service strategy for Ambasador Edge Stack.
-  # See: https://www.getambassador.io/docs/edge-stack/latest/topics/running/resolvers/
-  resolvers:
-    endpoint:
-      create: false
-      name: "endpoint"
-    consul:
-      create: false
-      name: "consul-dc1"
-      spec: { }
-      # Configuration for a Consul Resolver
-      #   address: consul-server.default.svc.cluster.local:8500
-      #   datacenter: dc1
-
-  ################################################################################
-  ## DEPRECATED configuration objects                                           ##
-  ################################################################################
-
-  # DEPRECATED: Ambassador now exposes the /metrics endpoint in Envoy.
-  # DEPRECATED: See https://www.getambassador.io/user-guide/monitoring#deployment for more information on how to use the /metrics endpoint
-  #
-  # DEPRECATED: Enabling the prometheus exporter creates a sidecar and configures ambassador to use it
-  prometheusExporter:
-    enabled: false
-    repository: prom/statsd-exporter
-    tag: v0.8.1
-    pullPolicy: IfNotPresent
-    resources: { }
-    # If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    #   limits:
-    #     cpu: 100m
-    #     memory: 256Mi
-    #   requests:
-    #     cpu: 50m
-    #     memory: 128Mi
-    # You can configure the statsd exporter to modify the behavior of mappings and other features.
-    # See documentation: https://github.com/prometheus/statsd_exporter/tree/v0.8.1#metric-mapping-and-configuration
-    # Uncomment the following line if you wish to specify a custom configuration:
-    # configuration: |
-    #   ---
-    #   mappings:
-    #   - match: 'envoy.cluster.*.upstream_cx_connect_ms'
-    #     name: "envoy_cluster_upstream_cx_connect_time"
-    #     timer_type: 'histogram'
-    #     labels:
-    #       cluster_name: "$1"
-
-  # DEPRECATED: Use security.podSecurityContext
-  # securityContext:
-  #   runAsUser: 8888
-
-
-  # Configures Service Preview that ships with the Ambassador Edge Stack and edgectl.
-  # Setting servicePreview.enabled: true will install the Traffic Agent Service Account, Traffic Manager with RBAC, and ambassador-injector
-  servicePreview:
-    enabled: false
-    trafficManager:
-      image:
-        # Leave blank to use image.repository and image.tag
-        repository:
-        tag:
-      serviceAccountName: "traffic-manager"
-    trafficAgent:
-      image:
-        # Leave blank to use image.repository and image.tag
-        repository:
-        tag:
-      singleNamespace: true
-      serviceAccountName: "traffic-agent"
-      port: 9900
-
-      # Configure the ambassador-injector webhook for Service Preview Traffic Agent automatic sidecar injection.
-      injector:
-        enabled: true
-
-        # If no injector.crtPEM and injector.keyPEM are provided, a self-signed certificate will be issued
-        # for the Common Name (CN) of `<ambassador-injector>.<namespace>.svc`, which is the cluster-internal DNS name
-        # for the service.
-        crtPEM: ""
-        keyPEM: ""
-
-  # Configure the ambassador agent
-  agent:
-    enabled: true
-    # this will be empty when it first gets applied, then the user will edit the agent to
-    # make it start reporting
-    cloudConnectToken: ""
-    rpcAddress: https://app.getambassador.io/
-    createArgoRBAC: true
-    image:
-      # Leave blank to use image.repository and image.tag
-      tag:
-      repository:
-
-  deploymentTool: ""
-
-  # configure docker to pull from private registry
-  docker: { }
-  createNamespace: false
-  enableTestService: false
-
-# End od ambasadoor values
-
+# End of Ambassador Values
 #######################################################################################
-
-# oathkeeper values
+# Ory Oathkeeper Values
 
 oathkeeper-bbk:
   # Number of ORY Oathkeeper members
@@ -892,7 +655,6 @@ oathkeeper-bbk:
     config:
       access_rules:
         repositories:
-          - file://./files/access_rules.json
       serve:
         proxy:
           port: 4455
@@ -904,7 +666,7 @@ oathkeeper-bbk:
           enabled: true
           config:
             jwks_urls:
-              - http://auth-service:8080/api/v1/.well-known/jwks.json
+              - http://bit-broker-auth-service:8080/api/v1/.well-known/jwks.json
             token_from:
               header: x-bbk-auth-token
       mutators:
@@ -923,11 +685,9 @@ oathkeeper-bbk:
           config:
             headers:
               x-bbk-policy: "{{ print .Extra.policy }}"
-      ## DEMO: To delete
       authorizers:
         allow:
           enabled: true
-  ## DEMO: To delete
 
   #  If set, uses the given JSON Web Key Set as the signing key for the ID Token Mutator.
   #  mutatorIdTokenJWKs: {}
@@ -1009,6 +769,5 @@ oathkeeper-bbk:
   maester:
     enabled: true
 
-    # End of oathkeeper values.
-
-    #######################################################################################
+# End of Ory Oathkeeper Values
+#######################################################################################
