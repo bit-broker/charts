@@ -2,8 +2,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ .Release.Name }}-pvc
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
   namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   accessModes:
     - ReadWriteMany

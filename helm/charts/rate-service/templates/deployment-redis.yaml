@@ -1,17 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rate-service-redis
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-redis
   namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rate-service-redis
+      app: {{ .Release.Name }}-{{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: rate-service-redis
+        app: {{ .Release.Name }}-{{ .Chart.Name }}
     spec:
       containers:
       - name: redis
@@ -20,11 +24,10 @@ spec:
         - containerPort: 6379
 {{- if .Values.persistentVolume.enabled }}
         volumeMounts:
-          - name: {{ .Release.Name }}-data
+          - name: {{ .Release.Name }}-{{ .Chart.Name }}-data
             mountPath: '{{ .Values.persistentVolume.mountPath }}'
       volumes:
-      - name: {{ .Release.Name }}-data
+      - name: {{ .Release.Name }}-{{ .Chart.Name }}-data
         persistentVolumeClaim:
-          claimName: {{ .Release.Name }}rate-service-pvc
+          claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
 {{- end }}
----

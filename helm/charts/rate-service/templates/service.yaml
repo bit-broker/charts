@@ -1,11 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-rate-service
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/name: {{ .Release.Name }}-rate-service
-    tier: backend
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   ports:
   - name: http
@@ -18,4 +19,4 @@ spec:
     targetPort: 7000
   type: ClusterIP
   selector:
-    app: {{ .Release.Name }}-rate-service
+    app: {{ .Release.Name }}-{{ .Chart.Name }}
