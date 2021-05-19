@@ -776,6 +776,7 @@ oathkeeper-bbk:
   # Configures controller setup
   maester:
     enabled: true
+    oathkeeperFullnameOverride: 'oathkeeper-bbk'
 
 # End of Ory Oathkeeper Values
 #######################################################################################
