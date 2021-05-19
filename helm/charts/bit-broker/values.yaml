@@ -17,7 +17,7 @@ global:
   docker:
     ## If private registry
     ##
-    #registry: ""
+    registry: "registry.hub.docker.com"
 
   ## Token's issuer
   ##
