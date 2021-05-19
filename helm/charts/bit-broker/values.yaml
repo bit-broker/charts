@@ -12,6 +12,13 @@ global:
     ##
     policy: "x-bbk-policy"
 
+  ## Docker image
+  ##
+  docker:
+    ## If private registry
+    ##
+    #registry: ""
+
   ## Token's issuer
   ##
   issuer: "bit-broker.io"
@@ -164,10 +171,6 @@ auth-service:
     imagePullPolicy: Always
     imagePullSecret: regcred
 
-    ## If private registry
-    ##
-    registry: "registry.eti-rolle.ciscolabs.com:5000"
-
   ## Number of replicas
   ##
   replicaCount: 1
@@ -197,10 +200,6 @@ rate-service:
     imageTag: "1.0.0"
     imagePullPolicy: "Always"
     imagePullSecret: "regcred"
-
-    ## If private registry
-    ##
-    registry: "registry.eti-rolle.ciscolabs.com:5000"
 
   ## Number of replicas
   ##
@@ -244,10 +243,6 @@ bbk-mockup-api:
     imageTag: "1.0.0"
     imagePullPolicy: "Always"
     imagePullSecret: "regcred"
-
-    ## If private registry
-    ##
-    registry: "registry.eti-rolle.ciscolabs.com:5000"
 
   ## ConfigMap values
   node_env: 'development'
