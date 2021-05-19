@@ -24,10 +24,10 @@ spec:
             claimName: {{ .Values.postgres.volume.pvc.name }}
       containers:
         - name: {{ .Values.postgres.name }}
-          image: {{ .Values.postgres.container.image }}
-          {{ if .Values.imagePullSecrets }}
+          image: "{{ .Values.postgres.docker.registry | default .Values.global.docker.registry }}/bit-broker-db:{{ .Values.postgres.docker.imageTag }}"
+          {{ if .Values.postgres.docker.imagePullSecrets }}
           imagePullSecrets:
-            - name: {{ .Values.imagePullSecrets }}
+            - name: {{ .Values.postgres.docker.imagePullSecrets }}
           {{ end }}
           ports:
             - containerPort: {{ .Values.postgres.container.port }}
