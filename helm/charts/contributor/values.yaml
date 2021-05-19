@@ -1,24 +1,33 @@
+## Default values for contributor helm templates.
+
+name: contributor
+group: app
+
+##contributor instance count.
 replicaCount: 1
-bbcontributor:
+
+##contributor security context configuration.
+securityContext:
+  runAsUser: 1392
+  fsGroup: 1392
+
+##Docker Image values.
+container:
+  image: public.ecr.aws/y1v9w5g2/contributor:latest
   name: contributor
-  group: app
-  securityContext:
-    runAsUser: 1392
-    fsGroup: 1392
-  container:
-    image: public.ecr.aws/y1v9w5g2/bitbroker-contributor:latest
-    name: bitbroker-contributor
-    port: 8001
-  imagePullSecrets: ecrcred
-  imagePullPolicy: Always
-  service:
-    type: ClusterIP
-    port: 8002
-  volume:
-    name: bibroker-contributor-storage
-    kind: PersistentVolumeClaim
-    mountPath: /home/node/app/services/contributor/logs
-    pvc:
-      name: bibroker-contributor-volume-claim
-      accessMode: ReadWriteOnce
-      storage: 4Gi
+  port: 8001
+imagePullSecrets: ecrcred
+imagePullPolicy: Always
+
+## Service configuration values.
+service:
+  type: ClusterIP
+  port: 8001
+
+## Volume definitions.
+volume:
+  mountPath: /home/node/app/services/contributor/logs
+  pvc:
+    accessMode: ReadWriteOnce
+    storage: 4Gi
+
