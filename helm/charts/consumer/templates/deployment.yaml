@@ -1,38 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.bbconsumer.name }}
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  namespace: '{{ .Release.Namespace }}'
   labels:
-    app: {{ .Values.bbconsumer.name }}
-    group: {{ .Values.bbconsumer.group }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.bbconsumer.name }}
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.bbconsumer.name }}
-        group: {{ .Values.bbconsumer.group }}
+        app: {{ .Values.name }}
+        group: {{ .Values.group }}
     spec:
       volumes:
-        - name: {{ .Values.bbconsumer.volume.name }}
+        - name: {{ .Release.Name }}-{{ .Chart.Name }}-vol
           persistentVolumeClaim:
-            claimName: {{ .Values.bbconsumer.volume.pvc.name }}
+            claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
       securityContext:
-        runAsUser: {{ .Values.bbconsumer.securityContext.runAsUser }}
-        fsGroup: {{ .Values.bbconsumer.securityContext.fsGroup }}
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
       containers:
-        - name: {{ .Values.bbconsumer.name }}
-          image: {{ .Values.bbconsumer.container.image }}
-          imagePullPolicy: {{ .Values.bbconsumer.imagePullPolicy }}
+        - name: {{ .Values.name }}
+          image: {{ .Values.container.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
-            - containerPort: {{ .Values.bbconsumer.container.port }}
+            - containerPort: {{ .Values.container.port }}
           envFrom:
             - configMapRef:
-                name: {{ .Release.Name }}-consumer-configmap
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
           volumeMounts:
-              - name: {{ .Values.bbconsumer.volume.name }}
-                mountPath: {{ .Values.bbconsumer.volume.mountPath }}
-                subPath: {{ .Values.bbconsumer.volume.subPath }}
+              - name: {{ .Release.Name }}-{{ .Chart.Name }}-logvol
+                mountPath: {{ .Values.volume.mountPath }}

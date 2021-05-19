@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.bbconsumer.name }}
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-svc
   labels:
-    group: {{ .Values.bbconsumer.group }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  type: {{ .Values.bbconsumer.service.type }}
+  type: {{ .Values.service.type }}
   selector:
-    app: {{ .Values.bbconsumer.name }}
+    app: {{ .Values.name }}
   ports:
-    - port: {{ .Values.bbconsumer.service.port }}
-      targetPort: {{ .Values.bbconsumer.container.port }}
-      {{ if eq .Values.bbconsumer.service.type "NodePort" }}nodePort: {{ .Values.bbconsumer.service.nodeport }}{{ end }}
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.container.port }}
+      {{ if eq .Values.service.type "NodePort" }}nodePort: {{ .Values.service.nodeport }}{{ end }}
