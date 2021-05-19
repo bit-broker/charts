@@ -2,12 +2,13 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-pre-install-job
+  namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
   annotations:
     helm.sh/hook: pre-install
-    helm.sh/hook-delete-policy: before-hook-creation
 spec:
   backoffLimit: 0
   template:
