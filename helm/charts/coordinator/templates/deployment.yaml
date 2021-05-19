@@ -1,38 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.bbcoordinator.name }}
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  namespace: '{{ .Release.Namespace }}'
   labels:
-    app: {{ .Values.bbcoordinator.name }}
-    group: {{ .Values.bbcoordinator.group }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.bbcoordinator.name }}
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.bbcoordinator.name }}
-        group: {{ .Values.bbcoordinator.group }}
+        app: {{ .Values.name }}
+        group: {{ .Values.group }}
     spec:
       volumes:
-        - name: {{ .Values.bbcoordinator.volume.name }}
+        - name: {{ .Release.Name }}-{{ .Chart.Name }}-vol
           persistentVolumeClaim:
-            claimName: {{ .Values.bbcoordinator.volume.pvc.name }}
+            claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
       securityContext:
-        runAsUser: {{ .Values.bbcoordinator.securityContext.runAsUser }}
-        fsGroup: {{ .Values.bbcoordinator.securityContext.fsGroup }}
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
       containers:
-        - name: {{ .Values.bbcoordinator.name }}
-          image: {{ .Values.bbcoordinator.container.image }}
-          imagePullPolicy: {{ .Values.bbcoordinator.imagePullPolicy }}
+        - name: {{ .Values.name }}
+          image: {{ .Values.container.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
-            - containerPort: {{ .Values.bbcoordinator.container.port }}
+            - containerPort: {{ .Values.container.port }}
           envFrom:
             - configMapRef:
-                name: {{ .Release.Name }}-coordinator-configmap
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
           volumeMounts:
-              - name: {{ .Values.bbcoordinator.volume.name }}
-                mountPath: {{ .Values.bbcoordinator.volume.mountPath }}
-                subPath: {{ .Values.bbcoordinator.volume.subPath }}
+              - name: {{ .Release.Name }}-{{ .Chart.Name }}-logvol
+                mountPath: {{ .Values.volume.mountPath }}

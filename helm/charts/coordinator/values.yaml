@@ -1,24 +1,33 @@
+## Default values for coordinator helm templates.
+
+name: coordinator
+group: app
+
+##coordinator instance count.
 replicaCount: 1
-bbcoordinator:
+
+##coordinator security context configuration.
+securityContext:
+  runAsUser: 1392
+  fsGroup: 1392
+
+##Docker Image values.
+container:
+  image: public.ecr.aws/y1v9w5g2/coordinator:latest
   name: coordinator
-  group: app
-  securityContext:
-    runAsUser: 1392
-    fsGroup: 1392
-  container:
-    image: public.ecr.aws/y1v9w5g2/bitbroker-coordinator:latest
-    name: bitbroker-coordinator
-    port: 8001
-  imagePullSecrets: ecrcred
-  imagePullPolicy: Always
-  service:
-    type: ClusterIP
-    port: 8001
-  volume:
-    name: bibroker-coordinator-storage
-    kind: PersistentVolumeClaim
-    mountPath: /home/node/app/services/coordinator/logs
-    pvc:
-      name: bibroker-coordinator-volume-claim
-      accessMode: ReadWriteOnce
-      storage: 4Gi
+  port: 8001
+imagePullSecrets: ecrcred
+imagePullPolicy: Always
+
+## Service configuration values.
+service:
+  type: ClusterIP
+  port: 8001
+
+## Volume definitions.
+volume:
+  mountPath: /home/node/app/services/coordinator/logs
+  pvc:
+    accessMode: ReadWriteOnce
+    storage: 4Gi
+
