@@ -12,17 +12,19 @@ securityContext:
   fsGroup: 1392
 
 ##Docker Image values.
+docker:
+  imageTag: "latest"
+  imagePullPolicy: Always
+  imagePullSecret: regcred
+
 container:
-  image: public.ecr.aws/y1v9w5g2/consumer:latest
-  name: consumer
-  port: 8001
-imagePullSecrets: ecrcred
-imagePullPolicy: Always
+  name: coordinator
+  port: 8003
 
 ## Service configuration values.
 service:
   type: ClusterIP
-  port: 8001
+  port: 8003
 
 ## Volume definitions.
 volume:

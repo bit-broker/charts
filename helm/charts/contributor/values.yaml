@@ -12,12 +12,14 @@ securityContext:
   fsGroup: 1392
 
 ##Docker Image values.
+docker:
+  imageTag: "latest"
+  imagePullPolicy: Always
+  imagePullSecret: regcred
+
 container:
-  image: public.ecr.aws/y1v9w5g2/contributor:latest
-  name: contributor
-  port: 8001
-imagePullSecrets: ecrcred
-imagePullPolicy: Always
+  name: coordinator
+  port: 8002
 
 ## Service configuration values.
 service:

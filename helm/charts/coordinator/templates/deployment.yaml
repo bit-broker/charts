@@ -27,8 +27,8 @@ spec:
         fsGroup: {{ .Values.securityContext.fsGroup }}
       containers:
         - name: {{ .Values.name }}
-          image: {{ .Values.container.image }}
-          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/coordinator:{{ .Values.docker.imageTag }}"
+          imagePullPolicy: {{ Values.docker.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.container.port }}
           envFrom:
