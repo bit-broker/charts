@@ -4,8 +4,9 @@ metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    tier: backend
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   ports:
   - name: http
@@ -14,4 +15,4 @@ spec:
     targetPort: 8080
   type: ClusterIP
   selector:
-    app: {{ .Release.Name }}
+    app: {{ .Release.Name }}-{{ .Chart.Name }}
