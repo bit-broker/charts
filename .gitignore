@@ -1,6 +1,2 @@
 # VIM locked files
 .swp
-
-# Charts and lock file
-helm/charts/bit-broker/charts
-helm/charts/bit-broker/Chart.lock

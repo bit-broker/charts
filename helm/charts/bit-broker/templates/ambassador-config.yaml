@@ -1,0 +1,74 @@
+{{- if index .Values "ambassador-bbk" "enabled" }}
+---
+apiVersion: getambassador.io/v2
+kind: AuthService
+metadata:
+  name: authentication
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  auth_service: "oathkeeper-api:4456"
+  timeout_ms: 5000
+  failure_mode_allow: false
+  path_prefix: "/decisions/bbk"
+  allowed_request_headers:
+  - '{{ .Values.global.headers.authToken }}'
+  allowed_authorization_headers:
+  - '{{ .Values.global.headers.policy }}'
+---
+apiVersion: getambassador.io/v2
+kind: RateLimitService
+metadata:
+  name: ratelimit
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  service: {{ .Release.Service }}-rate-service:7000
+  protocol_version: v2
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: bbk-consume
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  prefix: /consume/
+  rewrite: /api/v1/consume/
+  service: bit-broker:8080
+  labels:
+    ambassador:
+      - consume:
+        - remote_address
+        - uid:
+            header: '{{ .Values.global.headers.policy }}'
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: bbk-contribute
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  prefix: /contribute/
+  rewrite: /api/v1/contribute/
+  service: bit-broker:8080
+  labels:
+    ambassador:
+      - contribute:
+        - remote_address
+        - uid:
+            header: '{{ .Values.global.headers.policy }}'
+{{- end }}

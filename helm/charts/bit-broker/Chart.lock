@@ -1,0 +1,27 @@
+dependencies:
+- name: ambassador
+  repository: https://www.getambassador.io
+  version: 6.7.2
+- name: oathkeeper
+  repository: https://k8s.ory.sh/helm/charts
+  version: 0.11.1
+- name: auth-service
+  repository: file://../auth-service
+  version: "1.0"
+- name: rate-service
+  repository: file://../rate-service
+  version: "1.0"
+- name: bbk-mockup-api
+  repository: file://../bit-broker-mockup
+  version: "1.0"
+- name: coordinator
+  repository: file://../coordinator
+  version: "1.0"
+- name: contributor
+  repository: file://../contributor
+  version: "1.0"
+- name: consumer
+  repository: file://../consumer
+  version: "1.0"
+digest: sha256:ada213a97254de0c3224750584de85c24a3c1d32169e7d9efa4df1827d6e845e
+generated: "2021-05-19T14:15:10.153081+02:00"

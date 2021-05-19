@@ -13,7 +13,8 @@ dependencies:
   - name: ambassador
     version: "6.7.2"
     repository: https://www.getambassador.io
-    condition: ambassador.enabled
+    condition: ambassador-bbk.enabled
+    alias: ambassador-bbk
   - name: oathkeeper
     version: "0.11.1"
     repository: https://k8s.ory.sh/helm/charts
@@ -31,6 +32,10 @@ dependencies:
     version: "1.0"
     repository: file://../bit-broker-mockup
     condition: bbk-mockup-api.enabled
+  - name: bitbroker-db
+    version: "1.0"
+    repository: file://../coordinator
+    condition: bitbroker-db.enabled
   - name: coordinator
     version: "1.0"
     repository: file://../coordinator
@@ -43,9 +48,3 @@ dependencies:
     version: "1.0"
     repository: file://../consumer
     condition: consumer.enabled
-  - name: bitbroker-db
-    version: "1.0"
-    repository: file://../bitbroker-db
-    condition: bitbroker-db.enabled
-
-
