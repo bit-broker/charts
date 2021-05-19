@@ -32,10 +32,6 @@ dependencies:
     version: "1.0"
     repository: file://../bit-broker-mockup
     condition: bbk-mockup-api.enabled
-  - name: bitbroker-db
-    version: "1.0"
-    repository: file://../coordinator
-    condition: bitbroker-db.enabled
   - name: coordinator
     version: "1.0"
     repository: file://../coordinator
