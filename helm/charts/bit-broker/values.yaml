@@ -43,19 +43,20 @@ global:
 #######################################################################################
 
 #######################################################################################
-## Default values for coordinator helm template.
+## Bit-Broker Coordinator Values
 
 coordinator:
+  enabled: true
 
-  ##coordinator instance count.
+  ## Coordinator instance count.
   replicaCount: 1
 
-  ##coordinator security context configuration.
+  ## Coordinator security context configuration.
   securityContext:
     runAsUser: 1392
     fsGroup: 1392
 
-  ##Docker Image values.
+  ## Docker Image values.
   docker:
     imageTag: "latest"
     imagePullPolicy: Always
@@ -77,23 +78,24 @@ coordinator:
       accessMode: ReadWriteOnce
       storage: 4Gi
 
-## End of Coordinator Values
+## End of Bit-Broker Coordinator Values
 #######################################################################################
 
 #######################################################################################
-## Default values for contributor helm template.
+## Bit-Broker Contributor Values
 
 contributor:
+  enabled: true
 
-  ##contributor instance count.
+  ## Contributor instance count.
   replicaCount: 1
 
-  ##contributor security context configuration.
+  ## Contributor security context configuration.
   securityContext:
     runAsUser: 1392
     fsGroup: 1392
 
-  ##Docker Image values.
+  ## Docker Image values.
   docker:
     imageTag: "latest"
     imagePullPolicy: Always
@@ -115,23 +117,24 @@ contributor:
       accessMode: ReadWriteOnce
       storage: 4Gi
 
-## End of Contributor Values
+## End of Bit-Broker Contributor Values
 #######################################################################################
 
 #######################################################################################
-## Default values for consumer helm template.
+## Bit-Broker Consumer Values
 
 consumer:
+  enabled: true
 
-  ##consumer instance count.
+  ## Consumer instance count.
   replicaCount: 1
 
-  ##consumer security context configuration.
+  ## Consumer security context configuration.
   securityContext:
     runAsUser: 1392
     fsGroup: 1392
 
-  ##Docker Image values.
+  ## Docker Image values.
   docker:
     imageTag: "latest"
     imagePullPolicy: Always
@@ -153,15 +156,15 @@ consumer:
       accessMode: ReadWriteOnce
       storage: 4Gi
 
-## End of Consumer Values
+## End of Bit-Broker Consumer Values
 #######################################################################################
 
 #######################################################################################
-## Default values for bit-broker postgres instance.
+## Bit-Broker Postgres Values
 
 bit-broker-db:
-
   enabled: false
+
   replicaCount: 1
   postgres:
     name: bitbroker-db
@@ -185,7 +188,7 @@ bit-broker-db:
         accessMode: ReadWriteOnce
         storage: 4Gi
 
-# End of Database Values
+# End of Bit-Broker Postgres Values
 #######################################################################################
 
 #######################################################################################
