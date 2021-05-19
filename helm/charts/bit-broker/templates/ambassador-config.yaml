@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  auth_service: "oathkeeper-api:4456"
+  auth_service: {{ .Release.Service }}-oathkeeper-bbk-api:4456
   timeout_ms: 5000
   failure_mode_allow: false
   path_prefix: "/decisions/bbk"
