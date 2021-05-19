@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-pre-install-job
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  annotations:
+    helm.sh/hook: pre-install
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      name: {{ .Release.Name }}-{{ .Chart.Name }}-pre-install-job
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.docker.imagePullSecret }}
+      restartPolicy: Never
+      containers:
+      - name: pre-install-job
+        imagePullPolicy: Always
+        image: {{ .Values.docker.registry }}/auth-service:{{ .Values.docker.imageTag }}
+        command: ['npm', 'run', 'check-jwks', '{{ .Values.JWKS }}', '--silent']

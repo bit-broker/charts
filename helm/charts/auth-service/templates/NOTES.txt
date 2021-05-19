@@ -3,7 +3,7 @@ Thank you for installing {{ .Chart.Name }}.
 
 Your release is named {{ .Release.Name }}.
 
-A JWKS was generated, please perform a backup:
+Following JWKS is used, please perform a backup:
 
 {{ .Values.JWKS }}
 
