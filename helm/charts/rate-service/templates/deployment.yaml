@@ -1,17 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rate-service
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: rate-service
+      app: {{ .Release.Name }}-{{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: rate-service
+        app: {{ .Release.Name }}-{{ .Chart.Name }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
@@ -28,7 +32,7 @@ spec:
         - containerPort: 7000
         envFrom:
           - configMapRef:
-              name: {{ .Release.Name }}-rate-service-configmap
+              name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
         env:
           - name: SERVER_HTTP_HOST
             value: "localhost:4000"
