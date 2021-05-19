@@ -1,6 +1,23 @@
 {{- if index .Values "ambassador-bbk" "enabled" }}
 ---
 apiVersion: getambassador.io/v2
+kind: Host
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-host
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  hostname: {{ .Values.global.gateway.host }}
+  acmeProvider:
+    email: {{ .Values.global.gateway.acmeProvider }}
+{{- if  .Values.global.gateway.tlsSecret }}
+  tlsSecret:
+    name: {{ .Values.global.gateway.tlsSecret }}
+{{- end }}
+---
+apiVersion: getambassador.io/v2
 kind: AuthService
 metadata:
   name: authentication
