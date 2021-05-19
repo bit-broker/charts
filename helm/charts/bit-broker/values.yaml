@@ -8,6 +8,7 @@ global:
     ## Header containing the authentication token
     ##
     authToken: "x-bbk-auth-token"
+
     ## Header containing the policy id
     ##
     policy: "x-bbk-policy"
@@ -22,6 +23,21 @@ global:
   ## Token's issuer
   ##
   issuer: "bit-broker.io"
+
+  ## Gateway settings
+  ##
+  gateway:
+    ## Host URL
+    ##
+    host: "bit-broker.io"
+
+    ## Handle with Let's encrypt
+    ##
+    acmeProvider: "admin@bit-broker.io"
+
+    ## Or specify a tls secret
+    ##
+    #tlsSecret: "tls-cert"
 
 # End of Global Values
 #######################################################################################
