@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-service
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: auth-service
+      app: {{ .Release.Name }}-{{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: auth-service
+        app: {{ .Release.Name }}-{{ .Chart.Name }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
@@ -27,6 +27,6 @@ spec:
         - containerPort: 8080
         envFrom:
           - configMapRef:
-              name: {{ .Release.Name }}-auth-service-configmap
+              name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
           - secretRef:
-              name: {{ .Release.Name }}-secret
+              name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
