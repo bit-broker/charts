@@ -377,8 +377,11 @@ ambassador-bbk:
     #   runAsUser:
     #     rule: MustRunAsNonRoot
 
+  # Disable AES for Bit-Broker
+  enableAES: false
+
   image:
-    repository: docker.io/datawire/aes
+    repository: docker.io/datawire/ambassador
     tag: 1.13.1
     pullPolicy: IfNotPresent
 
@@ -529,17 +532,6 @@ ambassador-bbk:
       # interval: 30s
       # scrapeTimeout: 30s
       # selector: {}
-
-  ################################################################################
-  ## Ambassador Edge Stack Configuration                                        ##
-  ################################################################################
-
-  # The Ambassador Edge Stack is free for limited use without a license key.
-  # Go to https://{ambassador-host}/edge_stack/admin/#dashboard to register
-  # for a community license key.
-
-  # Disable AES for bitbroker.
-  enableAES: false
 
 # End of Ambassador Values
 #######################################################################################
