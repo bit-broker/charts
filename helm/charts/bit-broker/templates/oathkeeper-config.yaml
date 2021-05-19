@@ -1,0 +1,57 @@
+{{- if index .Values "oathkeeper-bbk" "enabled" }}
+---
+apiVersion: oathkeeper.ory.sh/v1alpha1
+kind: Rule
+metadata:
+  name: bbk-consume-auth
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  match:
+    methods: ["GET", "HEAD"]
+    url: "<http|https>://<.*>/bbk/consume/<.*>"
+  authenticators:
+  - handler: jwt
+    config:
+      scope_strategy: exact
+      required_scope:
+      - consume
+      trusted_issuers:
+      - '{{ .Values.global.issuer }}'
+      allowed_algorithms:
+      - RS256
+  authorizer:
+    handler: allow
+  mutators:
+  - handler: hydrator
+---
+apiVersion: oathkeeper.ory.sh/v1alpha1
+kind: Rule
+metadata:
+  name: bbk-contribute-auth
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  match:
+    methods: ["GET", "HEAD"]
+    url: "<http|https>://<.*>/bbk/contribute/<.*>"
+  authenticators:
+  - handler: jwt
+    config:
+      scope_strategy: exact
+      required_scope:
+      - consume
+      trusted_issuers:
+      - '{{ .Values.global.issuer }}'
+      allowed_algorithms:
+      - RS256
+  authorizer:
+    handler: allow
+  mutators:
+  - handler: hydrator
+---
+{{- end }}
