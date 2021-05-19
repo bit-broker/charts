@@ -43,121 +43,136 @@ global:
 #######################################################################################
 
 #######################################################################################
-# Coordinator Values
+## Default values for coordinator helm template.
 
 coordinator:
+
+  ##coordinator instance count.
   replicaCount: 1
-  enabled: false
-  bbcoordinator:
-    name: coordinator
-    group: app
-    # Refer to coordinator Dockerfile for user creation and ID. Services run as user bitbroker.
-    securityContext:
-      runAsUser: 1392
-      fsGroup: 1392
-    container:
-      image: public.ecr.aws/y1v9w5g2/bitbroker-coordinator:latest
-      name: bitbroker-coordinator
-      port: 8001
-    imagePullSecrets: ecrcred
+
+  ##coordinator security context configuration.
+  securityContext:
+    runAsUser: 1392
+    fsGroup: 1392
+
+  ##Docker Image values.
+  docker:
+    imageTag: "latest"
     imagePullPolicy: Always
-    service:
-      type: ClusterIP
-      port: 8001
-    volume:
-      name: bibroker-coordinator-storage
-      kind: PersistentVolumeClaim
-      mountPath: /home/node/app/services/coordinator/logs
-      pvc:
-        name: bibroker-coordinator-volume-claim
-        accessMode: ReadWriteOnce
-        storage: 4Gi
+    imagePullSecret: regcred
+
+  container:
+    name: coordinator
+    port: 8001
+
+  ## Service configuration values.
+  service:
+    type: ClusterIP
+    port: 8001
+
+  ## Volume definitions.
+  volume:
+    mountPath: /home/node/app/services/coordinator/logs
+    pvc:
+      accessMode: ReadWriteOnce
+      storage: 4Gi
 
 # End of Coordinator Values
 #######################################################################################
 
 #######################################################################################
-# Contributor Values
+## Default values for contributor helm template.
 
 contributor:
-  enabled: false
-  replicaCount: 1
-  bbcontributor:
-    name: contributor
-    group: app
-    securityContext:
-      # User ID and Group ID for user bitbroker
-      runAsUser: 1392
-      fsGroup: 1392
-    container:
-      image: public.ecr.aws/y1v9w5g2/bitbroker-contributor:latest
-      name: bitbroker-contributor
-      port: 8001
-    imagePullSecrets: ecrcred
-    imagePullPolicy: Always
-    service:
-      type: ClusterIP
-      port: 8002
-    volume:
-      name: bibroker-contributor-storage
-      kind: PersistentVolumeClaim
-      # Persisting logs
-      mountPath: /home/node/app/services/contributor/logs
-      pvc:
-        name: bibroker-contributor-volume-claim
-        accessMode: ReadWriteOnce
-        storage: 4Gi
 
+  ##contributor instance count.
+  replicaCount: 1
+
+  ##contributor security context configuration.
+  securityContext:
+    runAsUser: 1392
+    fsGroup: 1392
+
+  ##Docker Image values.
+  docker:
+    imageTag: "latest"
+    imagePullPolicy: Always
+    imagePullSecret: regcred
+
+  container:
+    name: coordinator
+    port: 8002
+
+  ## Service configuration values.
+  service:
+    type: ClusterIP
+    port: 8002
+
+  ## Volume definitions.
+  volume:
+    mountPath: /home/node/app/services/contributor/logs
+    pvc:
+      accessMode: ReadWriteOnce
+      storage: 4Gi
 
 # End of Contributor Values
 #######################################################################################
 
 #######################################################################################
-# Consumer Values
+## Default values for consumer helm template.
 
 consumer:
-  enabled: false
+
+  ##consumer instance count.
   replicaCount: 1
-  bbconsumer:
-    name: consumer
-    group: app
-    securityContext:
-      # User and group ID for bitbroker user
-      runAsUser: 1392
-      fsGroup: 1392
-    container:
-      image: public.ecr.aws/y1v9w5g2/bitbroker-consumer:latest
-      name: consumer
-      port: 8001
-    imagePullSecrets: ecrcred
+
+  ##consumer security context configuration.
+  securityContext:
+    runAsUser: 1392
+    fsGroup: 1392
+
+  ##Docker Image values.
+  docker:
+    imageTag: "latest"
     imagePullPolicy: Always
-    service:
-      type: ClusterIP
-      port: 8002
-    volume:
-      name: bibroker-consumer-storage
-      kind: PersistentVolumeClaim
-      mountPath: /home/node/app/services/consumer/logs
-      pvc:
-        name: bibroker-consumer-volume-claim
-        accessMode: ReadWriteOnce
-        storage: 4Gi
+    imagePullSecret: regcred
 
-# End of Consumer Values
+  container:
+    name: coordinator
+    port: 8003
+
+  ## Service configuration values.
+  service:
+    type: ClusterIP
+    port: 8003
+
+  ## Volume definitions.
+  volume:
+    mountPath: /home/node/app/services/consumer/logs
+    pvc:
+      accessMode: ReadWriteOnce
+      storage: 4Gi
+
+## End of Consumer Values
 #######################################################################################
-# Database Values
 
-bitbroker-db:
+#######################################################################################
+## Default values for bit-broker postgres instance.
+
+bit-broker-db:
+
   enabled: false
   replicaCount: 1
   postgres:
     name: bitbroker-db
     group: db
+    docker:
+      imageTag: "latest"
+      imagePullPolicy: Always
+      imagePullSecret: regcred
     container:
-      image: public.ecr.aws/y1v9w5g2/bitbroker-db:latest
-      name: bitbroker-db
+      name: bit-broker-db
       port: 5432
-    imagePullSecrets: ecrcred
     service:
       type: ClusterIP
       port: 5432
@@ -167,11 +182,8 @@ bitbroker-db:
       mountPath: /var/lib/postgresql/data
       subPath: postgres
       pvc:
-        name: postgres-persistent-volume-claim
         accessMode: ReadWriteOnce
         storage: 4Gi
-
-  postgres_password: 'bitbr0ker'
 
 # End of Database Values
 #######################################################################################
