@@ -22,5 +22,5 @@ spec:
       containers:
       - name: pre-install-job
         imagePullPolicy: Always
-        image: {{ .Values.docker.registry | default .Values.global.docker.registry }}/auth-service:{{ .Values.docker.imageTag }}
+        image: {{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/auth-service:{{ .Values.docker.imageTag }}
         command: ['npm', 'run', 'check-jwks', '{{ .Values.JWKS }}', '--silent']
