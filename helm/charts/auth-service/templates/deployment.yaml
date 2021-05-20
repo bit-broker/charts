@@ -26,7 +26,7 @@ spec:
       containers:
       - name: auth-service
         imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
-        image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/auth-service:{{ .Values.docker.imageTag }}"
+        image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/auth-service:{{ .Values.docker.imageTag }}"
         ports:
         - containerPort: 8080
         envFrom:

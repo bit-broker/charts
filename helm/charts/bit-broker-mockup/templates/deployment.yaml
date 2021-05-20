@@ -22,7 +22,7 @@ spec:
       containers:
       - name: {{ .Release.Name }}
         imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
-        image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bit-broker:{{ .Values.docker.imageTag }}"
+        image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bit-broker:{{ .Values.docker.imageTag }}"
         ports:
         - containerPort: 8080
         envFrom:
