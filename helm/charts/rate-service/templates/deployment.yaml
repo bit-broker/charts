@@ -41,7 +41,7 @@ spec:
           - name: GO_ENV
             value: "production"
           - name: REDIS_ADDR
-            value: "rate-service-redis:6379"
+            value: "{{ .Release.Name }}-{{ .Chart.Name }}-redis:6379"
           - name: REDIS_PASSWORD
             value: ""
           - name: REDIS_DB

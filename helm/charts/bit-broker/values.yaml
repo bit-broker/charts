@@ -13,6 +13,10 @@ global:
     ##
     policy: "x-bbk-policy"
 
+  ## Template to parse policy id from the extra data
+  ##
+  policyTemplate: "{{ print .Extra.policy }}"
+
   ## Docker image
   ##
   docker:
@@ -239,6 +243,10 @@ rate-service:
   ## Debug tools
   ##
   logLevel: "InfoLevel"
+
+  ## Redis docker image tag
+  ##
+  redisImageTag: "latest"
 
   persistentVolume:
     ## whether or not persistence is enabled
@@ -596,7 +604,7 @@ oathkeeper-bbk:
   ## Chart name override
   nameOverride: ""
   # Full chart name override
-  fullnameOverride: "oathkeeper-bbk"
+  fullnameOverride: ""
 
   ## If enabled, a demo deployment with exemplary access rules
   ## and JSON Web Key Secrets will be generated.
@@ -642,14 +650,13 @@ oathkeeper-bbk:
 
   oathkeeper:
     # Disable managed access rules
-    # Maester will handle this
     managedAccessRules: false
 
     # The ORY Oathkeeper configuration. For a full list of available settings, check:
     #   https://github.com/ory/oathkeeper/blob/master/docs/config.yaml
     config:
-      access_rules:
-        repositories:
+      # access_rules:
+
       serve:
         proxy:
           port: 4455
@@ -662,8 +669,6 @@ oathkeeper-bbk:
           config:
             jwks_urls:
               - http://bit-broker-auth-service:8080/api/v1/.well-known/jwks.json
-            token_from:
-              header: x-bbk-auth-token
       mutators:
         hydrator:
           enabled: true
@@ -679,7 +684,7 @@ oathkeeper-bbk:
           enabled: true
           config:
             headers:
-              x-bbk-policy: "{{ print .Extra.policy }}"
+              dummy: dummy # Keep this here to avoid validation error
       authorizers:
         allow:
           enabled: true
@@ -762,7 +767,7 @@ oathkeeper-bbk:
 
   ## Configures controller setup
   maester:
-    enabled: true
+    enabled: false
     oathkeeperFullnameOverride: "oathkeeper-bbk"
   oathkeeper-maester:
     oathkeeperFullnameOverride: "oathkeeper-bbk"
