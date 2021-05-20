@@ -20,7 +20,7 @@ spec:
         group: {{ .Values.group }}
     spec:
       volumes:
-        - name: {{ .Release.Name }}-{{ .Chart.Name }}-vol
+        - name: {{ .Release.Name }}-{{ .Chart.Name }}-logvol
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
       securityContext:
