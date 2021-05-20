@@ -17,6 +17,10 @@ replicaCount: 1
 ##
 logLevel: "InfoLevel"
 
+## Redis docker image tag
+##
+redisImageTag: "latest"
+
 persistentVolume:
   ## whether or not persistence is enabled
   ##
