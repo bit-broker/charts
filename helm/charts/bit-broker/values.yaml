@@ -43,6 +43,16 @@ global:
     ##
     #tlsSecret: "tls-cert"
 
+  postgresql: {}
+    #imageRegistry: myRegistryName
+    #imagePullSecrets:
+    #  - myRegistryKeySecretName
+    #storageClass: myStorageClass
+
+    ## Bitnami PostgreSQL image version
+    ## ref: https://hub.docker.com/r/bitnami/postgresql/tags/
+    ##
+
 ## End of Global Values
 #######################################################################################
 
@@ -166,31 +176,29 @@ consumer:
 #######################################################################################
 ## Bit-Broker Postgres Values
 
-bit-broker-db:
-  enabled: false
+postgresql-bbk:
+  enabled: true
 
-  replicaCount: 1
-  postgres:
-    name: bitbroker-db
-    group: db
-    docker:
-      imageTag: "latest"
-      imagePullPolicy: Always
-      imagePullSecret: regcred
-    container:
-      name: bit-broker-db
-      port: 5432
-    service:
-      type: ClusterIP
-      port: 5432
-    volume:
-      name: postgres-storage
-      kind: PersistentVolumeClaim
-      mountPath: /var/lib/postgresql/data
-      subPath: postgres
-      pvc:
-        accessMode: ReadWriteOnce
-        storage: 4Gi
+  ## initdb scripts
+  ## Specify dictionary of scripts to be run at first boot
+  ## Alternatively, you can put your scripts under the files/docker-entrypoint-initdb.d directory
+  ##
+  # initdbScripts:
+  #   my_init_script.sh: |
+  #      #!/bin/sh
+  #      echo "Do something."
+
+  ## ConfigMap with scripts to be run at first boot
+  ## NOTE: This will override initdbScripts
+  initdbScriptsConfigMap: bit-broker-postgres-config
+
+  ## Secret with scripts to be run at first boot (in case it contains sensitive information)
+  ## NOTE: This can work along initdbScripts or initdbScriptsConfigMap
+  # initdbScriptsSecret:
+
+  ## Specify the PostgreSQL username and password to execute the initdb scripts
+  # initdbUser:
+  # initdbPassword:
 
 # End of Bit-Broker Postgres Values
 #######################################################################################
