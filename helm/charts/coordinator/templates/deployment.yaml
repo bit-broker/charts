@@ -19,7 +19,7 @@ spec:
         group: {{ .Values.group }}
     spec:
       volumes:
-        - name: {{ .Release.Name }}-{{ .Chart.Name }}-vol
+        - name: {{ .Release.Name }}-{{ .Chart.Name }}-logvol
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
       securityContext:
@@ -28,7 +28,7 @@ spec:
       containers:
         - name: {{ .Values.name }}
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/coordinator:{{ .Values.docker.imageTag }}"
-          imagePullPolicy: {{ Values.docker.imagePullPolicy }}
+          imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.container.port }}
           envFrom:
