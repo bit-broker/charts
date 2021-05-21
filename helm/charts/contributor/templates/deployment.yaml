@@ -28,7 +28,7 @@ spec:
         fsGroup: {{ .Values.securityContext.fsGroup }}
       containers:
         - name: {{ .Values.name }}
-          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/contributor:{{ .Values.docker.imageTag }}"
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/contributor:{{ .Values.docker.imageTag }}"
           imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.container.port }}
