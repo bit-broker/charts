@@ -1,4 +1,4 @@
-Thank you for installing {{ .Chart.Name }}.
+Thank you for installing {{ .Chart.Name | upper }}.
 
 Your release is named {{ .Release.Name }}.
 
@@ -25,7 +25,7 @@ Here is how to get / update rate config:
 The Rate Limit gRPC protocol runs at:
     $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-rate-service 7000:7000
 
-3. Bit Broker
+3. Bit-Broker
 
 Following routes are mapped:
 
