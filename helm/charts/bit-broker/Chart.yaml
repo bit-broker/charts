@@ -20,6 +20,11 @@ dependencies:
     repository: https://k8s.ory.sh/helm/charts
     condition: oathkeeper-bbk.enabled
     alias: oathkeeper-bbk
+  - name: postgresql
+    version: "10.4.6"
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql-bbk.enabled
+    alias: postgresql-bbk
   - name: auth-service
     version: "1.0"
     repository: file://../auth-service
