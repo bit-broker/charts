@@ -34,7 +34,7 @@ global:
     ## Host URL
     ## If specified, an Ambassador Host will be created
     ##
-    host: "bit-broker.io"
+    #host: "bit-broker.io"
 
     ## Handle with Let's encrypt
     ##
