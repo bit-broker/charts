@@ -10,9 +10,9 @@ metadata:
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: '{{ .Values.persistentVolume.storageSize }}'
-  storageClassName: '{{ .Values.persistentVolume.storageClass }}'
+      storage: '{{ .Values.redis.persistentVolume.storageSize }}'
+  storageClassName: '{{ .Values.redis.persistentVolume.storageClass }}'
 {{- end }}

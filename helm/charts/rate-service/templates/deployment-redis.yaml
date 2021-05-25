@@ -19,13 +19,13 @@ spec:
     spec:
       containers:
       - name: redis
-        image: "redis:{{ .Values.redisImageTag }}"
+        image: "redis:{{ .Values.redis.imageTag }}"
         ports:
         - containerPort: 6379
 {{- if .Values.persistentVolume.enabled }}
         volumeMounts:
           - name: {{ .Release.Name }}-{{ .Chart.Name }}-data
-            mountPath: '{{ .Values.persistentVolume.mountPath }}'
+            mountPath: '{{ .Values.redis.persistentVolume.mountPath }}'
       volumes:
       - name: {{ .Release.Name }}-{{ .Chart.Name }}-data
         persistentVolumeClaim:
