@@ -22,7 +22,7 @@ spec:
         image: "redis:{{ .Values.redis.imageTag }}"
         ports:
         - containerPort: 6379
-{{- if .Values.persistentVolume.enabled }}
+{{- if .Values.redis.persistentVolume.enabled }}
         volumeMounts:
           - name: {{ .Release.Name }}-{{ .Chart.Name }}-data
             mountPath: '{{ .Values.redis.persistentVolume.mountPath }}'
