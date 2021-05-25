@@ -13,6 +13,6 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: '{{ .Values.redis.persistentVolume.storageSize }}'
+      storage: '{{ .Values.redis.persistentVolume.size }}'
   storageClassName: '{{ .Values.redis.persistentVolume.storageClass }}'
 {{- end }}
