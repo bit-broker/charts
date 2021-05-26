@@ -17,9 +17,14 @@ spec:
       labels:
         app: {{ .Release.Name }}-{{ .Chart.Name }}
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
       containers:
       - name: redis
         image: "redis:{{ .Values.redis.imageTag }}"
+        securityContext:
+          allowPrivilegeEscalation: false
         ports:
         - containerPort: 6379
 {{- if .Values.redis.persistentVolume.enabled }}

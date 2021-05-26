@@ -17,12 +17,17 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
       imagePullSecrets:
       - name: regcred
       containers:
       - name: {{ .Release.Name }}
         imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
         image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bit-broker-mockup:{{ .Values.docker.imageTag }}"
+        securityContext:
+          allowPrivilegeEscalation: false
         ports:
         - containerPort: 8080
         envFrom:
