@@ -49,3 +49,8 @@ dependencies:
     version: "1.0"
     repository: file://../consumer
     condition: consumer.enabled
+  - name: policy
+    version: "1.0"
+    repository: file://../policy
+    condition: consumer.enabled
+
