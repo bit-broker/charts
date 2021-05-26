@@ -22,7 +22,6 @@ spec:
         prometheus.io/path: "/metrics"
     spec:
       securityContext:
-        allowPrivilegeEscalation: false
         runAsNonRoot: true
       imagePullSecrets:
       - name: {{ .Values.docker.imagePullSecret }}
@@ -30,6 +29,8 @@ spec:
       - name: auth-service
         imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
         image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/auth-service:{{ .Values.docker.imageTag }}"
+        securityContext:
+          allowPrivilegeEscalation: false
         ports:
         - containerPort: 8080
         envFrom:
