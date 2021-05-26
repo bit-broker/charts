@@ -21,6 +21,9 @@ spec:
         prometheus.io/port: "9090"
         prometheus.io/path: "/metrics"
     spec:
+      securityContext:
+        allowPrivilegeEscalation: false
+        runAsNonRoot: true
       imagePullSecrets:
       - name: {{ .Values.docker.imagePullSecret }}
       containers:
