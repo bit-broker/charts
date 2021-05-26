@@ -23,6 +23,7 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
+        runAsUser: 999
       imagePullSecrets:
       - name: {{ .Values.docker.imagePullSecret }}
       containers:
