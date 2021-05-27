@@ -11,11 +11,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-{{ .Chart.Name }}
+      app: {{ .Release.Name }}-{{ .Chart.Name }}-redis
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-{{ .Chart.Name }}
+        app: {{ .Release.Name }}-{{ .Chart.Name }}-redis
     spec:
       containers:
       - name: redis
