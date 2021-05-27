@@ -26,5 +26,8 @@ dependencies:
 - name: consumer
   repository: file://../consumer
   version: "1.0"
-digest: sha256:83258f48e0232618ba9a7d013bcaa8480e6302a3388ed0bc0771f83714bd28ba
-generated: "2021-05-25T11:35:11.723109+02:00"
+- name: policy
+  repository: file://../policy
+  version: "1.0"
+digest: sha256:ec7d330b30ff790fd3c273ae38edf0e1eec4f7d175d75c2f6b710d9d26ff0df2
+generated: "2021-05-26T16:48:57.027816+02:00"

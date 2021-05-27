@@ -21,12 +21,18 @@ spec:
         prometheus.io/port: "9090"
         prometheus.io/path: "/metrics"
     spec:
+      preemptionPolicy: PreemptLowerPriority
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
       imagePullSecrets:
       - name: {{ .Values.docker.imagePullSecret }}
       containers:
       - name: rate-service
         imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
         image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/rate-service:{{ .Values.docker.imageTag }}"
+        securityContext:
+          allowPrivilegeEscalation: false
         ports:
         - containerPort: 4000
         - containerPort: 7000
