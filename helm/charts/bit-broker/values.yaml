@@ -296,7 +296,7 @@ rate-service:
   ##
   redis:
     ## Redis image
-    imageTag: "6.2.3"
+    imageTag: "6.2-alpine"
 
     ## Whether or not persistence is enabled
     ##
