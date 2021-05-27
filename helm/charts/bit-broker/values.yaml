@@ -210,7 +210,35 @@ policy:
       accessMode: ReadWriteOnce
       storage: 4Gi
 
-## End of Bit-Broker Consumer Values
+  ## Redis docker image tag
+  ##
+  redis:
+    ## Redis image
+    imageTag: "6.2.3-alpine"
+
+    ## Whether or not persistence is enabled
+    ##
+    persistentVolume:
+      enabled: false
+
+      ## Redis data Persistent Volume mount root path
+      ##
+      mountPath: /data
+
+      ## Redis data Persistent Volume size
+      ##
+      size: 10Gi
+
+      ## Redis data Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      # storageClass: "-"
+
+
+## End of Bit-Broker Policy Values
 #######################################################################################
 
 #######################################################################################
