@@ -6,11 +6,6 @@ group: app
 ##consumer instance count.
 replicaCount: 1
 
-##consumer security context configuration.
-securityContext:
-  runAsUser: 1392
-  fsGroup: 1392
-
 ##Docker Image values.
 docker:
   imageTag: "latest"
