@@ -15,7 +15,7 @@ Please go to [bit-broker.io/helm](https://bit-broker.io/helm/) for a list of hel
 1. Generate your JSON Web Key Set (JWKS)
 
 ```sh
-JWKS=$(docker run auth-service:latest npm run --silent create-jwks)
+JWKS=$(docker run bbkr/auth-service:latest npm run --silent create-jwks)
 ```
 > **WARNING**: Please store your key in a safe place.
 
