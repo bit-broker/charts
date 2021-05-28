@@ -30,6 +30,8 @@ spec:
         - name: {{ .Values.name }}
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/contributor:{{ .Values.docker.imageTag }}"
           imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: {{ .Values.container.port }}
           envFrom:
