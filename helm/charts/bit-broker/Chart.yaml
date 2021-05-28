@@ -33,10 +33,6 @@ dependencies:
     version: "1.0"
     repository: file://../rate-service
     condition: rate-service.enabled
-  - name: bbk-mockup-api
-    version: "1.0"
-    repository: file://../bit-broker-mockup
-    condition: bbk-mockup-api.enabled
   - name: coordinator
     version: "1.0"
     repository: file://../coordinator
@@ -53,4 +49,3 @@ dependencies:
     version: "1.0"
     repository: file://../policy
     condition: consumer.enabled
-

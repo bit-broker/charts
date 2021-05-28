@@ -350,27 +350,6 @@ rate-service:
 ## End of Rate Service Values
 #######################################################################################
 
-## Bbk Mockup Values
-
-bbk-mockup-api:
-  enabled: true
-
-  ## Docker image
-  ##
-  docker:
-    imageTag: "1.0.0"
-    imagePullPolicy: "Always"
-    imagePullSecret: "regcred"
-
-  ## ConfigMap values
-  node_env: 'development'
-  log_level: 'debug'
-  server_port: '8080'
-  ui_url: 'https://ui.com'
-
-## End of Bbk Mockup Values
-#######################################################################################
-
 #######################################################################################
 ## Ambassador Values
 
