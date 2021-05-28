@@ -4,7 +4,6 @@ metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app: {{ .Values.name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -26,6 +25,7 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1999
+        fsGroup: 1999
       containers:
         - name: {{ .Values.name }}
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/contributor:{{ .Values.docker.imageTag }}"

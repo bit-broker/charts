@@ -13,7 +13,7 @@ docker:
   imagePullSecret: regcred
 
 container:
-  name: coordinator
+  name: contributor
   port: 8002
 
 ## Service configuration values.
