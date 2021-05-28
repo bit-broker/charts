@@ -24,7 +24,7 @@ spec:
             claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
       securityContext:
         runAsNonRoot: true
-        runAsUser: 999
+        runAsUser: 1999
       containers:
         - name: {{ .Values.name }}
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/policy:{{ .Values.docker.imageTag }}"
