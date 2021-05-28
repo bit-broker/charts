@@ -23,8 +23,8 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
       securityContext:
-        runAsUser: {{ .Values.securityContext.runAsUser }}
-        fsGroup: {{ .Values.securityContext.fsGroup }}
+        runAsNonRoot: true
+        runAsUser: 999
       containers:
         - name: {{ .Values.name }}
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/coordinator:{{ .Values.docker.imageTag }}"
