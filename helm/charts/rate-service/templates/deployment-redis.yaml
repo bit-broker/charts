@@ -19,7 +19,7 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 999
+        runAsUser: 1999
       containers:
       - name: redis
         image: "redis:{{ .Values.redis.imageTag }}"
