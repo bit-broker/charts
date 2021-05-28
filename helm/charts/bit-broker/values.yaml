@@ -273,8 +273,6 @@ auth-service:
   ## JWKS
   ##
   JWKS: "JWKS"
-  ## Docker image
-  ##
 
 ## End of Auth Service Values
 #######################################################################################
