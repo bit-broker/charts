@@ -459,7 +459,7 @@ ambassador-bbk:
 
   image:
     repository: docker.io/datawire/ambassador
-    tag: 1.13.5
+    tag: 1.13.6
     pullPolicy: IfNotPresent
 
   dnsPolicy: "ClusterFirst"
