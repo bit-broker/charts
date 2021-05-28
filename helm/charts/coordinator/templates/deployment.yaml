@@ -25,6 +25,7 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1999
+        fsGroup: 1999
       containers:
         - name: {{ .Values.name }}
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/coordinator:{{ .Values.docker.imageTag }}"

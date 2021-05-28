@@ -14,13 +14,13 @@ docker:
 
 container:
   name: policy
-  port: 8001
+  port: 8004
 
 
 ## Service configuration values.
 service:
   type: ClusterIP
-  port: 8001
+  port: 8004
 
 ## Volume definitions.
 volume:
