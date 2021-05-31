@@ -1,3 +1,4 @@
+{{- if (not .Values.redis.ownInstance.enabled) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,17 +23,18 @@ spec:
         runAsUser: 1999
       containers:
       - name: redis
-        image: "redis:{{ .Values.redis.imageTag }}"
+        image: "redis:{{ .Values.redis.imageTag | default .Values.global.redis.imageTag }}"
         securityContext:
           allowPrivilegeEscalation: false
         ports:
         - containerPort: 6379
-{{- if .Values.redis.persistentVolume.enabled }}
+{{- if or (.Values.global.redis.persistentVolume.enabled) (.Values.redis.persistentVolume.enabled) }}
         volumeMounts:
-          - name: {{ .Release.Name }}-{{ .Chart.Name }}-data
-            mountPath: '{{ .Values.redis.persistentVolume.mountPath }}'
+          - name: {{ .Release.Name }}-{{ .Chart.Name }}-redis-data
+            mountPath: '{{ .Values.redis.persistentVolume.mountPath | default .Values.global.redis.persistentVolume.mountPath }}'
       volumes:
-      - name: {{ .Release.Name }}-{{ .Chart.Name }}-data
+      - name: {{ .Release.Name }}-{{ .Chart.Name }}-redis-data
         persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
+          claimName: {{ .Release.Name }}-{{ .Chart.Name }}-redis-pvc
+{{- end }}
 {{- end }}
