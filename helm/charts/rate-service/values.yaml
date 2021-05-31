@@ -17,11 +17,19 @@ replicaCount: 1
 ##
 logLevel: "InfoLevel"
 
-## Redis docker image tag
+## Redis options
 ##
 redis:
+  ## Rate Service comes with a basic instance of Redis
+  ## Uncomment below to enable your own instance
+  ownInstance:
+    enabled: false
+    #addr: "redis:6379"
+    #password: ""
+    #db: "0"
+
   ## Redis image
-  imageTag: "6.2.3"
+  imageTag: "6.2.3-alpine"
 
   ## Whether or not persistence is enabled
   ##
