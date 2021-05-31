@@ -18,8 +18,7 @@ spec:
         app: {{ .Release.Name }}-{{ .Chart.Name }}
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
-        prometheus.io/path: "/metrics"
+        prometheus.io/port: "4000"
     spec:
       preemptionPolicy: PreemptLowerPriority
       securityContext:
