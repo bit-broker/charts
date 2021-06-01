@@ -537,7 +537,7 @@ ambassador-bbk:
     { }
 
   podAnnotations:
-    { }
+    sidecar.istio.io/inject: "false"
   # prometheus.io/scrape: "true"
   # prometheus.io/port: "9102"
 
