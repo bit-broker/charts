@@ -239,6 +239,12 @@ postgresql-bbk:
   # initdbUser:
   # initdbPassword:
 
+  ## Enable security context
+  securityContext:
+    enabled: true
+    fsGroup: 1001
+    runAsNonRoot: true
+
 # End of Bit-Broker Postgres Values
 #######################################################################################
 
