@@ -240,9 +240,9 @@ postgresql-bbk:
   # initdbPassword:
 
   ## Enable security context
-  securityContext:
+  containerSecurityContext:
     enabled: true
-    fsGroup: 1001
+    runAsUser: 1001
     runAsNonRoot: true
 
 # End of Bit-Broker Postgres Values
