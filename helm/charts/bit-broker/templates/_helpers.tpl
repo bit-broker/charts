@@ -2,6 +2,6 @@
 {{/*
 Check JWKS specified
 */}}
-{{- if (eq (index .Values "auth-service" "JWKS") "JWKS") -}}
+{{- if (eq (index .Values "auth-service-bbk" "JWKS") "JWKS") -}}
 {{ fail "JWKS not specified, please check documentation." }}
 {{- end -}}

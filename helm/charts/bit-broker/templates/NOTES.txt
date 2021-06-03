@@ -4,7 +4,7 @@ Your release is named {{ .Release.Name }}.
 
 Following JWKS is used, please perform a backup:
 
-{{ index .Values "auth-service" "JWKS" }}
+{{ index .Values "auth-service-bbk" "JWKS" }}
 
 1. Auth Service
 

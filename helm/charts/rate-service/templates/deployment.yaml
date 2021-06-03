@@ -18,8 +18,7 @@ spec:
         app: {{ .Release.Name }}-{{ .Chart.Name }}
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
-        prometheus.io/path: "/metrics"
+        prometheus.io/port: "4000"
     spec:
       preemptionPolicy: PreemptLowerPriority
       securityContext:
@@ -46,9 +45,18 @@ spec:
             value: "0.0.0.0:7000"
           - name: GO_ENV
             value: "production"
+{{- if (not .Values.redis.ownInstance.enabled) }}
           - name: REDIS_ADDR
             value: "{{ .Release.Name }}-{{ .Chart.Name }}-redis:6379"
           - name: REDIS_PASSWORD
             value: ""
           - name: REDIS_DB
             value: "0"
+{{- else }}
+          - name: REDIS_ADDR
+            value: "{{ .Values.redis.ownInstance.addr }}"
+          - name: REDIS_PASSWORD
+            value: "{{ .Values.redis.ownInstance.password }}"
+          - name: REDIS_DB
+            value: "{{ .Values.redis.ownInstance.db }}"
+{{- end }}

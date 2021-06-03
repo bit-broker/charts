@@ -28,24 +28,30 @@ dependencies:
   - name: auth-service
     version: "1.0"
     repository: file://../auth-service
-    condition: auth-service.enabled
+    condition: auth-service-bbk.enabled
+    alias: auth-service-bbk
   - name: rate-service
     version: "1.0"
     repository: file://../rate-service
-    condition: rate-service.enabled
+    condition: rate-service-bbk.enabled
+    alias: rate-service-bbk
   - name: coordinator
     version: "1.0"
     repository: file://../coordinator
-    condition: coordinator.enabled
+    condition: coordinator-bbk.enabled
+    alias: coordinator-bbk
   - name: contributor
     version: "1.0"
     repository: file://../contributor
-    condition: contributor.enabled
+    condition: contributor-bbk.enabled
+    alias: contributor-bbk
   - name: consumer
     version: "1.0"
     repository: file://../consumer
-    condition: consumer.enabled
+    condition: consumer-bbk.enabled
+    alias: consumer-bbk
   - name: policy
     version: "1.0"
     repository: file://../policy
-    condition: consumer.enabled
+    condition: policy-bbk.enabled
+    alias: policy-bbk
