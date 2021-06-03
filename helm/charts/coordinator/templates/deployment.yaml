@@ -17,6 +17,9 @@ spec:
       labels:
         app: {{ .Values.name }}
         group: {{ .Values.group }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.container.port }}"
     spec:
       volumes:
         - name: {{ .Release.Name }}-{{ .Chart.Name }}-logvol

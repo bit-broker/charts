@@ -44,15 +44,32 @@ global:
     ##
     #tlsSecret: "tls-cert"
 
-  postgresql: {}
-    #imageRegistry: myRegistryName
-    #imagePullSecrets:
-    #  - myRegistryKeySecretName
-    #storageClass: myStorageClass
+  ## Redis global options
+  ##
+  redis:
+    ## Redis image
+    imageTag: "6.2.3-alpine"
 
-    ## Bitnami PostgreSQL image version
-    ## ref: https://hub.docker.com/r/bitnami/postgresql/tags/
+    ## Whether or not persistence is enabled
     ##
+    persistentVolume:
+      enabled: false
+
+      ## Redis data Persistent Volume mount root path
+      ##
+      mountPath: /data
+
+      ## Redis data Persistent Volume size
+      ##
+      size: 10Gi
+
+      ## Redis data Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      # storageClass: "-"
 
 ## End of Global Values
 #######################################################################################
@@ -60,7 +77,7 @@ global:
 #######################################################################################
 ## Bit-Broker Coordinator Values
 
-coordinator:
+coordinator-bbk:
   enabled: true
 
   ## Coordinator instance count.
@@ -94,7 +111,7 @@ coordinator:
 #######################################################################################
 ## Bit-Broker Contributor Values
 
-contributor:
+contributor-bbk:
   enabled: true
 
   ## Contributor instance count.
@@ -128,7 +145,7 @@ contributor:
 #######################################################################################
 ## Bit-Broker Consumer Values
 
-consumer:
+consumer-bbk:
   enabled: true
 
   ## Consumer instance count.
@@ -162,7 +179,7 @@ consumer:
 #######################################################################################
 ## Bit-Broker Policy Values
 
-policy:
+policy-bbk:
   enabled: true
 
   ## Consumer instance count.
@@ -190,33 +207,16 @@ policy:
       accessMode: ReadWriteOnce
       storage: 4Gi
 
-  ## Redis docker image tag
+  ## Redis options
   ##
   redis:
-    ## Redis image
-    imageTag: "6.2.3-alpine"
-
-    ## Whether or not persistence is enabled
-    ##
-    persistentVolume:
+    ## Policy Service comes with a basic instance of Redis
+    ## Change values below to enable your own instance
+    ownInstance:
       enabled: false
-
-      ## Redis data Persistent Volume mount root path
-      ##
-      mountPath: /data
-
-      ## Redis data Persistent Volume size
-      ##
-      size: 10Gi
-
-      ## Redis data Persistent Volume Storage Class
-      ## If defined, storageClassName: <storageClass>
-      ## If set to "-", storageClassName: "", which disables dynamic provisioning
-      ## If undefined (the default) or set to null, no storageClassName spec is
-      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-      ##   GKE, AWS & OpenStack)
-      # storageClass: "-"
-
+      #addr: "redis:6379"
+      #password: ""
+      #db: "0"
 
 ## End of Bit-Broker Policy Values
 #######################################################################################
@@ -226,15 +226,6 @@ policy:
 
 postgresql-bbk:
   enabled: true
-
-  ## initdb scripts
-  ## Specify dictionary of scripts to be run at first boot
-  ## Alternatively, you can put your scripts under the files/docker-entrypoint-initdb.d directory
-  ##
-  # initdbScripts:
-  #   my_init_script.sh: |
-  #      #!/bin/sh
-  #      echo "Do something."
 
   ## ConfigMap with scripts to be run at first boot
   ## NOTE: This will override initdbScripts
@@ -248,13 +239,19 @@ postgresql-bbk:
   # initdbUser:
   # initdbPassword:
 
+  ## Enable security context
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 1001
+    runAsNonRoot: true
+
 # End of Bit-Broker Postgres Values
 #######################################################################################
 
 #######################################################################################
 ## Auth Service Values
 
-auth-service:
+auth-service-bbk:
   enabled: true
 
   docker:
@@ -280,7 +277,7 @@ auth-service:
 #######################################################################################
 ## Rate Service Values
 
-rate-service:
+rate-service-bbk:
   enabled: true
 
   ## Docker image
@@ -298,32 +295,16 @@ rate-service:
   ##
   logLevel: "InfoLevel"
 
-  ## Redis docker image tag
+  ## Redis options
   ##
   redis:
-    ## Redis image
-    imageTag: "6.2-alpine"
-
-    ## Whether or not persistence is enabled
-    ##
-    persistentVolume:
+    ## Rate Service comes with a basic instance of Redis
+    ## Change values below to enable your own instance
+    ownInstance:
       enabled: false
-
-      ## Redis data Persistent Volume mount root path
-      ##
-      mountPath: /data
-
-      ## Redis data Persistent Volume size
-      ##
-      size: 10Gi
-
-      ## Redis data Persistent Volume Storage Class
-      ## If defined, storageClassName: <storageClass>
-      ## If set to "-", storageClassName: "", which disables dynamic provisioning
-      ## If undefined (the default) or set to null, no storageClassName spec is
-      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-      ##   GKE, AWS & OpenStack)
-      # storageClass: "-"
+      #addr: "redis:6379"
+      #password: ""
+      #db: "0"
 
 ## End of Rate Service Values
 #######################################################################################
@@ -562,7 +543,7 @@ ambassador-bbk:
     { }
 
   podAnnotations:
-    { }
+    sidecar.istio.io/inject: "false"
   # prometheus.io/scrape: "true"
   # prometheus.io/port: "9102"
 
