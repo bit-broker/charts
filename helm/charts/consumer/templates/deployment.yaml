@@ -37,9 +37,9 @@ spec:
               value: "Bit-Broker"
             - name: APP_MODE
               value: "standard"
-            - name: COORDINATOR_NAME
-              value: "Bit-Broker Coordinator Server"
-            - name: COORDINATOR_BASE
+            - name: CONSUMER_NAME
+              value: "Bit-Broker Consumer Server"
+            - name: CONSUMER_BASE
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8001/v1"
             - name: DATABASE
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
