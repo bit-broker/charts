@@ -40,7 +40,7 @@ spec:
               name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
         env:
           - name: SERVER_HTTP_HOST
-            value: "localhost:4000"
+            value: "0.0.0.0:4000"
           - name: SERVER_GRPC_HOST
             value: "0.0.0.0:7000"
           - name: GO_ENV
