@@ -1,29 +1,18 @@
-## Default values for consumer helm templates.
-
-name: consumer
-group: app
-
-##consumer instance count.
-replicaCount: 1
-
-##Docker Image values.
+## Docker image
+##
 docker:
   imageTag: "latest"
-  imagePullPolicy: Always
-  imagePullSecret: regcred
+  imagePullPolicy: "Always"
+  imagePullSecret: "regcred"
 
-container:
-  name: coordinator
-  port: 8003
+  ## If private registry
+  ##
+  #registry: ""
 
-## Service configuration values.
-service:
-  type: ClusterIP
-  port: 8003
+## Number of replicas
+##
+replicaCount: 1
 
-## Volume definitions.
-volume:
-  mountPath: /home/node/app/services/consumer/logs
-  pvc:
-    accessMode: ReadWriteOnce
-    storage: 4Gi
+## Database access
+##
+password: bbk_consumer_pwd

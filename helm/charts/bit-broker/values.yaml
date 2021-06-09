@@ -17,6 +17,16 @@ global:
   ##
   policyTemplate: "{{ print .Extra.policy }}"
 
+  ## Database access
+  ##
+  passwords:
+    admin: bbk_admin_pwd
+    coordinator: bbk_coordinator_pwd
+    contributor: bbk_contributor_pwd
+    consumer: bbk_consumer_pwd
+    policy: bbk_policy_pwd
+    tests: bbk_tests_pwd
+
   ## Docker image
   ##
   docker:
@@ -89,22 +99,6 @@ coordinator-bbk:
     imagePullPolicy: Always
     imagePullSecret: regcred
 
-  container:
-    name: coordinator
-    port: 8001
-
-  ## Service configuration values.
-  service:
-    type: ClusterIP
-    port: 8001
-
-  ## Volume definitions.
-  volume:
-    mountPath: /home/node/app/services/coordinator/logs
-    pvc:
-      accessMode: ReadWriteOnce
-      storage: 4Gi
-
 ## End of Bit-Broker Coordinator Values
 #######################################################################################
 
@@ -122,22 +116,6 @@ contributor-bbk:
     imageTag: "latest"
     imagePullPolicy: Always
     imagePullSecret: regcred
-
-  container:
-    name: coordinator
-    port: 8002
-
-  ## Service configuration values.
-  service:
-    type: ClusterIP
-    port: 8002
-
-  ## Volume definitions.
-  volume:
-    mountPath: /home/node/app/services/contributor/logs
-    pvc:
-      accessMode: ReadWriteOnce
-      storage: 4Gi
 
 ## End of Bit-Broker Contributor Values
 #######################################################################################
@@ -157,22 +135,6 @@ consumer-bbk:
     imagePullPolicy: Always
     imagePullSecret: regcred
 
-  container:
-    name: coordinator
-    port: 8003
-
-  ## Service configuration values.
-  service:
-    type: ClusterIP
-    port: 8003
-
-  ## Volume definitions.
-  volume:
-    mountPath: /home/node/app/services/consumer/logs
-    pvc:
-      accessMode: ReadWriteOnce
-      storage: 4Gi
-
 ## End of Bit-Broker Consumer Values
 #######################################################################################
 
@@ -190,22 +152,6 @@ policy-bbk:
     imageTag: "latest"
     imagePullPolicy: Always
     imagePullSecret: regcred
-
-  container:
-    name: policy
-    port: 8003
-
-  ## Service configuration values.
-  service:
-    type: ClusterIP
-    port: 8003
-
-  ## Volume definitions.
-  volume:
-    mountPath: /home/node/app/services/policy/logs
-    pvc:
-      accessMode: ReadWriteOnce
-      storage: 4Gi
 
   ## Redis options
   ##
