@@ -11,20 +11,15 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      app: {{ .Release.Name }}-{{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
-        group: {{ .Values.group }}
+        app: {{ .Release.Name }}-{{ .Chart.Name }}
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "{{ .Values.container.port }}"
+        prometheus.io/port: "8003"
     spec:
-      volumes:
-        - name: {{ .Release.Name }}-{{ .Chart.Name }}-logvol
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-{{ .Chart.Name }}-pvc
       securityContext:
         runAsNonRoot: true
         runAsUser: 1999
@@ -36,10 +31,18 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: {{ .Values.container.port }}
+            - containerPort: 8003
+          env:
+            - name: APP_NAME
+              value: "Bit-Broker"
+            - name: APP_MODE
+              value: "standard"
+            - name: COORDINATOR_NAME
+              value: "Bit-Broker Coordinator Server"
+            - name: COORDINATOR_BASE
+              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8003/v1"
+            - name: DATABASE
+              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
           envFrom:
-            - configMapRef:
-                name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
-          volumeMounts:
-              - name: {{ .Release.Name }}-{{ .Chart.Name }}-logvol
-                mountPath: {{ .Values.volume.mountPath }}
+            - secretRef:
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
