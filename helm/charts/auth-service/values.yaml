@@ -24,3 +24,8 @@ logLevel: "info"
 ## JWKS
 ##
 JWKS: "JWKS"
+
+## Enable or disable metrics for Prometheus
+##
+metrics:
+  enabled: false
