@@ -21,7 +21,7 @@ data:
           "handler": "jwt",
           "config": {
             "scope_strategy": "exact",
-            "required_scope": ["consume"],
+            "required_scope": ["consumer"],
             "trusted_issuers": ["{{ .Values.global.issuer }}"],
             "allowed_algorithms": ["RS256"],
             "token_from": {
@@ -58,7 +58,7 @@ data:
         "handler": "jwt",
         "config": {
           "scope_strategy": "exact",
-          "required_scope": ["contribute"],
+          "required_scope": ["contributor"],
           "trusted_issuers": ["{{ .Values.global.issuer }}"],
           "allowed_algorithms": ["RS256"],
           "token_from": {
