@@ -13,45 +13,45 @@ dependencies:
   - name: ambassador
     version: "6.7.2"
     repository: https://www.getambassador.io
-    condition: ambassador-bbk.enabled
-    alias: ambassador-bbk
+    condition: bbk-ambassador.enabled
+    alias: bbk-ambassador
   - name: oathkeeper
     version: "0.12.0"
     repository: https://k8s.ory.sh/helm/charts
-    condition: oathkeeper-bbk.enabled
-    alias: oathkeeper-bbk
+    condition: bbk-oathkeeper.enabled
+    alias: bbk-oathkeeper
   - name: postgresql
     version: "10.4.6"
     repository: https://charts.bitnami.com/bitnami
-    condition: postgresql-bbk.enabled
-    alias: postgresql-bbk
+    condition: bbk-postgresql.enabled
+    alias: bbk-postgresql
   - name: auth-service
     version: "1.0"
     repository: file://../auth-service
-    condition: auth-service-bbk.enabled
-    alias: auth-service-bbk
+    condition: bbk-auth-service.enabled
+    alias: bbk-auth-service
   - name: rate-service
     version: "1.0"
     repository: file://../rate-service
-    condition: rate-service-bbk.enabled
-    alias: rate-service-bbk
+    condition: bbk-rate-service.enabled
+    alias: bbk-rate-service
   - name: coordinator
     version: "1.0"
     repository: file://../coordinator
-    condition: coordinator-bbk.enabled
-    alias: coordinator-bbk
+    condition: bbk-coordinator.enabled
+    alias: bbk-coordinator
   - name: contributor
     version: "1.0"
     repository: file://../contributor
-    condition: contributor-bbk.enabled
-    alias: contributor-bbk
+    condition: bbk-contributor.enabled
+    alias: bbk-contributor
   - name: consumer
     version: "1.0"
     repository: file://../consumer
-    condition: consumer-bbk.enabled
-    alias: consumer-bbk
+    condition: bbk-consumer.enabled
+    alias: bbk-consumer
   - name: policy
     version: "1.0"
     repository: file://../policy
-    condition: policy-bbk.enabled
-    alias: policy-bbk
+    condition: bbk-policy.enabled
+    alias: bbk-policy

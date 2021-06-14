@@ -92,7 +92,7 @@ global:
 #######################################################################################
 ## Bit-Broker Coordinator Values
 
-coordinator-bbk:
+bbk-coordinator:
   enabled: true
 
   ## Coordinator instance count.
@@ -110,7 +110,7 @@ coordinator-bbk:
 #######################################################################################
 ## Bit-Broker Contributor Values
 
-contributor-bbk:
+bbk-contributor:
   enabled: true
 
   ## Contributor instance count.
@@ -128,7 +128,7 @@ contributor-bbk:
 #######################################################################################
 ## Bit-Broker Consumer Values
 
-consumer-bbk:
+bbk-consumer:
   enabled: true
 
   ## Consumer instance count.
@@ -146,7 +146,7 @@ consumer-bbk:
 #######################################################################################
 ## Bit-Broker Policy Values
 
-policy-bbk:
+bbk-policy:
   enabled: true
 
   ## Consumer instance count.
@@ -175,12 +175,13 @@ policy-bbk:
 #######################################################################################
 ## Bit-Broker Postgres Values
 
-postgresql-bbk:
+bbk-postgresql:
   enabled: true
+  fullnameOverride: "bbk-postgresql"
 
   ## ConfigMap with scripts to be run at first boot
   ## NOTE: This will override initdbScripts
-  initdbScriptsConfigMap: bit-broker-postgres-config
+  initdbScriptsConfigMap: bbk-postgresql-config
 
   ## Secret with scripts to be run at first boot (in case it contains sensitive information)
   ## NOTE: This can work along initdbScripts or initdbScriptsConfigMap
@@ -202,7 +203,7 @@ postgresql-bbk:
 #######################################################################################
 ## Auth Service Values
 
-auth-service-bbk:
+bbk-auth-service:
   enabled: true
 
   docker:
@@ -228,7 +229,7 @@ auth-service-bbk:
 #######################################################################################
 ## Rate Service Values
 
-rate-service-bbk:
+bbk-rate-service:
   enabled: true
 
   ## Docker image
@@ -263,7 +264,7 @@ rate-service-bbk:
 #######################################################################################
 ## Ambassador Values
 
-ambassador-bbk:
+bbk-ambassador:
   ## Dependency enabler
   enabled: true
   ## Default values for ambassador.
@@ -275,7 +276,7 @@ ambassador-bbk:
   ## Defaults to .Chart.Name
   nameOverride: ""
   ## Defaults to .Release.Name-.Chart.Name unless .Release.Name contains "ambassador"
-  fullnameOverride: ""
+  fullnameOverride: "bbk-ambassador"
   ## Defaults to .Release.Namespace
   namespaceOverride: ""
 
@@ -546,7 +547,7 @@ ambassador-bbk:
 #######################################################################################
 ## Ory Oathkeeper Values
 
-oathkeeper-bbk:
+bbk-oathkeeper:
   ## Number of ORY Oathkeeper members
   enabled: true
   replicaCount: 1
@@ -571,7 +572,7 @@ oathkeeper-bbk:
   ## Chart name override
   nameOverride: ""
   # Full chart name override
-  fullnameOverride: ""
+  fullnameOverride: "bbk-oathkeeper"
 
   ## If enabled, a demo deployment with exemplary access rules
   ## and JSON Web Key Secrets will be generated.
@@ -735,9 +736,9 @@ oathkeeper-bbk:
   ## Configures controller setup
   maester:
     enabled: false
-    oathkeeperFullnameOverride: "oathkeeper-bbk"
+    oathkeeperFullnameOverride: "bbk-oathkeeper"
   oathkeeper-maester:
-    oathkeeperFullnameOverride: "oathkeeper-bbk"
+    oathkeeperFullnameOverride: "bbk-oathkeeper"
 
 
 ## End of Ory Oathkeeper Values

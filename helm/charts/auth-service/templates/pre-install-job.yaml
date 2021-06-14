@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}-pre-install-job
+  name: {{ .Chart.Name }}-pre-install-job
   namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -14,7 +14,7 @@ spec:
   backoffLimit: 0
   template:
     metadata:
-      name: {{ .Release.Name }}-{{ .Chart.Name }}-pre-install-job
+      name: {{ .Chart.Name }}-pre-install-job
     spec:
       securityContext:
         runAsNonRoot: true
@@ -25,7 +25,7 @@ spec:
       containers:
       - name: pre-install-job
         imagePullPolicy: Always
-        image: {{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/auth-service:{{ .Values.docker.imageTag }}
+        image: {{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-auth-service:{{ .Values.docker.imageTag }}
         securityContext:
           allowPrivilegeEscalation: false
         command: ['npm', 'run', 'check-jwks', '{{ .Values.JWKS }}', '--silent']

@@ -1,10 +1,10 @@
-{{- if index .Values "ambassador-bbk" "enabled" }}
+{{- if index .Values "bbk-ambassador" "enabled" }}
 {{- if .Values.global.gateway.host }}
 ---
 apiVersion: getambassador.io/v2
 kind: Host
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}-host
+  name: {{ .Chart.Name }}-host
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -29,7 +29,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  auth_service: {{ .Release.Name }}-oathkeeper-bbk-api:4456
+  auth_service: bbk-oathkeeper-api:4456
   timeout_ms: 5000
   failure_mode_allow: false
   path_prefix: "/decisions/bbk"
@@ -48,7 +48,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  service: {{ .Release.Name }}-rate-service:7000
+  service: bbk-rate-service:7000
   protocol_version: v2
 ---
 apiVersion: getambassador.io/v2
