@@ -42,9 +42,9 @@ spec:
             - name: COORDINATOR_NAME
               value: "Bit-Broker Coordinator Server"
             - name: COORDINATOR_BASE
-              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8003/v1"
+              value: "http://{{ .Chart.Name }}:8001/v1"
             - name: DATABASE
-              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
+              value: "postgresql://CREDENTIALS@{{ .Chart.Name }}/bit_broker"
             - name: METRICS_ENABLED
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:

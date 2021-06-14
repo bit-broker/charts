@@ -42,13 +42,13 @@ spec:
             - name: POLICY_NAME
               value: "Bit-Broker Policy Server"
             - name: POLICY_BASE
-              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8004/v1"
+              value: "http://{{ .Chart.Name }}:8004/v1"
             - name: DATABASE
-              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
+              value: "postgresql://CREDENTIALS@{{ .Chart.Name }}/bit_broker"
             - name: POLICY_CACHE
-              value: "redis://{{ .Release.Name }}-{{ .Chart.Name }}-cache:6379"
+              value: "redis://{{ .Chart.Name }}-cache:6379"
             - name: RATE_LIMIT_BASE
-              value: "http://{{ .Release.Name }}-rate-service-bbk:4000/api/v1"
+              value: "http://bbk-rate-service:4000/api/v1"
             - name: METRICS_ENABLED
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
