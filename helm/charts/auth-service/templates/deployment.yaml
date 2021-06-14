@@ -16,9 +16,11 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-{{ .Chart.Name }}
+{{- if or (.Values.global.metrics.enabled) (.Values.metrics.enabled) }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
+{{- end }}
     spec:
       securityContext:
         runAsNonRoot: true
@@ -33,6 +35,9 @@ spec:
           allowPrivilegeEscalation: false
         ports:
         - containerPort: 8080
+        env:
+          - name: METRICS_ENABLED
+            value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
         envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap

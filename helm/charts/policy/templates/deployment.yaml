@@ -16,9 +16,11 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-{{ .Chart.Name }}
+{{- if or (.Values.global.metrics.enabled) (.Values.metrics.enabled) }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8004"
+{{- end }}
     spec:
       securityContext:
         runAsNonRoot: true
@@ -40,13 +42,15 @@ spec:
             - name: POLICY_NAME
               value: "Bit-Broker Policy Server"
             - name: POLICY_BASE
-              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8003/v1"
+              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8004/v1"
             - name: DATABASE
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-{{ .Chart.Name }}-cache:6379"
             - name: RATE_LIMIT_BASE
               value: "http://{{ .Release.Name }}-rate-service-bbk:4000/api/v1"
+            - name: METRICS_ENABLED
+              value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
             - secretRef:
                 name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
