@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: {{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -11,11 +11,11 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-{{ .Chart.Name }}
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-{{ .Chart.Name }}
+        app: {{ .Chart.Name }}
 {{- if or (.Values.global.metrics.enabled) (.Values.metrics.enabled) }}
       annotations:
         prometheus.io/scrape: "true"
@@ -28,7 +28,7 @@ spec:
         fsGroup: 1999
       containers:
         - name: contributor
-          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/contributor:{{ .Values.docker.imageTag }}"
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-contributor:{{ .Values.docker.imageTag }}"
           imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
           securityContext:
             allowPrivilegeEscalation: false
@@ -49,4 +49,4 @@ spec:
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
             - secretRef:
-                name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
+                name: {{ .Chart.Name }}-secret
