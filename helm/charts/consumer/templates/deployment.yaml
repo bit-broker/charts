@@ -16,9 +16,11 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-{{ .Chart.Name }}
+{{- if or (.Values.global.metrics.enabled) (.Values.metrics.enabled) }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8001"
+{{- end }}
     spec:
       securityContext:
         runAsNonRoot: true
@@ -43,6 +45,8 @@ spec:
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8001/v1"
             - name: DATABASE
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
+            - name: METRICS_ENABLED
+              value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
             - secretRef:
                 name: {{ .Release.Name }}-{{ .Chart.Name }}-secret

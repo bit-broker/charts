@@ -81,6 +81,11 @@ global:
       ##   GKE, AWS & OpenStack)
       # storageClass: "-"
 
+  ## Enable or disable metrics for Prometheus
+  ##
+  metrics:
+    enabled: false
+
 ## End of Global Values
 #######################################################################################
 
