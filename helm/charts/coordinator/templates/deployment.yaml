@@ -29,7 +29,7 @@ spec:
       initContainers:
         - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-db'
           image: postgres:latest
-          command: ['sh', '-c', 'until pg_isready -h {{ .Release.Name }}-bbk-postgresql -p 5432 -U {{ .Chart.Name }};
+          command: ['sh', '-c', 'until pg_isready -h bbk-postgresql -p 5432 -U {{ .Chart.Name }};
             do echo waiting for database; sleep 2; done;']
       containers:
         - name: coordinator
@@ -51,8 +51,8 @@ spec:
             - name: COORDINATOR_BASE
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8003/v1"
             - name: DATABASE
-              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
-            - name: METRICS_ENABLED
+              value: "postgresql://CREDENTIALS@bbk-postgresql/bit_broker"
+            - name: APP_SERVER_METRICS
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
             - secretRef:
