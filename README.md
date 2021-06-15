@@ -22,5 +22,5 @@ JWKS=$(docker run bbkr/auth-service:latest npm run --silent create-jwks)
 2. Deploy the helm chart
 
 ```sh
-helm install bit-broker . -f values.yaml --set auth-service-bbk.JWKS=$JWKS
+helm install bit-broker . -f values.yaml --set bbk-auth-service.JWKS=$JWKS
 ```

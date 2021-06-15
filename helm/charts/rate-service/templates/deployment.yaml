@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -11,11 +11,11 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: {{ .Release.Name }}-{{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: {{ .Release.Name }}-{{ .Chart.Name }}
 {{- if or (.Values.global.metrics.enabled) (.Values.metrics.enabled) }}
       annotations:
         prometheus.io/scrape: "true"
@@ -31,7 +31,7 @@ spec:
       containers:
       - name: rate-service
         imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
-        image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-rate-service:{{ .Values.docker.imageTag }}"
+        image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/rate-service:{{ .Values.docker.imageTag }}"
         securityContext:
           allowPrivilegeEscalation: false
         ports:
@@ -39,7 +39,7 @@ spec:
         - containerPort: 7000
         envFrom:
           - configMapRef:
-              name: {{ .Chart.Name }}-configmap
+              name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
         env:
           - name: SERVER_HTTP_HOST
             value: "0.0.0.0:4000"

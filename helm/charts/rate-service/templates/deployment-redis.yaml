@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}-redis
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-redis
   namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -12,11 +12,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}-redis
+      app: {{ .Release.Name }}-{{ .Chart.Name }}-redis
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}-redis
+        app: {{ .Release.Name }}-{{ .Chart.Name }}-redis
     spec:
       securityContext:
         runAsNonRoot: true
@@ -30,11 +30,11 @@ spec:
         - containerPort: 6379
 {{- if or (.Values.global.redis.persistentVolume.enabled) (.Values.redis.persistentVolume.enabled) }}
         volumeMounts:
-          - name: {{ .Chart.Name }}-redis-data
+          - name: {{ .Release.Name }}-{{ .Chart.Name }}-redis-data
             mountPath: '{{ .Values.redis.persistentVolume.mountPath | default .Values.global.redis.persistentVolume.mountPath }}'
       volumes:
-      - name: {{ .Chart.Name }}-redis-data
+      - name: {{ .Release.Name }}-{{ .Chart.Name }}-redis-data
         persistentVolumeClaim:
-          claimName: {{ .Chart.Name }}-redis-pvc
+          claimName: {{ .Release.Name }}-{{ .Chart.Name }}-redis-pvc
 {{- end }}
 {{- end }}
