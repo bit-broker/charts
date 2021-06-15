@@ -35,6 +35,8 @@ spec:
           ports:
             - containerPort: 8002
           env:
+            - name: NODE_ENV
+              value: "production"
             - name: APP_NAME
               value: "Bit-Broker"
             - name: APP_MODE

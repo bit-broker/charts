@@ -35,6 +35,8 @@ spec:
           ports:
             - containerPort: 8004
           env:
+            - name: NODE_ENV
+              value: "production"
             - name: APP_NAME
               value: "Bit-Broker"
             - name: APP_MODE
@@ -44,7 +46,7 @@ spec:
             - name: POLICY_BASE
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8004/v1"
             - name: DATABASE
-              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
+              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-{{ .Chart.Name }}-cache:6379"
             - name: RATE_LIMIT_BASE

@@ -35,6 +35,8 @@ spec:
           ports:
             - containerPort: 8001
           env:
+            - name: NODE_ENV
+              value: "production"
             - name: APP_NAME
               value: "Bit-Broker"
             - name: APP_MODE
@@ -44,7 +46,7 @@ spec:
             - name: CONSUMER_BASE
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8001/v1"
             - name: DATABASE
-              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
+              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
             - name: METRICS_ENABLED
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
