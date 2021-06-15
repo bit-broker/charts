@@ -26,5 +26,5 @@ dependencies:
 - name: policy
   repository: file://../policy
   version: "1.0"
-digest: sha256:71c089ef5c6e946cfc30cf4f60ffb59a61cceeaf5ec0e629c3a45e2daa452658
-generated: "2021-05-31T10:44:29.629041+02:00"
+digest: sha256:61cd5baee20eef3e7f4b6f4f968b446bb7af368e61dcabe34a6dbcb9b4486022
+generated: "2021-06-15T14:55:24.829024+02:00"
