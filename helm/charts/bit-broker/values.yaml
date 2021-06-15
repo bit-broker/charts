@@ -177,11 +177,10 @@ bbk-policy:
 
 bbk-postgresql:
   enabled: true
-  fullnameOverride: "bbk-postgresql"
 
   ## ConfigMap with scripts to be run at first boot
   ## NOTE: This will override initdbScripts
-  initdbScriptsConfigMap: bbk-postgresql-config
+  initdbScriptsConfigMap: bit-broker-postgres-config
 
   ## Secret with scripts to be run at first boot (in case it contains sensitive information)
   ## NOTE: This can work along initdbScripts or initdbScriptsConfigMap
@@ -276,7 +275,7 @@ bbk-ambassador:
   ## Defaults to .Chart.Name
   nameOverride: ""
   ## Defaults to .Release.Name-.Chart.Name unless .Release.Name contains "ambassador"
-  fullnameOverride: "bbk-ambassador"
+  fullnameOverride: ""
   ## Defaults to .Release.Namespace
   namespaceOverride: ""
 
@@ -572,7 +571,7 @@ bbk-oathkeeper:
   ## Chart name override
   nameOverride: ""
   # Full chart name override
-  fullnameOverride: "bbk-oathkeeper"
+  fullnameOverride: ""
 
   ## If enabled, a demo deployment with exemplary access rules
   ## and JSON Web Key Secrets will be generated.

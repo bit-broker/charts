@@ -5,9 +5,9 @@ Your release is named {{ .Release.Name }}.
 
 Here is how to get / update rate config:
 
-  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Chart.Name }} 4000:4000
+  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }} 4000:4000
   $ curl -X PUT -H "Content-Type: application/json" -d '{"enabled": true,"rate":"20","quota":{"max_number": 10, "interval_type": "day"}}' http://localhost:4000/api/v1/{uid}/config
   $ curl http://localhost:4000/api/v1/{uid}/config
 
 The Rate Limit gRPC protocol runs at:
-    $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Chart.Name }} 7000:7000
+    $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }} 7000:7000

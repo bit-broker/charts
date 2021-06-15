@@ -3,7 +3,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ .Chart.Name }}-redis-pvc
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-redis-pvc
   namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}

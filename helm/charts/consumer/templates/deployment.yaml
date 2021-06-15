@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -11,11 +11,11 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: {{ .Release.Name }}-{{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: {{ .Release.Name }}-{{ .Chart.Name }}
 {{- if or (.Values.global.metrics.enabled) (.Values.metrics.enabled) }}
       annotations:
         prometheus.io/scrape: "true"
@@ -28,7 +28,7 @@ spec:
         fsGroup: 1999
       containers:
         - name: consumer
-          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-consumer:{{ .Values.docker.imageTag }}"
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/consumer:{{ .Values.docker.imageTag }}"
           imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
           securityContext:
             allowPrivilegeEscalation: false
@@ -42,11 +42,11 @@ spec:
             - name: CONSUMER_NAME
               value: "Bit-Broker Consumer Server"
             - name: CONSUMER_BASE
-              value: "http://{{ .Chart.Name }}:8003/v1"
+              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8001/v1"
             - name: DATABASE
-              value: "postgresql://CREDENTIALS@{{ .Chart.Name }}/bit_broker"
+              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
             - name: METRICS_ENABLED
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
             - secretRef:
-                name: {{ .Chart.Name }}-secret
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
