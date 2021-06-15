@@ -26,6 +26,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1999
         fsGroup: 1999
+      initContainers:
+        - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-db'
+          image: postgres:latest
+          command: ['sh', '-c', 'until pg_isready -h {{ .Release.Name }}-bbk-postgresql -p 5432 -U {{ .Chart.Name }};
+            do echo waiting for database; sleep 2; done;']
       containers:
         - name: coordinator
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/coordinator:{{ .Values.docker.imageTag }}"
