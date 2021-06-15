@@ -33,7 +33,7 @@ spec:
             do echo waiting for database; sleep 2; done;']
       containers:
         - name: consumer
-          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/consumer:{{ .Values.docker.imageTag }}"
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-consumer:{{ .Values.docker.imageTag }}"
           imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
           securityContext:
             allowPrivilegeEscalation: false
