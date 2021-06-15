@@ -26,6 +26,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 1999
         fsGroup: 1999
+      initContainers:
+        - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-db'
+          image: postgres:latest
+          command: ['sh', '-c', 'until pg_isready -h {{ .Release.Name }}-bbk-postgresql -p 5432 -U {{ .Chart.Name }};
+            do echo waiting for database; sleep 2; done;']
       containers:
         - name: contributor
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/contributor:{{ .Values.docker.imageTag }}"
@@ -46,7 +51,7 @@ spec:
             - name: CONTRIBUTOR_BASE
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8002/v1"
             - name: DATABASE
-              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-{{ .Chart.Name }}/bit_broker"
+              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
             - name: METRICS_ENABLED
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
