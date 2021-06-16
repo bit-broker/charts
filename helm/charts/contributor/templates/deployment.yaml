@@ -52,7 +52,7 @@ spec:
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8002/v1"
             - name: DATABASE
               value: "postgresql://CREDENTIALS@bbk-postgresql/bit_broker"
-            - name: METRICS_ENABLED
+            - name: APP_SERVER_METRICS
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
             - secretRef:

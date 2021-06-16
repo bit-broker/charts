@@ -1,5 +1,0 @@
-apiVersion: v2
-description: Bitbroker Policy Service Helm Chart
-name: policy
-appVersion: "1.0"
-version: "1.0"

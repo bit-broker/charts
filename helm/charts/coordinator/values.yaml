@@ -17,7 +17,43 @@ replicaCount: 1
 ##
 password: bbk_contributor_pwd
 
+## Redis options
+##
+redis:
+  ## Rate Service comes with a basic instance of Redis
+  ## Uncomment below to enable your own instance
+  ownInstance:
+    enabled: false
+    #addr: "redis:6379"
+    #password: ""
+    #db: "0"
+
+  ## Redis image
+  imageTag: "6.2.3-alpine"
+
+  ## Whether or not persistence is enabled
+  ##
+  persistentVolume:
+    enabled: false
+
+    ## Redis data Persistent Volume mount root path
+    ##
+    mountPath: /data
+
+    ## Redis data Persistent Volume size
+    ##
+    size: 10Gi
+
+    ## Redis data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    # storageClass: "-"
+
 ## Enable or disable metrics for Prometheus
 ##
 metrics:
   enabled: false
+## Enable or disable metrics for Prometheus
