@@ -15,7 +15,7 @@ replicaCount: 1
 
 ## Database access
 ##
-password: bbk_contributor_pwd
+password: bbk_coordinator_pwd
 
 ## Redis options
 ##
@@ -56,4 +56,3 @@ redis:
 ##
 metrics:
   enabled: false
-## Enable or disable metrics for Prometheus
