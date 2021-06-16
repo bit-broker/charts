@@ -29,7 +29,7 @@ spec:
       initContainers:
         - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-db'
           image: postgres:latest
-          command: ['sh', '-c', 'until pg_isready -h bbk-postgresql -p 5432 -U {{ .Chart.Name }};
+          command: ['sh', '-c', 'until pg_isready -h {{ .Release.Name }}-bbk-postgresql -p 5432 -U {{ .Chart.Name }};
             do echo waiting for database; sleep 2; done;']
       containers:
         - name: contributor
@@ -51,7 +51,7 @@ spec:
             - name: CONTRIBUTOR_BASE
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8002/v1"
             - name: DATABASE
-              value: "postgresql://CREDENTIALS@bbk-postgresql/bit_broker"
+              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-coordinator-cache:6379"
             - name: APP_SERVER_METRICS
