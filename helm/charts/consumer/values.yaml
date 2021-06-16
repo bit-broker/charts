@@ -15,7 +15,7 @@ replicaCount: 1
 
 ## Database access
 ##
-password: bbk_consumer_pwd
+# password: bbk_consumer_pwd
 
 ## Enable or disable metrics for Prometheus
 ##
