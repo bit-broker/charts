@@ -55,7 +55,7 @@ spec:
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-{{ .Chart.Name }}-cache:6379"
             - name: RATE_LIMIT_BASE
-              value: "http://{{ .Release.Name }}-rate-service-bbk:4000/api/v1"
+              value: "http://{{ .Release.Name }}-bbk-rate-service:4000/api/v1"
             - name: APP_SERVER_METRICS
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
