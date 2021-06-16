@@ -10,7 +10,7 @@ Following JWKS is used, please perform a backup:
 
 Here is how to get the public key / sign tokens:
 
-  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-auth-service 8080:8080
+  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-auth-service 8080:8080
   $ curl -i http://localhost:8080/api/v1/.well-known/jwks.json
   $ curl --header "Content-Type: application/json" --request POST --data '{"aud":"policy_id","scope":"contributor or consumer"}' http://localhost:8080/api/v1/token
 
@@ -18,12 +18,12 @@ Here is how to get the public key / sign tokens:
 
 Here is how to get / update rate config:
 
-  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-rate-service 4000:4000
+  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-rate-service 4000:4000
   $ curl -X PUT -H "Content-Type: application/json" -d '{"enabled": true,"rate":"20","quota":{"max_number": 10, "interval_type": "day"}}' http://localhost:4000/api/v1/{uid}/config
   $ curl http://localhost:4000/api/v1/{uid}/config
 
 The Rate Limit gRPC protocol runs at:
-    $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-rate-service 7000:7000
+    $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-rate-service 7000:7000
 
 3. Bit-Broker
 
