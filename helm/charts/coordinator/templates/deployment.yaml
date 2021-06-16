@@ -52,6 +52,10 @@ spec:
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8003/v1"
             - name: DATABASE
               value: "postgresql://CREDENTIALS@bbk-postgresql/bit_broker"
+            - name: POLICY_CACHE
+              value: "redis://{{ .Release.Name }}-{{ .Chart.Name }}-cache:6379"
+            - name: RATE_LIMIT_BASE
+              value: "http://{{ .Release.Name }}-rate-service-bbk:4000/api/v1"
             - name: APP_SERVER_METRICS
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:

@@ -50,8 +50,3 @@ dependencies:
     repository: file://../consumer
     condition: bbk-consumer.enabled
     alias: bbk-consumer
-  - name: policy
-    version: "1.0"
-    repository: file://../policy
-    condition: bbk-policy.enabled
-    alias: bbk-policy
