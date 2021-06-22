@@ -11,9 +11,9 @@ metadata:
 data:
   "access-rules.json": |
     [{
-      "id": "bbk-consume-auth",
+      "id": "bbk-consumer-auth",
       "match": {
-        "url": "<http|https>://<.*>/bbk/consume/<.*>",
+        "url": "<http|https>://<.*>/bbk/consumer/<.*>",
         "methods": ["GET", "HEAD"]
       },
       "authenticators": [
@@ -48,10 +48,10 @@ data:
       ]
     },
     {
-    "id": "bbk-contribute-auth",
+    "id": "bbk-contributor-auth",
     "match": {
-      "url": "<http|https>://<.*>/bbk/contribute/<.*>",
-      "methods": ["GET", "HEAD"]
+      "url": "<http|https>://<.*>/bbk/contributor/<.*>",
+      "methods": ["GET", "HEAD", "POST"]
     },
     "authenticators": [
       {
@@ -59,6 +59,43 @@ data:
         "config": {
           "scope_strategy": "exact",
           "required_scope": ["contributor"],
+          "trusted_issuers": ["{{ .Values.global.issuer }}"],
+          "allowed_algorithms": ["RS256"],
+          "token_from": {
+            "header": "{{ .Values.global.headers.authToken }}"
+          }
+        }
+      }
+    ],
+    "authorizer": {
+      "handler": "allow"
+    },
+    "mutators": [
+      {
+        "handler": "hydrator"
+      },
+      {
+        "handler": "header",
+        "config": {
+          "headers": {
+            "{{ .Values.global.headers.policy }}": "{{ .Values.global.policyTemplate }}"
+          }
+        }
+      }
+    ]
+    },
+    {
+    "id": "bbk-coordinator-auth",
+    "match": {
+      "url": "<http|https>://<.*>/bbk/coordinator/<.*>",
+      "methods": ["GET", "HEAD", "POST", "PUT"]
+    },
+    "authenticators": [
+      {
+        "handler": "jwt",
+        "config": {
+          "scope_strategy": "exact",
+          "required_scope": ["coordinator"],
           "trusted_issuers": ["{{ .Values.global.issuer }}"],
           "allowed_algorithms": ["RS256"],
           "token_from": {
