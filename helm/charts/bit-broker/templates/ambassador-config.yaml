@@ -35,9 +35,9 @@ spec:
   failure_mode_allow: false
   path_prefix: "/decisions/bbk"
   allowed_request_headers:
-  - '{{ .Values.global.headers.authToken }}'
+  - 'x-bbk-auth-token'
   allowed_authorization_headers:
-  - '{{ .Values.global.headers.policy }}'
+  - 'x-bbk-audience'
 ---
 apiVersion: getambassador.io/v2
 kind: RateLimitService
@@ -70,7 +70,7 @@ spec:
       - consume:
         - remote_address
         - uid:
-            header: '{{ .Values.global.headers.policy }}'
+            header: 'x-bbk-audience'
 ---
 apiVersion: getambassador.io/v2
 kind:  Mapping
@@ -90,7 +90,7 @@ spec:
       - contribute:
         - remote_address
         - uid:
-            header: '{{ .Values.global.headers.policy }}'
+            header: 'x-bbk-audience'
 ---
 apiVersion: getambassador.io/v2
 kind:  Mapping
@@ -110,4 +110,4 @@ spec:
       - contribute:
         - remote_address
         - uid:
-            header: '{{ .Values.global.headers.policy }}'
+            header: 'x-bbk-audience'

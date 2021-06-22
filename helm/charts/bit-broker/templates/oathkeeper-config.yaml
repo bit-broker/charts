@@ -25,7 +25,7 @@ data:
             "trusted_issuers": ["{{ .Values.global.issuer }}"],
             "allowed_algorithms": ["RS256"],
             "token_from": {
-              "header": "{{ .Values.global.headers.authToken }}"
+              "header": "x-bbk-auth-token"
             }
           }
         }
@@ -35,13 +35,10 @@ data:
       },
       "mutators": [
         {
-          "handler": "hydrator"
-        },
-        {
           "handler": "header",
           "config": {
             "headers": {
-              "{{ .Values.global.headers.policy }}": "{{ .Values.global.policyTemplate }}"
+              "x-bbk-audience": '"{{" print .Audience "}}"'
             }
           }
         }
@@ -62,7 +59,7 @@ data:
           "trusted_issuers": ["{{ .Values.global.issuer }}"],
           "allowed_algorithms": ["RS256"],
           "token_from": {
-            "header": "{{ .Values.global.headers.authToken }}"
+            "header": "x-bbk-auth-token"
           }
         }
       }
@@ -72,13 +69,10 @@ data:
     },
     "mutators": [
       {
-        "handler": "hydrator"
-      },
-      {
         "handler": "header",
         "config": {
           "headers": {
-            "{{ .Values.global.headers.policy }}": "{{ .Values.global.policyTemplate }}"
+            "x-bbk-audience": '"{{" print .Audience "}}"'
           }
         }
       }
@@ -99,7 +93,7 @@ data:
           "trusted_issuers": ["{{ .Values.global.issuer }}"],
           "allowed_algorithms": ["RS256"],
           "token_from": {
-            "header": "{{ .Values.global.headers.authToken }}"
+            "header": "x-bbk-auth-token"
           }
         }
       }
@@ -109,13 +103,10 @@ data:
     },
     "mutators": [
       {
-        "handler": "hydrator"
-      },
-      {
         "handler": "header",
         "config": {
           "headers": {
-            "{{ .Values.global.headers.policy }}": "{{ .Values.global.policyTemplate }}"
+            "x-bbk-audience": '"{{" print .Audience "}}"'
           }
         }
       }
