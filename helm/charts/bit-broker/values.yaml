@@ -2,21 +2,6 @@
 ## Global Values
 
 global:
-  ## Allowed headers
-  ##
-  headers:
-    ## Header containing the authentication token
-    ##
-    authToken: "x-bbk-auth-token"
-
-    ## Header containing the policy id
-    ##
-    policy: "x-bbk-audience"
-
-  ## Template to parse policy id from the extra data
-  ##
-  policyTemplate: "{{ print .Extra.policy }}"
-
   ## Database access
   ##
   passwords:
@@ -24,7 +9,6 @@ global:
     coordinator: bbk_coordinator_pwd
     contributor: bbk_contributor_pwd
     consumer: bbk_consumer_pwd
-    tests: bbk_tests_pwd
 
   ## Docker image
   ##
@@ -618,16 +602,6 @@ bbk-oathkeeper:
             jwks_urls:
               - http://bit-broker-auth-service:8080/api/v1/.well-known/jwks.json
       mutators:
-        hydrator:
-          enabled: true
-          config:
-            api:
-              url: http://bit-broker:8080/api/v1/check
-              retry:
-                give_up_after: 2s
-                max_delay: 100ms
-            cache:
-              ttl: 60s
         header:
           enabled: true
           config:
