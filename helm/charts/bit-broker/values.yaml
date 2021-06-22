@@ -11,7 +11,7 @@ global:
 
     ## Header containing the policy id
     ##
-    policy: "x-bbk-policy"
+    policy: "x-bbk-audience"
 
   ## Template to parse policy id from the extra data
   ##

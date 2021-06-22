@@ -54,16 +54,16 @@ spec:
 apiVersion: getambassador.io/v2
 kind:  Mapping
 metadata:
-  name: bbk-consume
+  name: bbk-consumer
   namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  prefix: /consume/
-  rewrite: /api/v1/consume/
-  service: bit-broker:8080
+  prefix: /consumer/
+  rewrite: /v1/
+  service: '{{ .Release.Names }}'-bbk-consumer:8001
   labels:
     ambassador:
       - consume:
@@ -74,16 +74,37 @@ spec:
 apiVersion: getambassador.io/v2
 kind:  Mapping
 metadata:
-  name: bbk-contribute
+  name: bbk-contributor
   namespace: '{{ .Release.Namespace }}'
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  prefix: /contribute/
-  rewrite: /api/v1/contribute/
-  service: bit-broker:8080
+  prefix: /contributor/
+  rewrite: /v1/
+  service: '{{ .Release.Names }}'-bbk-contributor:8002
+  labels:
+    ambassador:
+      - contribute:
+        - remote_address
+        - uid:
+            header: '{{ .Values.global.headers.policy }}'
+{{- end }}
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: bbk-coordinator
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  prefix: /coordinator/
+  rewrite: /v1/
+  service: '{{ .Release.Names }}'-bbk-coordinator:8003
   labels:
     ambassador:
       - contribute:
