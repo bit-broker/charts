@@ -18,6 +18,7 @@ spec:
     name: {{ .Values.global.gateway.tlsSecret }}
 {{- end }}
 {{- end }}
+{{- end }}
 ---
 apiVersion: getambassador.io/v2
 kind: AuthService
@@ -63,7 +64,7 @@ metadata:
 spec:
   prefix: /consumer/
   rewrite: /v1/
-  service: '{{ .Release.Names }}'-bbk-consumer:8001
+  service: {{ .Release.Name }}-bbk-consumer:8001
   labels:
     ambassador:
       - consume:
@@ -83,14 +84,13 @@ metadata:
 spec:
   prefix: /contributor/
   rewrite: /v1/
-  service: '{{ .Release.Names }}'-bbk-contributor:8002
+  service: {{ .Release.Name }}-bbk-contributor:8002
   labels:
     ambassador:
       - contribute:
         - remote_address
         - uid:
             header: '{{ .Values.global.headers.policy }}'
-{{- end }}
 ---
 apiVersion: getambassador.io/v2
 kind:  Mapping
@@ -104,11 +104,10 @@ metadata:
 spec:
   prefix: /coordinator/
   rewrite: /v1/
-  service: '{{ .Release.Names }}'-bbk-coordinator:8003
+  service: {{ .Release.Name }}-bbk-coordinator:8003
   labels:
     ambassador:
       - contribute:
         - remote_address
         - uid:
             header: '{{ .Values.global.headers.policy }}'
-{{- end }}

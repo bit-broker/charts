@@ -12,7 +12,7 @@ Here is how to get the public key / sign tokens:
 
   $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-auth-service 8080:8080
   $ curl -i http://localhost:8080/api/v1/.well-known/jwks.json
-  $ curl --header "Content-Type: application/json" --request POST --data '{"aud":"policy_id","scope":"contributor or consumer"}' http://localhost:8080/api/v1/token
+  $ curl --header "Content-Type: application/json" --request POST --data '{"aud":"audience","scope":"contributor or consumer or coordinator"}' http://localhost:8080/api/v1/token
 
 2. Rate Service
 
@@ -29,5 +29,6 @@ The Rate Limit gRPC protocol runs at:
 
 Following routes are mapped:
 
- $ GET /consume/data
- $ GET /contribute/data
+ $ GET /consumer/*
+ $ POST /contributor/*
+ $ GET,POST,PUT /coordinator/*
