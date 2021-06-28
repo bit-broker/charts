@@ -46,12 +46,12 @@ spec:
               value: "Bit-Broker"
             - name: APP_MODE
               value: "standard"
+            - name: APP_DATABASE
+              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
             - name: COORDINATOR_NAME
               value: "Bit-Broker Coordinator Server"
             - name: COORDINATOR_BASE
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8003/v1"
-            - name: DATABASE
-              value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-{{ .Chart.Name }}-cache:6379"
             - name: RATE_LIMIT_BASE
