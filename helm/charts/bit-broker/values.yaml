@@ -604,7 +604,7 @@ bbk-oathkeeper:
           enabled: true
           config:
             jwks_urls:
-              - http://bit-broker-auth-service:8080/api/v1/.well-known/jwks.json
+              - dummy # Keep this here to avoid validation error
       mutators:
         header:
           enabled: true

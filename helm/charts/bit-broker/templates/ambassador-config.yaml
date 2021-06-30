@@ -49,7 +49,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  service: {{ .Release.Name }}-rate-service:7000
+  service: {{ .Release.Name }}-bbk-rate-service:7000
   protocol_version: v2
 ---
 apiVersion: getambassador.io/v2
