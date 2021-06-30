@@ -1,3 +1,5 @@
+{{- $adminJti := uuidv4 -}}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,6 +9,8 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  annotations:
+    helm.sh/hook: post-install
 data:
   "schema.sql": |
     /*
@@ -82,6 +86,8 @@ data:
         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
+    INSERT INTO users (email, properties) VALUES ('{{ .Values.global.adminEmail }}', '{ "name": "admin" }');
+
     -- entity table
 
     CREATE TABLE entity
@@ -106,7 +112,7 @@ data:
         slug VARCHAR (32) UNIQUE NOT NULL,
         properties JSONB NOT NULL,
         contribution_id CHAR(36) UNIQUE,
-        contribution_key CHAR(36),
+        contribution_key_id CHAR(36) UNIQUE NOT NULL,
         session_id CHAR(36) UNIQUE,
         session_mode SESSION_MODES,
         session_started TIMESTAMP,
@@ -169,25 +175,40 @@ data:
 
     -- access table
 
-    CREATE TYPE access_scopes AS ENUM ('coordinator', 'contributor', 'consumer');
+    CREATE TYPE access_roles AS ENUM ('coordinator', 'contributor', 'consumer');
 
     CREATE TABLE access
     (
         id SERIAL PRIMARY KEY,
         user_id SERIAL REFERENCES users (id) ON DELETE CASCADE,
+        role ACCESS_ROLES NOT NULL,
+        context VARCHAR (32),
         key_id CHAR(36) UNIQUE NOT NULL,
-        scope ACCESS_SCOPES NOT NULL,
-        policy_id SERIAL REFERENCES policy (id) ON DELETE CASCADE,
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE (user_id, scope, policy_id)
+        UNIQUE (user_id, role, context)
     );
 
-    CREATE INDEX idx_access_user ON access (user_id);
-    CREATE INDEX idx_access_policy ON access (policy_id);
+    CREATE INDEX idx_access_user ON access (user_id, role);
+
+    INSERT INTO access (user_id, role, key_id) VALUES (1, 'coordinator', '{{ $adminJti }}');
 
     -- grant permissions - TODO allocate more specific grants based on each user
 
     GRANT SELECT ON ALL TABLES IN SCHEMA public TO bbk_reader;
     GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO bbk_writer;
     GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO bbk_writer;
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-bbk-admin-jti
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  annotations:
+    helm.sh/hook: post-install
+data:
+  ADMIN_JTI: {{ $adminJti | b64enc }}
