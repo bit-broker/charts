@@ -21,6 +21,10 @@ global:
   ##
   issuer: "bit-broker.io"
 
+  ## Admin's email
+  ##
+  adminEmail: "noreply@bit-broker.io"
+
   ## Gateway settings
   ##
   gateway:

@@ -10,25 +10,29 @@ Following JWKS is used, please perform a backup:
 
 Here is how to get the public key / sign tokens:
 
-  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-auth-service 8080:8080
-  $ curl -i http://localhost:8080/api/v1/.well-known/jwks.json
-  $ curl --header "Content-Type: application/json" --request POST --data '{"aud":"audience","scope":"contributor or consumer or coordinator"}' http://localhost:8080/api/v1/token
+    $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-auth-service 8080:8080
+    $ curl -i http://localhost:8080/api/v1/.well-known/jwks.json
+    $ curl --header "Content-Type: application/json" --request POST --data '{"aud":"audience","scope":"contributor or consumer or coordinator"}' http://localhost:8080/api/v1/token
 
 2. Rate Service
 
 Here is how to get / update rate config:
 
-  $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-rate-service 4000:4000
-  $ curl -X PUT -H "Content-Type: application/json" -d '{"enabled": true,"rate":"20","quota":{"max_number": 10, "interval_type": "day"}}' http://localhost:4000/api/v1/{uid}/config
-  $ curl http://localhost:4000/api/v1/{uid}/config
+    $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-rate-service 4000:4000
+    $ curl -X PUT -H "Content-Type: application/json" -d '{"enabled": true,"rate":"20","quota":{"max_number": 10, "interval_type": "day"}}' http://localhost:4000/api/v1/{uid}/config
+    $ curl http://localhost:4000/api/v1/{uid}/config
 
 The Rate Limit gRPC protocol runs at:
     $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-bbk-rate-service 7000:7000
 
 3. Bit-Broker
 
+Here is how to get the Coordinator token:
+
+    $ kubectl exec -it $(kubectl get pods --no-headers -o custom-columns=":metadata.name" --selector=app={{ .Release.Name}}-bbk-auth-service -n {{ .Release.Namespace }} | head -1) -n {{ .Release.Namespace }} npm run sign-token coordinator $(kubectl get secret --namespace {{ .Release.Namespace }} {{ .Release.Name }}-bbk-admin-jti -o jsonpath="{.data.ADMIN_JTI}" | base64 --decode)
+
 Following routes are mapped:
 
- $ GET /consumer/*
- $ POST /contributor/*
- $ GET,POST,PUT /coordinator/*
+    $ GET /consumer/*
+    $ POST /contributor/*
+    $ GET,POST,PUT /coordinator/*
