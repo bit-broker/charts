@@ -191,6 +191,17 @@ bbk-auth-service:
   ##
   JWKS: "JWKS"
 
+  ## Redis options
+  ##
+  redis:
+    ## Auth Service comes with a basic instance of Redis
+    ## Change values below to enable your own instance
+    ownInstance:
+      enabled: false
+      #addr: "redis:6379"
+      #password: ""
+      #db: "0"
+
 ## End of Auth Service Values
 #######################################################################################
 
@@ -604,7 +615,7 @@ bbk-oathkeeper:
           enabled: true
           config:
             jwks_urls:
-              - dummy # Keep this here to avoid validation error
+              - http://dummy # Keep this here to avoid validation error
       mutators:
         header:
           enabled: true
