@@ -1,0 +1,20 @@
+{{- if (not .Values.redis.ownInstance.enabled) }}
+{{- if or (.Values.global.redis.persistentVolume.enabled) (.Values.redis.persistentVolume.enabled) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-redis-pvc
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: '{{ .Values.redis.persistentVolume.size | default .Values.global.redis.persistentVolume.size }}'
+  storageClassName: '{{ .Values.redis.persistentVolume.storageClass | default .Values.global.redis.persistentVolume.storageClass }}'
+{{- end }}
+{{- end }}
