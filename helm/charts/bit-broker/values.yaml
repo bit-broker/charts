@@ -9,6 +9,7 @@ global:
     coordinator: bbk_coordinator_pwd
     contributor: bbk_contributor_pwd
     consumer: bbk_consumer_pwd
+    tests: bbk_tests_pwd
 
   ## Docker image
   ##
