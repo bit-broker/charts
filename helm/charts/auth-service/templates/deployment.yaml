@@ -27,6 +27,13 @@ spec:
         runAsUser: 1999
       imagePullSecrets:
       - name: {{ .Values.docker.imagePullSecret }}
+{{- if (not .Values.redis.ownInstance.enabled) }}
+      initContainers:
+        - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-redis'
+          image: redis:latest
+          command: ['sh', '-c', 'until redis-cli -u redis://{{ .Release.Name }}-{{ .Chart.Name }}-redis:6379 ping;
+            do echo waiting for redis; sleep 2; done;']
+{{- end }}
       containers:
       - name: auth-service
         imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
