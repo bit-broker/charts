@@ -624,8 +624,10 @@ bbk-oathkeeper:
             headers:
               dummy: dummy # Keep this here to avoid validation error
       authorizers:
-        allow:
+        remote:
           enabled: true
+          config:
+            remote: http://dummy # Keep this here to avoid validation error
 
   ##  If set, uses the given JSON Web Key Set as the signing key for the ID Token Mutator.
   ##  mutatorIdTokenJWKs: {}
