@@ -43,3 +43,19 @@ spec:
               name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
           - secretRef:
               name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
+        env:
+{{- if (not .Values.redis.ownInstance.enabled) }}
+          - name: REDIS_ADDR
+            value: "{{ .Release.Name }}-{{ .Chart.Name }}-redis:6379"
+          - name: REDIS_PASSWORD
+            value: ""
+          - name: REDIS_DB
+            value: "0"
+{{- else }}
+          - name: REDIS_ADDR
+            value: "{{ .Values.redis.ownInstance.addr }}"
+          - name: REDIS_PASSWORD
+            value: "{{ .Values.redis.ownInstance.password }}"
+          - name: REDIS_DB
+            value: "{{ .Values.redis.ownInstance.db }}"
+{{- end }}

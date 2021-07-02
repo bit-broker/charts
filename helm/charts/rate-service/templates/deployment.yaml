@@ -49,13 +49,13 @@ spec:
             value: "production"
           - name: METRICS_ENABLED
             value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
-{{- if (not .Values.redis.ownInstance.enabled) }}
           - name: POLICY_SERVICE_ENDPOINT
             value: "http://{{ .Release.Name }}-bbk-coordinator:8003/v1/policy/access-all-areas/access_control"
           - name: POLICY_SERVICE_AUTHORIZATION
             value: ""
           - name: POLICY_SERVICE_TIMEOUT
             value: "5"
+{{- if (not .Values.redis.ownInstance.enabled) }}
           - name: REDIS_ADDR
             value: "{{ .Release.Name }}-{{ .Chart.Name }}-redis:6379"
           - name: REDIS_PASSWORD
