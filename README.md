@@ -22,5 +22,61 @@ JWKS=$(docker run bbkr/auth-service:latest npm run --silent create-jwks)
 2. Deploy the helm chart
 
 ```sh
-helm install bit-broker . -f values.yaml --set bbk-auth-service.JWKS=$JWKS
+helm install bit-broker . -f values.yaml --set bbk-auth-service.JWKS=$JWKS -n bbk
+```
+
+## Logging
+
+1. Deploy ELK + Fluentd
+
+```sh
+# Add helm repos
+helm repo add elastic https://helm.elastic.co
+helm repo add kokuwa https://kokuwaio.github.io/helm-charts
+helm repo update
+
+# Create Kubernetes Namespace
+kubectl create namespace logging
+
+# Install charts
+helm install elasticsearch elastic/elasticsearch -n logging
+helm install kibana elastic/kibana -n logging
+helm install fluentd-elasticsearch kokuwa/fluentd-elasticsearch --set 'elasticsearch.hosts=elasticsearch-master:9200' -n logging
+```
+2. Check Kibana Dashboard
+
+```sh
+kubectl port-forward svc/kibana-kibana 5601:5601 -n logging
+```
+
+<ul>
+<li>Click on Discover in the left-hand navigation menu and create a new index pattern "logstash-*" based on the @timestamp field.</li>
+<li>Now, hit Discover in the left hand navigation menu again and you should start seeing log entries.</li>
+</ul>
+
+## Metrics
+
+1. Update values
+
+```sh
+helm upgrade bit-broker . -f values.yaml --set global.metrics.enabled=true --set bbk-ambassador.metrics.serviceMonitor.enabled=true -n bbk
+```
+
+2. Deploy Prometheus Stack
+
+```sh
+# Add helm repo
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+# Create Kubernetes Namespace
+kubectl create namespace metrics
+
+# Install chart
+helm install prometheus-stack prometheus-community/kube-prometheus-stack --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false -n metrics
+```
+3. Check Grafana Dashboard
+
+```sh
+kubectl port-forward svc/prometheus-stack-grafana 3000:80 -n metrics
 ```
