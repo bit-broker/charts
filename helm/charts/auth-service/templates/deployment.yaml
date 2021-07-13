@@ -42,15 +42,14 @@ spec:
           allowPrivilegeEscalation: false
         ports:
         - containerPort: 8080
-        env:
-          - name: METRICS_ENABLED
-            value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
         envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
           - secretRef:
               name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
         env:
+          - name: METRICS_ENABLED
+            value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
 {{- if (not .Values.redis.ownInstance.enabled) }}
           - name: REDIS_ADDR
             value: "{{ .Release.Name }}-{{ .Chart.Name }}-redis:6379"
