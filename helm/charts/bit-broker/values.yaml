@@ -70,6 +70,7 @@ global:
       # storageClass: "-"
 
   ## Enable or disable metrics for Prometheus
+  ## Prometheus Service Monitors will be deployed for each subchart
   ##
   metrics:
     enabled: false

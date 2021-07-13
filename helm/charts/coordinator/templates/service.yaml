@@ -6,6 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ .Release.Name }}-{{ .Chart.Name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   ports:
