@@ -189,6 +189,10 @@ bbk-auth-service:
   ##
   logLevel: "info"
 
+  ## JWT's duration for refreshable tokens
+  ##
+  jwt_duration: "2592000"
+
   ## JWKS
   ##
   JWKS: "JWKS"

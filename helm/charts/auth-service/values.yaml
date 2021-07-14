@@ -17,6 +17,10 @@ replicaCount: 1
 ##
 issuer: "bit-broker.io"
 
+## JWT's duration for refreshable tokens
+##
+jwt_duration: "2592000"
+
 ## Debug tools
 ##
 logLevel: "info"
