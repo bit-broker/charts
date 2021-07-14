@@ -9,3 +9,4 @@ metadata:
 data:
   LOG_LEVEL: "{{ .Values.logLevel }}"
   ISSUER: "{{ .Values.issuer | default .Values.global.issuer }}"
+  JWT_DURATION: "{{ .Values.jwt_duration }}"
