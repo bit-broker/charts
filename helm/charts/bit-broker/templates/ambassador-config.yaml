@@ -105,9 +105,3 @@ spec:
   prefix: /coordinator/
   rewrite: /v1/
   service: {{ .Release.Name }}-bbk-coordinator:8003
-  labels:
-    ambassador:
-      - contribute:
-        - remote_address
-        - uid:
-            header: 'x-bbk-audience'
