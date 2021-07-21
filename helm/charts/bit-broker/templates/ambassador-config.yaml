@@ -63,7 +63,6 @@ metadata:
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   prefix: /consumer/
-  rewrite: /v1/
   service: {{ .Release.Name }}-bbk-consumer:8001
   labels:
     ambassador:
@@ -83,7 +82,6 @@ metadata:
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   prefix: /contributor/
-  rewrite: /v1/
   service: {{ .Release.Name }}-bbk-contributor:8002
   labels:
     ambassador:
@@ -103,5 +101,4 @@ metadata:
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
   prefix: /coordinator/
-  rewrite: /v1/
   service: {{ .Release.Name }}-bbk-coordinator:8003
