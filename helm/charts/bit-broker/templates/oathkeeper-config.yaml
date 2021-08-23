@@ -100,7 +100,7 @@ data:
     "id": "bbk-coordinator-auth",
     "match": {
       "url": "<http|https>://<.*>/bbk/coordinator/<.*>",
-      "methods": ["GET", "HEAD", "POST", "PUT"]
+      "methods": ["GET", "HEAD", "POST", "PUT", "DELETE"]
     },
     "authenticators": [
       {
