@@ -54,8 +54,10 @@ spec:
               value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8003/v1"
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-{{ .Chart.Name }}-cache:6379"
-            - name: RATE_LIMIT_BASE
+            - name: RATE_SERVICE
               value: "http://{{ .Release.Name }}-bbk-rate-service:4000/api/v1"
+            - name: AUTH_SERVICE
+              value: "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1"
             - name: APP_SERVER_METRICS
               value: "{{ .Values.metrics.enabled | default .Values.global.metrics.enabled }}"
           envFrom:
