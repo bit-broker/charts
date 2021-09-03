@@ -47,7 +47,8 @@ data:
           "handler": "header",
           "config": {
             "headers": {
-              "x-bbk-audience": '{{ "{{ print .Extra.aud }}" }}'
+              "x-bbk-audience": '{{ "{{ print .Extra.aud }}" }}',
+              "x-bbk-rate-uid": '{{ "{{ print (index .Extra.scp 0) }}:{{ print .Extra.aud }}" }}',
             }
           }
         }

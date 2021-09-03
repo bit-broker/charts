@@ -38,6 +38,7 @@ spec:
   - 'x-bbk-auth-token'
   allowed_authorization_headers:
   - 'x-bbk-audience'
+  - 'x-bbk-rate-uid'
 ---
 apiVersion: getambassador.io/v2
 kind: RateLimitService
@@ -69,7 +70,7 @@ spec:
       - consume:
         - remote_address
         - uid:
-            header: 'x-bbk-audience'
+            header: 'x-bbk-rate-uid'
 ---
 apiVersion: getambassador.io/v2
 kind:  Mapping
