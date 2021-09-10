@@ -89,7 +89,7 @@ spec:
       - contribute:
         - remote_address
         - uid:
-            header: 'x-bbk-audience'
+            header: 'x-bbk-rate-uid'
 ---
 apiVersion: getambassador.io/v2
 kind:  Mapping
