@@ -21,9 +21,11 @@ global:
   ##
   issuer: "bit-broker.io"
 
-  ## Admin's email
+  ## Admin settings
   ##
-  adminEmail: "noreply@bit-broker.io"
+  admin:
+    email: "noreply@bit-broker.io"
+    jti: "8facd32b-41b0-44e8-a97a-e8b5dc610d46"
 
   ## Gateway settings
   ##
