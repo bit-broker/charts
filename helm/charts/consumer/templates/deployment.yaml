@@ -48,10 +48,12 @@ spec:
               value: "standard"
             - name: APP_DATABASE
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
-            - name: CONSUMER_NAME
-              value: "Bit-Broker Consumer Server"
+            - name: CONSUMER_PORT
+              value: "8001"
             - name: CONSUMER_BASE
-              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8001/v1"
+              value: "v1"
+            - name: CONSUMER_USER
+              value: "bbk_consumer:{{ .Values.global.passwords.consumer }}"
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-bbk-coordinator-cache:6379"
             - name: APP_SERVER_METRICS
