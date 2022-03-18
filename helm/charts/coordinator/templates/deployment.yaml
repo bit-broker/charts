@@ -48,10 +48,12 @@ spec:
               value: "standard"
             - name: APP_DATABASE
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
-            - name: COORDINATOR_NAME
-              value: "Bit-Broker Coordinator Server"
+            - name: COORDINATOR_PORT
+              value: "8003"
             - name: COORDINATOR_BASE
-              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8003/v1"
+              value: "v1"
+            - name: COORDINATOR_USER
+              value: "bbk_coordinator:{{ .Values.global.passwords.coordinator }}"
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-{{ .Chart.Name }}-cache:6379"
             - name: RATE_SERVICE

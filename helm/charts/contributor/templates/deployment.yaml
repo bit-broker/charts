@@ -48,10 +48,12 @@ spec:
               value: "standard"
             - name: APP_DATABASE
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
-            - name: CONTRIBUTOR_NAME
-              value: "Bit-Broker Contributor Server"
+            - name: CONTRIBUTOR_PORT
+              value: "8002"
             - name: CONTRIBUTOR_BASE
-              value: "http://{{ .Release.Name }}-{{ .Chart.Name }}:8002/v1"
+              value: "v1"
+            - name: CONTRIBUTOR_USER
+              value: "bbk_contributor:{{ .Values.global.passwords.contributor }}"
             - name: POLICY_CACHE
               value: "redis://{{ .Release.Name }}-bbk-coordinator-cache:6379"
             - name: APP_SERVER_METRICS
