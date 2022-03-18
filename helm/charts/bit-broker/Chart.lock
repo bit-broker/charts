@@ -1,7 +1,7 @@
 dependencies:
 - name: ambassador
   repository: https://www.getambassador.io
-  version: 6.7.2
+  version: 6.7.13
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
   version: 0.12.0
@@ -23,5 +23,5 @@ dependencies:
 - name: consumer
   repository: file://../consumer
   version: "1.0"
-digest: sha256:83046048d06b83c5d5c031b36836dfa3fd783ed37051edced796090a30c28b8e
-generated: "2021-06-16T12:24:46.081903+02:00"
+digest: sha256:3e2cf59b7e61f8053c22fa659133d114f5610295ba30d975740ba13f734440ec
+generated: "2022-03-18T16:48:33.733726+01:00"

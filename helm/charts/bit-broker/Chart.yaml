@@ -11,7 +11,7 @@ engine: gotpl
 type: application
 dependencies:
   - name: ambassador
-    version: "6.7.2"
+    version: "6.7.13"
     repository: https://www.getambassador.io
     condition: bbk-ambassador.enabled
     alias: bbk-ambassador
