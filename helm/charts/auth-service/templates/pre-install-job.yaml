@@ -4,9 +4,7 @@ metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-pre-install-job
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "authservice.labels" . }}
   annotations:
     helm.sh/hook: pre-install
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded,hook-failed

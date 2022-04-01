@@ -27,13 +27,31 @@ global:
     email: "noreply@bit-broker.io"
     jti: "8facd32b-41b0-44e8-a97a-e8b5dc610d46"
 
+  ## Portal settings
+  ##
+  portal:
+    ## Mail Settings
+    mail:
+      send:
+        host: "smtp.ethereal.email"
+        port: "587"
+      sender:
+        name: "BitBroker Team"
+      username: "juliet.koelpin84@ethereal.email"
+      password: "7aPyGg9TCVCTCYbkKW"
+
+    ## Host URL
+    ## Should be specified if gateway host below is disabled
+    ##
+    # host: "https://bit-broker.io"
+
   ## Gateway settings
   ##
   gateway:
     ## Host URL
     ## If specified, an Ambassador Host will be created
     ##
-    #host: "bit-broker.io"
+    # host: "bit-broker.io"
 
     ## Handle with Let's encrypt
     ##
@@ -143,6 +161,25 @@ bbk-consumer:
 
 ## End of Bit-Broker Consumer Values
 #######################################################################################
+#
+#######################################################################################
+## Bit-Broker Portal Values
+
+bbk-portal:
+  enabled: true
+
+  ## Contributor instance count.
+  replicaCount: 1
+
+  ## Docker Image values.
+  docker:
+    imageTag: "latest"
+    imagePullPolicy: Always
+    imagePullSecret: regcred
+
+## End of Bit-Broker Portal Values
+#######################################################################################
+
 
 #######################################################################################
 ## Bit-Broker Postgres Values

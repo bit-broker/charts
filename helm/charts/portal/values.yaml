@@ -1,0 +1,30 @@
+## Docker image
+##
+docker:
+  imageTag: "latest"
+  imagePullPolicy: "Always"
+  imagePullSecret: "regcred"
+
+  ## If private registry
+  ##
+  #registry: ""
+
+## Mail Settings
+##
+mail:
+  send: {}
+#     host: ""
+#     port: ""
+  sender: {}
+#     name: ""
+#     email: ""
+#   username: ""
+#   password: ""
+
+## Number of replicas
+##
+replicaCount: 1
+
+## App Host
+##
+# host:

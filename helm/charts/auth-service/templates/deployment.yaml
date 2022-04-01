@@ -4,9 +4,7 @@ metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "authservice.labels" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
