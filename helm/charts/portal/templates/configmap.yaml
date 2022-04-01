@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+data:
+  MAIL_SEND_HOST: "{{ .Values.mail.send.host | default .Values.global.portal.mail.send.host }}"
+  MAIL_SEND_PORT: "{{ .Values.mail.send.port | default .Values.global.portal.mail.send.port }}"
+  MAIL_USER_NAME: "{{ .Values.mail.username | default .Values.global.portal.mail.username }}"
+  MAIL_USER_PWD: "{{ .Values.mail.password | default .Values.global.portal.mail.password }}"
+  MAIL_SENDER_NAME: "{{ .Values.mail.sender.name | default .Values.global.portal.mail.sender.name }}"
+  MAIL_SENDER_EMAIL: "{{ .Values.mail.sender.email | default .Values.global.admin.email }}"
+  APP_SERVICE: "{{ .Values.host | default (or .Values.global.portal.host .Values.global.gateway.host) }}/service"

@@ -6,9 +6,7 @@ kind: Host
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-host
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "bitbroker.labels" . }}
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   hostname: {{ .Values.global.gateway.host }}
@@ -27,9 +25,7 @@ metadata:
   name: authentication
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "bitbroker.labels" . }}
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   auth_service: {{ .Release.Name }}-bbk-oathkeeper-api:4456
@@ -48,9 +44,7 @@ metadata:
   name: ratelimit
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "bitbroker.labels" . }}
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   service: {{ .Release.Name }}-bbk-rate-service:7000
@@ -62,9 +56,7 @@ metadata:
   name: bbk-consumer
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "bitbroker.labels" . }}
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   prefix: /consumer/
@@ -82,9 +74,7 @@ metadata:
   name: bbk-contributor
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "bitbroker.labels" . }}
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   prefix: /contributor/
@@ -102,10 +92,34 @@ metadata:
   name: bbk-coordinator
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "bitbroker.labels" . }}
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   prefix: /coordinator/
   service: {{ .Release.Name }}-bbk-coordinator:8003
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: bbk-portal-app
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+spec:
+  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  prefix: /
+  service: {{ .Release.Name }}-bbk-portal:3000
+  bypass_auth: true
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: bbk-portal-service
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+spec:
+  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  prefix: /service
+  service: {{ .Release.Name }}-bbk-portal:8100
+  bypass_auth: true

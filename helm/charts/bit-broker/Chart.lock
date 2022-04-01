@@ -23,5 +23,8 @@ dependencies:
 - name: consumer
   repository: file://../consumer
   version: "1.0"
-digest: sha256:3e2cf59b7e61f8053c22fa659133d114f5610295ba30d975740ba13f734440ec
-generated: "2022-03-18T16:48:33.733726+01:00"
+- name: portal
+  repository: file://../portal
+  version: "1.0"
+digest: sha256:48a171df960e1b3dc707520e2fb7e9779cb8f7d289e7668aeae14b7ab8e2fa21
+generated: "2022-03-25T16:54:57.343568+01:00"

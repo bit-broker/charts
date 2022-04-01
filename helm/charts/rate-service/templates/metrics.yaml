@@ -5,9 +5,7 @@ metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-servicemonitor
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "rateservice.labels" . }}
 spec:
   selector:
     matchLabels:

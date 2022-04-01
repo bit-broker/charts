@@ -3,9 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "authservice.labels" . }}
 data:
   LOG_LEVEL: "{{ .Values.logLevel }}"
   ISSUER: "{{ .Values.issuer | default .Values.global.issuer }}"

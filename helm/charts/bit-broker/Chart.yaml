@@ -50,3 +50,8 @@ dependencies:
     repository: file://../consumer
     condition: bbk-consumer.enabled
     alias: bbk-consumer
+  - name: portal
+    version: "1.0"
+    repository: file://../portal
+    condition: bbk-portal.enabled
+    alias: bbk-portal

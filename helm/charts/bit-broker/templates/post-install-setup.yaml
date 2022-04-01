@@ -4,9 +4,7 @@ metadata:
   name: bbk-postgresql-config
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "bitbroker.labels" . }}
   annotations:
     helm.sh/hook: post-install
 data:
@@ -19,9 +17,7 @@ metadata:
   name: {{ .Release.Name }}-bbk-admin-jti
   namespace: '{{ .Release.Namespace }}'
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    {{ include "bitbroker.labels" . }}
   annotations:
     helm.sh/hook: post-install
 data:

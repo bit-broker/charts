@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-{{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-{{ .Chart.Name }}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1999
+        fsGroup: 1999
+      containers:
+        - name: portal-service
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-portal-service:{{ .Values.docker.imageTag }}"
+          imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 3000
+          env:
+            - name: APP_NAME
+              value: "BitBroker Portal"
+            - name: APP_PORT
+              value: "8100"
+            - name: APP_BASE
+              value: "v1"
+            - name: APP_PORTAL
+              value: "http://localhost:3000"
+            - name: BBK_ROUTE
+              value: "http://{{ .Release.Name }}-bbk-coordinator:8003/v1"
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
+        - name: portal-app
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-portal-app:{{ .Values.docker.imageTag }}"
+          imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 8100
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
