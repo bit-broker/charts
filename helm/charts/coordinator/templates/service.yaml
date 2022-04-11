@@ -12,8 +12,8 @@ spec:
   ports:
   - name: http
     protocol: TCP
-    port: 8003
-    targetPort: 8003
+    port: 8001
+    targetPort: 8001
   type: ClusterIP
   selector:
     app: {{ .Release.Name }}-{{ .Chart.Name }}
