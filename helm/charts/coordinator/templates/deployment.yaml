@@ -48,6 +48,12 @@ spec:
               value: "standard"
             - name: APP_DATABASE
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
+            - name: BOOTSTRAP_USER_EMAIL
+              value: "{{ .Values.global.admin.email }}"
+            - name: BOOTSTRAP_USER_NAME
+              value: "{{ .Values.global.admin.name }}"
+            - name: BOOTSTRAP_USER_KEY_ID
+              value: "{{ .Values.global.admin.jti }}"
             - name: COORDINATOR_PORT
               value: "8001"
             - name: COORDINATOR_BASE
