@@ -60,7 +60,7 @@ metadata:
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   prefix: /consumer/
-  service: {{ .Release.Name }}-bbk-consumer:8001
+  service: {{ .Release.Name }}-bbk-consumer:8003
   labels:
     ambassador:
       - consume:
@@ -96,7 +96,7 @@ metadata:
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   prefix: /coordinator/
-  service: {{ .Release.Name }}-bbk-coordinator:8003
+  service: {{ .Release.Name }}-bbk-coordinator:8001
 ---
 apiVersion: getambassador.io/v2
 kind:  Mapping

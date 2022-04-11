@@ -19,7 +19,7 @@ spec:
 {{- if or (.Values.global.metrics.enabled) (.Values.metrics.enabled) }}
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8001"
+        prometheus.io/port: "8003"
 {{- end }}
     spec:
       securityContext:
@@ -38,7 +38,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 8001
+            - containerPort: 8003
           env:
             - name: NODE_ENV
               value: "production"
@@ -49,7 +49,7 @@ spec:
             - name: APP_DATABASE
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
             - name: CONSUMER_PORT
-              value: "8001"
+              value: "8003"
             - name: CONSUMER_BASE
               value: "v1"
             - name: CONSUMER_USER
