@@ -1,17 +1,4 @@
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: bbk-postgresql-config
-  namespace: '{{ .Release.Namespace }}'
-  labels:
-    {{ include "bitbroker.labels" . }}
-  annotations:
-    helm.sh/hook: post-install
-data:
-  schema.sql: |-
-    {{- (.Files.Glob "schema/schema.sql").AsConfig | nindent 2 }}
----
-apiVersion: v1
 kind: Secret
 metadata:
   name: {{ .Release.Name }}-bbk-admin-jti
@@ -22,3 +9,55 @@ metadata:
     helm.sh/hook: post-install
 data:
   ADMIN_JTI: {{ .Values.global.admin.jti | b64enc }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bbk-postgres-init
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+  annotations:
+    helm.sh/hook: pre-install
+data:
+  init.sql: |
+    /*
+    The bit-broker database creation script. Contains all tables, keys, indexes,
+    constrains, enums, users, roles, grants, etc.
+    */
+
+    \connect postgres
+
+    -- clean up any previous assets - for development only
+
+    DROP DATABASE IF EXISTS bit_broker;
+
+    DROP USER IF EXISTS bbk_admin;
+    DROP USER IF EXISTS bbk_coordinator;
+    DROP USER IF EXISTS bbk_contributor;
+    DROP USER IF EXISTS bbk_consumer;
+
+    DROP ROLE IF EXISTS bbk_reader;
+    DROP ROLE IF EXISTS bbk_writer;
+
+    -- create the user and role assets
+
+    CREATE ROLE bbk_reader;
+    CREATE ROLE bbk_writer;
+
+    CREATE USER bbk_admin WITH ENCRYPTED PASSWORD '{{ .Values.global.passwords.admin }}';
+    CREATE USER bbk_coordinator WITH ENCRYPTED PASSWORD '{{ .Values.global.passwords.coordinator }}';
+    CREATE USER bbk_contributor WITH ENCRYPTED PASSWORD '{{ .Values.global.passwords.contributor }}';
+    CREATE USER bbk_consumer WITH ENCRYPTED PASSWORD '{{ .Values.global.passwords.consumer }}';
+
+    GRANT bbk_reader TO bbk_consumer;
+    GRANT bbk_writer TO bbk_admin, bbk_coordinator, bbk_contributor;
+
+    -- create the database
+
+    CREATE DATABASE bit_broker WITH ENCODING = 'UTF8' OWNER = bbk_admin;
+    \connect bit_broker
+
+    -- extensions
+
+    CREATE EXTENSION postgis;

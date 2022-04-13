@@ -23,19 +23,22 @@ spec:
 {{- end }}
     spec:
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1999
         fsGroup: 1999
       initContainers:
         - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-db'
           image: postgres:latest
           command: ['sh', '-c', 'until pg_isready -h {{ .Release.Name }}-bbk-postgresql -p 5432 -U {{ .Chart.Name }};
             do echo waiting for database; sleep 2; done;']
+        - name: '{{ .Release.Name }}-{{ .Chart.Name }}-flyway-migrate'
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-flyway-migrate:{{ .Values.docker.imageTag }}"
+          command: ['flyway', 'migrate', '-url=jdbc:postgresql://{{ .Release.Name }}-bbk-postgresql:5432/bit_broker', '-schemas=public', '-user=bbk_admin', '-password={{ .Values.global.passwords.admin }}', '-connectRetries=3', '-mixed=true']
       containers:
         - name: coordinator
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-coordinator:{{ .Values.docker.imageTag }}"
           imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
           securityContext:
+            runAsNonRoot: true
+            runAsUser: 1999
             allowPrivilegeEscalation: false
           ports:
             - containerPort: 8001

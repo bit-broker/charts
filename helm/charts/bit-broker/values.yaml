@@ -27,6 +27,7 @@ global:
     name: "Admin"
     email: "noreply@bit-broker.io"
     jti: "8facd32b-41b0-44e8-a97a-e8b5dc610d46"
+    password: "bbkadmin"
 
   ## Portal settings
   ##
@@ -193,6 +194,9 @@ bbk-postgresql:
     enabled: true
     runAsUser: 1001
     runAsNonRoot: true
+
+  ## ConfigMap with scripts to be run at first boot
+  initdbScriptsConfigMap: bbk-postgres-init
 
 # End of Bit-Broker Postgres Values
 #######################################################################################

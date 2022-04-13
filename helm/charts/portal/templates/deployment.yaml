@@ -21,7 +21,22 @@ spec:
         runAsNonRoot: true
         runAsUser: 1999
         fsGroup: 1999
+      initContainers:
+        - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-coordinator'
+          image: alpine/curl:latest
+          command: ['sh', '-c', 'until curl http://{{ .Release.Name }}-bbk-coordinator:8001/v1;
+            do echo waiting for the coordinator; sleep 2; done;']
       containers:
+        - name: portal-app
+          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-portal-app:{{ .Values.docker.imageTag }}"
+          imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 8100
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
         - name: portal-service
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-portal-service:{{ .Values.docker.imageTag }}"
           imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
@@ -39,20 +54,16 @@ spec:
             - name: APP_PORTAL
               value: "http://localhost:3000"
             - name: BBK_ROUTE
-              value: "http://{{ .Release.Name }}-bbk-coordinator:8003/v1"
+              value: "http://{{ .Release.Name }}-bbk-coordinator:8001/v1"
+            - name: BBK_JTI
+              value: "{{ .Values.global.admin.jti }}"
+            - name: BOOTSTRAP_USER_NAME
+              value: "{{ .Values.global.admin.name }}"
+            - name: BOOTSTRAP_USER_PASSWORD
+              value: "{{ .Values.global.admin.password }}"
           envFrom:
             - secretRef:
                 name: {{ .Release.Name }}-{{ .Chart.Name }}-secret
-          envFrom:
-            - configMapRef:
-                name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
-        - name: portal-app
-          image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-portal-app:{{ .Values.docker.imageTag }}"
-          imagePullPolicy: {{ .Values.docker.imagePullPolicy }}
-          securityContext:
-            allowPrivilegeEscalation: false
-          ports:
-            - containerPort: 8100
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-{{ .Chart.Name }}-configmap
