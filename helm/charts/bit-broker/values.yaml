@@ -55,13 +55,19 @@ global:
     ##
     # host: "bit-broker.io"
 
-    ## Handle with Let's encrypt
+    ## Specify this for Let's encrypt auto renewal
     ##
     acmeProvider: "admin@bit-broker.io"
 
-    ## Or specify a tls secret
+    ## Specify the tls certificate
     ##
     #tlsSecret: "tls-cert"
+
+    ## Enable cluster issuer for Let's encrypt
+    ## This will enable resources to add Let's encrypt HTTP
+    ## challenge and release the certificate
+    ##
+    certificateIssuer: false
 
   ## Redis global options
   ##

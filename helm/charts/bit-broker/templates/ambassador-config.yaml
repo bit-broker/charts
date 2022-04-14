@@ -12,10 +12,8 @@ spec:
   hostname: {{ .Values.global.gateway.host }}
   acmeProvider:
     email: {{ .Values.global.gateway.acmeProvider }}
-{{- if  .Values.global.gateway.tlsSecret }}
   tlsSecret:
     name: {{ .Values.global.gateway.tlsSecret }}
-{{- end }}
 {{- end }}
 {{- end }}
 ---
@@ -123,3 +121,67 @@ spec:
   prefix: /service
   service: {{ .Release.Name }}-bbk-portal:8100
   bypass_auth: true
+---
+{{- if  .Values.global.gateway.certificateIssuer }}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ .Release.Name }}-bbk-cluster-issuer
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+spec:
+  acme:
+    email: {{ .Values.global.gateway.acmeProvider }}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: bbk-cluster-issuer
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+      selector: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-bbk-acme-challenge-service
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+spec:
+  ports:
+  - port: 80
+    targetPort: 8089
+  selector:
+    acme.cert-manager.io/http01-solver: "true"
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: bbk-acme-challenge-service
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+spec:
+  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  prefix: /.well-known/acme-challenge/
+  rewrite: ""
+  service: {{ .Release.Name }}-bbk-acme-challenge-service
+  bypass_auth: true
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Release.Name }}-bbk-certificate
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+spec:
+  secretName: {{ .Values.global.gateway.tlsSecret }}
+  issuerRef:
+    name: {{ .Release.Name }}-bbk-cluster-issuer
+    kind: ClusterIssuer
+  dnsNames:
+  - {{ .Values.global.gateway.host }}
+{{- end }}
