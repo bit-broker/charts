@@ -60,6 +60,7 @@ metadata:
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   prefix: /consumer/
+  rewrite: ""
   service: {{ .Release.Name }}-bbk-consumer:8003
   labels:
     ambassador:
@@ -78,6 +79,7 @@ metadata:
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   prefix: /contributor/
+  rewrite: ""
   service: {{ .Release.Name }}-bbk-contributor:8002
   labels:
     ambassador:
@@ -96,6 +98,7 @@ metadata:
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
   prefix: /coordinator/
+  rewrite: ""
   service: {{ .Release.Name }}-bbk-coordinator:8001
 ---
 apiVersion: getambassador.io/v2
