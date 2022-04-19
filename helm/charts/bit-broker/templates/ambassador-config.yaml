@@ -14,6 +14,8 @@ spec:
     email: {{ .Values.global.gateway.acmeProvider }}
   tlsSecret:
     name: {{ .Values.global.gateway.tlsSecret }}
+  tls:
+    min_tls_version: v1.2
 {{- end }}
 {{- end }}
 ---
