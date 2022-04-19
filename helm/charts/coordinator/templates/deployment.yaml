@@ -60,7 +60,7 @@ spec:
             - name: COORDINATOR_PORT
               value: "8001"
             - name: COORDINATOR_BASE
-              value: "v1"
+              value: "coordinator/v1"
             - name: COORDINATOR_USER
               value: "bbk_coordinator:{{ .Values.global.passwords.coordinator }}"
             - name: POLICY_CACHE

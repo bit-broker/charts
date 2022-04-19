@@ -51,7 +51,7 @@ spec:
             - name: CONSUMER_PORT
               value: "8003"
             - name: CONSUMER_BASE
-              value: "v1"
+              value: "/consumer/v1"
             - name: CONSUMER_USER
               value: "bbk_consumer:{{ .Values.global.passwords.consumer }}"
             - name: POLICY_CACHE

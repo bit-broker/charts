@@ -51,7 +51,7 @@ spec:
             - name: CONTRIBUTOR_PORT
               value: "8002"
             - name: CONTRIBUTOR_BASE
-              value: "v1"
+              value: "contributor/v1"
             - name: CONTRIBUTOR_USER
               value: "bbk_contributor:{{ .Values.global.passwords.contributor }}"
             - name: POLICY_CACHE
