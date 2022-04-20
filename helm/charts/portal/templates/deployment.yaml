@@ -54,7 +54,7 @@ spec:
             - name: APP_PORTAL
               value: "http://localhost:3000"
             - name: BBK_ROUTE
-              value: "http://{{ .Release.Name }}-bbk-coordinator:8001/v1"
+              value: "http://{{ .Release.Name }}-bbk-coordinator:8001/coordinator/v1"
             - name: BBK_JTI
               value: "{{ .Values.global.admin.jti }}"
             - name: BOOTSTRAP_USER_NAME

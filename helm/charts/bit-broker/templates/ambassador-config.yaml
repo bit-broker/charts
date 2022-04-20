@@ -123,7 +123,7 @@ metadata:
     {{ include "bitbroker.labels" . }}
 spec:
   ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
-  prefix: /service
+  prefix: /service/
   service: {{ .Release.Name }}-bbk-portal:8100
   bypass_auth: true
 ---

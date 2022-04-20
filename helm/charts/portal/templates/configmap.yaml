@@ -14,4 +14,4 @@ data:
   MAIL_USER_PWD: "{{ .Values.mail.password | default .Values.global.portal.mail.password }}"
   MAIL_SENDER_NAME: "{{ .Values.mail.sender.name | default .Values.global.portal.mail.sender.name }}"
   MAIL_SENDER_EMAIL: "{{ .Values.mail.sender.email | default .Values.global.admin.email }}"
-  APP_SERVICE: "{{ .Values.host | default (or .Values.global.portal.host (printf "%s://%s" $gatewayProtocol .Values.global.gateway.host)) }}/service"
+  APP_SERVICE: "{{ .Values.host | default (or .Values.global.portal.host (printf "%s://%s" $gatewayProtocol .Values.global.gateway.host)) }}/service/v1"
