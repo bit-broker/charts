@@ -34,6 +34,7 @@ spec:
   path_prefix: "/decisions/bbk"
   allowed_request_headers:
   - 'x-bbk-auth-token'
+  - 'x-bbk-connectors'
   allowed_authorization_headers:
   - 'x-bbk-audience'
   - 'x-bbk-rate-uid'
