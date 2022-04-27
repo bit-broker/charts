@@ -1,4 +1,4 @@
-{{- if index .Values "bbk-ambassador" "enabled" }}
+{{- if index .Values "bbk-emissary-ingress" "enabled" }}
 {{- if .Values.global.gateway.host }}
 ---
 apiVersion: getambassador.io/v2
@@ -8,7 +8,8 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   hostname: {{ .Values.global.gateway.host }}
   acmeProvider:
     email: {{ .Values.global.gateway.acmeProvider }}
@@ -27,7 +28,8 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   auth_service: {{ .Release.Name }}-bbk-oathkeeper-api:4456
   timeout_ms: 5000
   failure_mode_allow: false
@@ -47,9 +49,44 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   service: {{ .Release.Name }}-bbk-rate-service:7000
   protocol_version: v2
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: bbk-http-listener
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+spec:
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
+  port: 8080
+  protocol: HTTPS
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: SELF
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: bbk-https-listener
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+    {{ include "bitbroker.labels" . }}
+spec:
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
+  port: 8443
+  protocol: HTTPS
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: SELF
 ---
 apiVersion: getambassador.io/v2
 kind:  Mapping
@@ -59,7 +96,8 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   prefix: /consumer/
   rewrite: ""
   service: {{ .Release.Name }}-bbk-consumer:8003
@@ -78,7 +116,8 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   prefix: /contributor/
   rewrite: ""
   service: {{ .Release.Name }}-bbk-contributor:8002
@@ -97,7 +136,8 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   prefix: /coordinator/
   rewrite: ""
   service: {{ .Release.Name }}-bbk-coordinator:8001
@@ -110,7 +150,8 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   prefix: /
   service: {{ .Release.Name }}-bbk-portal:3000
   bypass_auth: true
@@ -123,7 +164,8 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   prefix: /service/
   service: {{ .Release.Name }}-bbk-portal:8100
   bypass_auth: true
@@ -170,7 +212,8 @@ metadata:
   labels:
     {{ include "bitbroker.labels" . }}
 spec:
-  ambassador_id: {{ index .Values "bbk-ambassador" "env" "AMBASSADOR_ID" }}
+  ambassador_id:
+    - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
   prefix: /.well-known/acme-challenge/
   rewrite: ""
   service: {{ .Release.Name }}-bbk-acme-challenge-service

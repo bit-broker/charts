@@ -10,13 +10,13 @@ maintainers:
 engine: gotpl
 type: application
 dependencies:
-  - name: ambassador
-    version: "6.7.13"
-    repository: https://www.getambassador.io
-    condition: bbk-ambassador.enabled
-    alias: bbk-ambassador
+  - name: emissary-ingress
+    version: "7.3.2"
+    repository: https://app.getambassador.io
+    condition: bbk-emissary-ingress.enabled
+    alias: bbk-emissary-ingress
   - name: oathkeeper
-    version: "0.12.0"
+    version: "0.19.6"
     repository: https://k8s.ory.sh/helm/charts
     condition: bbk-oathkeeper.enabled
     alias: bbk-oathkeeper

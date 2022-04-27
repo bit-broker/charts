@@ -17,9 +17,16 @@ Please go to [bit-broker.io/helm](https://bit-broker.io/helm/) for a list of hel
 ```sh
 JWKS=$(docker run bbkr/auth-service:latest npm run --silent create-jwks)
 ```
+
 > **WARNING**: Please store your key in a safe place.
 
-2. Deploy the helm chart
+2. Install the Emissary Ingress CRDs
+
+```sh
+kubectl apply -f https://app.getambassador.io/yaml/emissary/2.2.2/emissary-crds.yaml
+```
+
+3. Deploy the helm chart
 
 ```sh
 helm install bit-broker . -f values.yaml --set bbk-auth-service.JWKS=$JWKS -n bbk
@@ -43,6 +50,7 @@ helm install elasticsearch elastic/elasticsearch -n logging
 helm install kibana elastic/kibana -n logging
 helm install fluentd-elasticsearch kokuwa/fluentd-elasticsearch --set 'elasticsearch.hosts=elasticsearch-master:9200' -n logging
 ```
+
 2. Check Kibana Dashboard
 
 ```sh
@@ -59,7 +67,7 @@ kubectl port-forward svc/kibana-kibana 5601:5601 -n logging
 1. Update values
 
 ```sh
-helm upgrade bit-broker . -f values.yaml --set global.metrics.enabled=true --set bbk-ambassador.metrics.serviceMonitor.enabled=true -n bbk
+helm upgrade bit-broker . -f values.yaml --set global.metrics.enabled=true --set bbk-emissary-ingress.metrics.serviceMonitor.enabled=true -n bbk
 ```
 
 2. Deploy Prometheus Stack
@@ -75,6 +83,7 @@ kubectl create namespace metrics
 # Install chart
 helm install prometheus-stack prometheus-community/kube-prometheus-stack --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false -n metrics
 ```
+
 3. Check Grafana Dashboard
 
 ```sh

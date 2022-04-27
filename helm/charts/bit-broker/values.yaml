@@ -286,30 +286,12 @@ bbk-rate-service:
 #######################################################################################
 ## Ambassador Values
 
-bbk-ambassador:
+bbk-emissary-ingress:
   ## Dependency enabler
   enabled: true
   ## Default values for ambassador.
   ## This is a YAML-formatted file.
   ## Declare variables to be passed into your templates.
-
-  ## Manually set metadata for the Release.
-  ##
-  ## Defaults to .Chart.Name
-  nameOverride: ""
-  ## Defaults to .Release.Name-.Chart.Name unless .Release.Name contains "ambassador"
-  fullnameOverride: ""
-  ## Defaults to .Release.Namespace
-  namespaceOverride: ""
-
-  replicaCount: 3
-  daemonSet: false
-
-  ## This will enable the test-ready Pod (https://github.com/datawire/ambassador-chart/blob/master/templates/tests/test-ready.yaml).
-  ## It will spawn a busybox container to call Ambassador's check_ready endpoint to validate it is working correctly.
-  test:
-    enabled: true
-    image: busybox
 
   ## Enable autoscaling using HorizontalPodAutoscaler
   ## daemonSet: true, autoscaling will be disabled
@@ -333,9 +315,6 @@ bbk-ambassador:
 
   podDisruptionBudget: { }
 
-  # namespace:
-  # name: default
-
   ## Additional container environment variable
   ## Uncomment or add additional environment variables for the container here.
   env:
@@ -351,72 +330,16 @@ bbk-ambassador:
   ## labels Ambassador with an ID to allow for configuring multiple Ambassadors in a cluster
     AMBASSADOR_ID: ambassador-bbk
 
-  # Additional container environment variable in raw YAML format
-  # Uncomment or add additional environment variables for the container here.
-  envRaw: { }
-  # - name: REDIS_PASSWORD
-  #   value: password
-  #   valueFrom:
-  #     secretKeyRef:
-  #       name: redis-password
-  #       key: password
-  # - name: POD_IP
-  #   valueFrom:
-  #     fieldRef:
-  #       fieldPath: status.podIP
-
-  imagePullSecrets: [ ]
-
-  security:
-    # Security Context for all containers in the pod.
-    # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podsecuritycontext-v1-core
-    podSecurityContext:
-      runAsUser: 8888
-    # Security Context for the Ambassador container specifically
-    # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#securitycontext-v1-core
-    containerSecurityContext:
-      allowPrivilegeEscalation: false
-    # A basic PodSecurityPolicy to ensure Ambassador is running with appropriate security permissions
-    # https://kubernetes.io/docs/concepts/policy/pod-security-policy/
-    #
-    # A set of reasonable defaults is outlined below. This is not created by default as it should only
-    # be created by a one Release. If you want to use the PodSecurityPolicy in the chart, create it in
-    # the "master" Release and then leave it unset in all others. Set the `rbac.podSecurityPolicies`
-    # in all non-"master" Releases.
-    podSecurityPolicy: { }
-      # # Add AppArmor and Seccomp annotations
-      # # https://kubernetes.io/docs/concepts/policy/pod-security-policy/#apparmor
-      # annotations:
-      # spec:
-      #   seLinux:
-      #     rule: RunAsAny
-      #   supplementalGroups:
-      #     rule: 'MustRunAs'
-      #     ranges:
-      #       # Forbid adding the root group.
-      #       - min: 1
-      #         max: 65535
-      #   fsGroup:
-      #     rule: 'MustRunAs'
-      #     ranges:
-      #       # Forbid adding the root group.
-      #       - min: 1
-      #         max: 65535
-      #   privileged: false
-      #   allowPrivilegeEscalation: false
-    #   runAsUser:
-    #     rule: MustRunAsNonRoot
-
   ## Disable AES for Bit-Broker
   enableAES: false
 
   image:
-    repository: docker.io/datawire/ambassador
-    tag: 1.13.6
+    # Emissary Ingress docker repo
+    repository: docker.io/emissaryingress/emissary
+    # Emissary Ingress docker tag
+    tag: 2.2.2
+    # Pod container image pull policy
     pullPolicy: IfNotPresent
-
-  dnsPolicy: "ClusterFirst"
-  hostNetwork: false
 
   service:
     type: LoadBalancer
@@ -442,91 +365,9 @@ bbk-ambassador:
         # protocol: TCP
         # nodePort: 30222
 
-    externalTrafficPolicy:
-
-    sessionAffinity:
-
-    sessionAffinityConfig:
-
-    externalIPs: [ ]
-
-    annotations: { }
-
-    ## Manually set the name of the generated Service
-    nameOverride:
-
-  adminService:
-    create: true
-    type: ClusterIP
-    port: 8877
-    snapshotPort: 8005
-    # NodePort used if type is NodePort
-    # nodePort: 38877
-    annotations:
-      { }
-
-  rbac:
-    # Specifies whether RBAC resources should be created
-    create: true
-    # List of Pod Security Policies to use on the container.
-    # If security.podSecurityPolicy is set, it will be appended to the list
-    podSecurityPolicies: [ ]
-    # Name of the RBAC resources defaults to the name of the release.
-    # Set nameOverride when installing Ambassador with cluster-wide scope in
-    # different namespaces with the same release name to avoid conflicts.
-    nameOverride:
-
-  scope:
-    # tells Ambassador to only use resources in the namespace or namespace set by namespace.name
-    singleNamespace: false
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name:
-
-  deploymentStrategy:
-    type: RollingUpdate
-
-  restartPolicy:
-
-  terminationGracePeriodSeconds:
-
-  initContainers: [ ]
-
-  sidecarContainers: [ ]
-
-  livenessProbe:
-    initialDelaySeconds: 30
-    periodSeconds: 3
-    failureThreshold: 3
-
-  readinessProbe:
-    initialDelaySeconds: 30
-    periodSeconds: 3
-    failureThreshold: 3
-
-
-  volumes: [ ]
-
-  volumeMounts: [ ]
-
-  podLabels:
-    { }
-
   podAnnotations:
-    sidecar.istio.io/inject: "false"
   # prometheus.io/scrape: "true"
   # prometheus.io/port: "9102"
-
-  deploymentLabels:
-    { }
-
-  deploymentAnnotations:
-    { }
-  # configmap.reloader.stakater.com/auto: "true"
 
   resources:
     ## Recommended resource requests and limits for Ambassador
@@ -536,23 +377,6 @@ bbk-ambassador:
     requests:
       cpu: 200m
       memory: 300Mi
-
-  priorityClassName: ""
-
-  nodeSelector: { }
-
-  tolerations: [ ]
-
-  affinity: { }
-
-  topologySpreadConstraints: [ ]
-
-  ambassadorConfig: ""
-
-  crds:
-    enabled: true
-    create: true
-    keep: true
 
   ## Prometheus Operator ServiceMonitor configuration
   ## See documentation: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#servicemonitor
@@ -578,65 +402,9 @@ bbk-oathkeeper:
     ## ORY Oathkeeper image
     repository: oryd/oathkeeper
     ## ORY Oathkeeper version
-    tag: v0.38.5
+    tag: v0.38.18
     ## Image pull policy
     pullPolicy: IfNotPresent
-
-  ## Options for the sidecar
-  sidecar:
-    image:
-      repository: oryd/oathkeeper-maester
-      tag: v0.1.0
-    envs: { }
-
-  ## Image pull secrets
-  imagePullSecrets: [ ]
-  ## Chart name override
-  nameOverride: ""
-  # Full chart name override
-  fullnameOverride: ""
-
-  ## If enabled, a demo deployment with exemplary access rules
-  ## and JSON Web Key Secrets will be generated.
-  demo: false
-
-  ## Configures the Kubernetes service
-  service:
-    ## Configures the Kubernetes service for the proxy port.
-    proxy:
-      ## En-/disable the service
-      enabled: true
-      ## The service type
-      type: ClusterIP
-      ## The service port
-      port: 4455
-      ## If you do want to specify annotations, uncomment the following
-      ## lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
-      annotations: { }
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      labels: { }
-      ##      If you do want to specify additional labels, uncomment the following
-      ##      lines, adjust them as necessary, and remove the curly braces after 'labels:'.
-      ##      e.g.  app: oathkeeper
-
-    ## Configures the Kubernetes service for the api port.
-    api:
-      ## En-/disable the service
-      enabled: true
-      ## The service type
-      type: ClusterIP
-      ## The service port
-      port: 4456
-      ## If you do want to specify annotations, uncomment the following
-      ## lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
-      annotations: { }
-      ## kubernetes.io/ingress.class: nginx
-      ## kubernetes.io/tls-acme: "true"
-      labels: { }
-      ##      If you do want to specify additional labels, uncomment the following
-      ##      lines, adjust them as necessary, and remove the curly braces after 'labels:'.
-      ##      e.g.  app: oathkeeper
 
   oathkeeper:
     # Disable managed access rules

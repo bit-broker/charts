@@ -1,10 +1,10 @@
 dependencies:
-- name: ambassador
-  repository: https://www.getambassador.io
-  version: 6.7.13
+- name: emissary-ingress
+  repository: https://app.getambassador.io
+  version: 7.3.2
 - name: oathkeeper
   repository: https://k8s.ory.sh/helm/charts
-  version: 0.12.0
+  version: 0.23.1
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 10.4.6
@@ -26,5 +26,5 @@ dependencies:
 - name: portal
   repository: file://../portal
   version: "1.0"
-digest: sha256:48a171df960e1b3dc707520e2fb7e9779cb8f7d289e7668aeae14b7ab8e2fa21
-generated: "2022-03-25T16:54:57.343568+01:00"
+digest: sha256:f48fa968d311305092f349ebce489079231f9f0e3510a755afe482d74856e57d
+generated: "2022-04-27T14:47:31.435963+02:00"
