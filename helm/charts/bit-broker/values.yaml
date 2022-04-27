@@ -406,6 +406,9 @@ bbk-oathkeeper:
     ## Image pull policy
     pullPolicy: IfNotPresent
 
+  # -- Chart name override
+  nameOverride: "bbk-oathkeeper"
+
   oathkeeper:
     # Disable managed access rules
     managedAccessRules: false
@@ -432,12 +435,13 @@ bbk-oathkeeper:
           enabled: true
           config:
             headers:
-              dummy: dummy # Keep this here to avoid validation error
+              dummy: dummy
       authorizers:
         remote:
           enabled: true
           config:
-            remote: http://dummy # Keep this here to avoid validation error
+            remote: http://dummy
+            forward_response_headers_to_upstream: []
 
   ##  If set, uses the given JSON Web Key Set as the signing key for the ID Token Mutator.
   ##  mutatorIdTokenJWKs: {}
@@ -518,10 +522,6 @@ bbk-oathkeeper:
   ## Configures controller setup
   maester:
     enabled: false
-    oathkeeperFullnameOverride: "bbk-oathkeeper"
-  oathkeeper-maester:
-    oathkeeperFullnameOverride: "bbk-oathkeeper"
-
 
 ## End of Ory Oathkeeper Values
 #######################################################################################

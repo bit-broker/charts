@@ -29,7 +29,7 @@ The Rate Limit gRPC protocol runs at:
 
 Here is how to get the Coordinator token:
 
-    $ kubectl exec -it $(kubectl get pods --no-headers -o custom-columns=":metadata.name" --selector=app={{ .Release.Name}}-bbk-auth-service -n {{ .Release.Namespace }} | head -1) -n {{ .Release.Namespace }} npm run sign-token coordinator $(kubectl get secret --namespace {{ .Release.Namespace }} {{ .Release.Name }}-bbk-admin-jti -o jsonpath="{.data.ADMIN_JTI}" | base64 --decode)
+    $ kubectl exec $(kubectl get pods --no-headers -o custom-columns=":metadata.name" --selector=app={{ .Release.Name}}-bbk-auth-service -n {{ .Release.Namespace }} | head -1) -n {{ .Release.Namespace }} -c auth-service -- npm run sign-token coordinator $(kubectl get secret --namespace {{ .Release.Namespace }} {{ .Release.Name }}-bbk-admin-jti -o jsonpath="{.data.ADMIN_JTI}" | base64 --decode)
 
 Following routes are mapped:
 

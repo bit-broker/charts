@@ -21,6 +21,8 @@ spec:
         runAsNonRoot: true
         runAsUser: 1999
         fsGroup: 1999
+      imagePullSecrets:
+      - name: {{ .Values.docker.imagePullSecret }}
       initContainers:
         - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-coordinator'
           image: alpine/curl:latest

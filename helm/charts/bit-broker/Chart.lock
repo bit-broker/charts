@@ -27,4 +27,4 @@ dependencies:
   repository: file://../portal
   version: "1.0"
 digest: sha256:f48fa968d311305092f349ebce489079231f9f0e3510a755afe482d74856e57d
-generated: "2022-04-27T14:47:31.435963+02:00"
+generated: "2022-04-27T16:24:07.610944+02:00"

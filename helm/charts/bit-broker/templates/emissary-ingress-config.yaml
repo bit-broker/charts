@@ -1,5 +1,4 @@
 {{- if index .Values "bbk-emissary-ingress" "enabled" }}
-{{- if .Values.global.gateway.host }}
 ---
 apiVersion: getambassador.io/v2
 kind: Host
@@ -10,6 +9,7 @@ metadata:
 spec:
   ambassador_id:
     - {{ index .Values "bbk-emissary-ingress" "env" "AMBASSADOR_ID" }}
+{{- if .Values.global.gateway.host }}
   hostname: {{ .Values.global.gateway.host }}
   acmeProvider:
     email: {{ .Values.global.gateway.acmeProvider }}
@@ -17,7 +17,11 @@ spec:
     name: {{ .Values.global.gateway.tlsSecret }}
   tls:
     min_tls_version: v1.2
-{{- end }}
+{{- else }}
+  hostname: '*'
+  requestPolicy:
+    insecure:
+      action: Route
 {{- end }}
 ---
 apiVersion: getambassador.io/v2
@@ -233,4 +237,5 @@ spec:
     kind: ClusterIssuer
   dnsNames:
   - {{ .Values.global.gateway.host }}
+{{- end }}
 {{- end }}

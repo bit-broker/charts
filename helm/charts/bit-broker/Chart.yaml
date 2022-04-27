@@ -16,7 +16,7 @@ dependencies:
     condition: bbk-emissary-ingress.enabled
     alias: bbk-emissary-ingress
   - name: oathkeeper
-    version: "0.19.6"
+    version: "0.23.1"
     repository: https://k8s.ory.sh/helm/charts
     condition: bbk-oathkeeper.enabled
     alias: bbk-oathkeeper

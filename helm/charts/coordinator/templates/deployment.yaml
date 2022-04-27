@@ -24,6 +24,8 @@ spec:
     spec:
       securityContext:
         fsGroup: 1999
+      imagePullSecrets:
+      - name: {{ .Values.docker.imagePullSecret }}
       initContainers:
         - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-db'
           image: postgres:latest

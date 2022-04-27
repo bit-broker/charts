@@ -26,11 +26,13 @@ spec:
         runAsNonRoot: true
         runAsUser: 1999
         fsGroup: 1999
+      imagePullSecrets:
+      - name: {{ .Values.docker.imagePullSecret }}
       initContainers:
-        - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-db'
-          image: postgres:latest
-          command: ['sh', '-c', 'until pg_isready -h {{ .Release.Name }}-bbk-postgresql -p 5432 -U {{ .Chart.Name }};
-            do echo waiting for database; sleep 2; done;']
+        - name: '{{ .Release.Name }}-{{ .Chart.Name }}-wait-for-coordinator'
+          image: alpine/curl:latest
+          command: ['sh', '-c', 'until curl http://{{ .Release.Name }}-bbk-coordinator:8001/v1;
+            do echo waiting for the coordinator; sleep 2; done;']
       containers:
         - name: contributor
           image: "{{ .Values.docker.registry | default .Values.global.docker.registry }}/bbkr/bbk-contributor:{{ .Values.docker.imageTag }}"
