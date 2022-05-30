@@ -430,19 +430,24 @@ bbk-oathkeeper:
           config:
             jwks_urls:
               - http://dummy # Keep this here to avoid validation error
+        noop:
+          enabled: true
       mutators:
         header:
           enabled: true
           config:
             headers:
               dummy: dummy
+        noop:
+          enabled: true
       authorizers:
         remote:
           enabled: true
           config:
             remote: http://dummy
             forward_response_headers_to_upstream: []
-
+        allow:
+          enabled: true
   ##  If set, uses the given JSON Web Key Set as the signing key for the ID Token Mutator.
   ##  mutatorIdTokenJWKs: {}
   ##  If set, uses the given access rules.

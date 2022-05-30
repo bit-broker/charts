@@ -53,89 +53,149 @@ data:
       ]
     },
     {
-    "id": "bbk-contributor-auth",
-    "match": {
-      "url": "<http|https>://<.*>/bbk/contributor/<.*>",
-      "methods": ["GET", "HEAD", "POST"]
-    },
-    "authenticators": [
-      {
-        "handler": "jwt",
-        "config": {
-          "scope_strategy": "exact",
-          "required_scope": ["contributor"],
-          "trusted_issuers": ["{{ .Values.global.issuer }}"],
-          "allowed_algorithms": ["RS256"],
-          "jwks_urls": [
-            "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1/.well-known/jwks.json"
-          ],
-          "token_from": {
-            "header": "x-bbk-auth-token"
-          }
+      "id": "bbk-consumer-no-auth",
+      "match": {
+        "url": "<http|https>://<.*>/bbk/consumer/<.*>",
+        "methods": ["OPTIONS"]
+      },
+      "authenticators": [
+        {
+          "handler": "noop"
         }
-      }
-    ],
-    "authorizer": {
-      "handler": "remote",
-      "config": {
-        "remote": "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1/token/check",
-        "headers": {
-          "x-auth-jti": '{{ "{{ print .Extra.jti }}" }}'
+      ],
+      "authorizer": {
+        "handler": "allow"
+      },
+      "mutators": [
+        {
+          "handler": "noop"
         }
-      }
-    },
-    "mutators": [
-      {
-        "handler": "header",
-        "config": {
-          "headers": {
-            "x-bbk-audience": '{{ "{{ print .Extra.aud }}" }}'
-          }
-        }
-      }
-    ]
+      ]
     },
     {
-    "id": "bbk-coordinator-auth",
-    "match": {
-      "url": "<http|https>://<.*>/bbk/coordinator/<.*>",
-      "methods": ["GET", "HEAD", "POST", "PUT", "DELETE"]
-    },
-    "authenticators": [
-      {
-        "handler": "jwt",
-        "config": {
-          "scope_strategy": "exact",
-          "required_scope": ["coordinator"],
-          "trusted_issuers": ["{{ .Values.global.issuer }}"],
-          "allowed_algorithms": ["RS256"],
-          "jwks_urls": [
-            "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1/.well-known/jwks.json"
-          ],
-          "token_from": {
-            "header": "x-bbk-auth-token"
+      "id": "bbk-contributor-auth",
+      "match": {
+        "url": "<http|https>://<.*>/bbk/contributor/<.*>",
+        "methods": ["GET", "HEAD", "POST"]
+      },
+      "authenticators": [
+        {
+          "handler": "jwt",
+          "config": {
+            "scope_strategy": "exact",
+            "required_scope": ["contributor"],
+            "trusted_issuers": ["{{ .Values.global.issuer }}"],
+            "allowed_algorithms": ["RS256"],
+            "jwks_urls": [
+              "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1/.well-known/jwks.json"
+            ],
+            "token_from": {
+              "header": "x-bbk-auth-token"
+            }
           }
         }
-      }
-    ],
-    "authorizer": {
-      "handler": "remote",
-      "config": {
-        "remote": "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1/token/check",
-        "headers": {
-          "x-auth-jti": '{{ "{{ print .Extra.jti }}" }}'
-        }
-      }
-    },
-    "mutators": [
-      {
-        "handler": "header",
+      ],
+      "authorizer": {
+        "handler": "remote",
         "config": {
+          "remote": "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1/token/check",
           "headers": {
-            "x-bbk-audience": '{{ "{{ print .Extra.aud }}" }}'
+            "x-auth-jti": '{{ "{{ print .Extra.jti }}" }}'
           }
         }
-      }
-    ]
+      },
+      "mutators": [
+        {
+          "handler": "header",
+          "config": {
+            "headers": {
+              "x-bbk-audience": '{{ "{{ print .Extra.aud }}" }}'
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "bbk-contributor-no-auth",
+      "match": {
+        "url": "<http|https>://<.*>/bbk/contributor/<.*>",
+        "methods": ["OPTIONS"]
+      },
+      "authenticators": [
+        {
+          "handler": "noop"
+        }
+      ],
+      "authorizer": {
+        "handler": "allow"
+      },
+      "mutators": [
+        {
+          "handler": "noop"
+        }
+      ]
+    },
+    {
+      "id": "bbk-coordinator-auth",
+      "match": {
+        "url": "<http|https>://<.*>/bbk/coordinator/<.*>",
+        "methods": ["GET", "HEAD", "POST", "PUT", "DELETE"]
+      },
+      "authenticators": [
+        {
+          "handler": "jwt",
+          "config": {
+            "scope_strategy": "exact",
+            "required_scope": ["coordinator"],
+            "trusted_issuers": ["{{ .Values.global.issuer }}"],
+            "allowed_algorithms": ["RS256"],
+            "jwks_urls": [
+              "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1/.well-known/jwks.json"
+            ],
+            "token_from": {
+              "header": "x-bbk-auth-token"
+            }
+          }
+        }
+      ],
+      "authorizer": {
+        "handler": "remote",
+        "config": {
+          "remote": "http://{{ .Release.Name }}-bbk-auth-service:8080/api/v1/token/check",
+          "headers": {
+            "x-auth-jti": '{{ "{{ print .Extra.jti }}" }}'
+          }
+        }
+      },
+      "mutators": [
+        {
+          "handler": "header",
+          "config": {
+            "headers": {
+              "x-bbk-audience": '{{ "{{ print .Extra.aud }}" }}'
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "bbk-coordinator-no-auth",
+      "match": {
+        "url": "<http|https>://<.*>/bbk/coordinator/<.*>",
+        "methods": ["OPTIONS"]
+      },
+      "authenticators": [
+        {
+          "handler": "noop"
+        }
+      ],
+      "authorizer": {
+        "handler": "allow"
+      },
+      "mutators": [
+        {
+          "handler": "noop"
+        }
+      ]
     }]
 {{- end }}
