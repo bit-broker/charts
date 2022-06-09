@@ -7,7 +7,7 @@ dependencies:
   version: 0.23.1
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 10.4.6
+  version: 10.16.2
 - name: auth-service
   repository: file://../auth-service
   version: "1.0"
@@ -26,5 +26,5 @@ dependencies:
 - name: portal
   repository: file://../portal
   version: "1.0"
-digest: sha256:f48fa968d311305092f349ebce489079231f9f0e3510a755afe482d74856e57d
-generated: "2022-04-27T16:24:07.610944+02:00"
+digest: sha256:55aa87c72328072bfcc33ef9479f355d2be49a97d37e50dd9bac8cf597d6b890
+generated: "2022-06-09T17:54:46.804857+02:00"
