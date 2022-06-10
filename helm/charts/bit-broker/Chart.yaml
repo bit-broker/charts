@@ -1,12 +1,16 @@
 apiVersion: v2
 name: bit-broker
-appVersion: v0.0.1
-description: Charts for bitbroker deployment. bitbroker is a data brokering platform
-version: v0.0.1
+appVersion: v1.0.0
+description: Charts for Bit-Broker deployment.
+version: v1.0.0
 home: https://www.bit-broker.io/
 icon: https://www.bit-broker.io/images/logo.png
 sources:
 maintainers:
+  - name: Jean Diaconu
+    email: jdiaconu@cisco.com
+  - name: James Walker
+    email: jawalke2@cisco.com
 engine: gotpl
 type: application
 dependencies:

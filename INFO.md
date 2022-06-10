@@ -8,8 +8,6 @@
 
 This repository contains helm charts for Kubernetes.
 
-Please go to [bit-broker.io/helm](https://bit-broker.io/helm/) for a list of helm charts and their configuration options.
-
 ## Deployment
 
 1. Generate your JSON Web Key Set (JWKS)
@@ -29,7 +27,9 @@ kubectl apply -f https://app.getambassador.io/yaml/emissary/2.2.2/emissary-crds.
 3. Deploy the helm chart
 
 ```sh
-helm install bit-broker . -f values.yaml --set bbk-auth-service.JWKS=$JWKS -n bbk
+helm repo add bit-broker https://bit-broker.github.io/charts
+helm show values bit-broker/bit-broker > values.yaml
+helm install --values values.yaml --create-namespace bit-broker bit-broker/bit-broker --set bbk-auth-service.JWKS=$JWKS -n bit-broker
 ```
 
 ## Logging
@@ -67,7 +67,7 @@ kubectl port-forward svc/kibana-kibana 5601:5601 -n logging
 1. Update values
 
 ```sh
-helm upgrade bit-broker . -f values.yaml --set global.metrics.enabled=true --set bbk-emissary-ingress.metrics.serviceMonitor.enabled=true -n bbk
+helm upgrade bit-broker . -f values.yaml --set global.metrics.enabled=true --set bbk-emissary-ingress.metrics.serviceMonitor.enabled=true -n bit-broker
 ```
 
 2. Deploy Prometheus Stack

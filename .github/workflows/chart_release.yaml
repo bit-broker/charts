@@ -36,8 +36,14 @@ jobs:
       - name: Add Bitnami Repository
         run: helm repo add bitnami https://charts.bitnami.com/bitnami
 
+      - name: Add Datawire Repository
+        run: helm repo add datawire https://app.getambassador.io
+
+      - name: Add Ory Repository
+        run: helm repo add ory https://k8s.ory.sh/helm/charts
+
       - name: Run chart-testing (lint)
-        run: ct lint --chart-dirs ./helm/charts
+        run: ct lint --chart-dirs helm/charts --target-branch main --validate-maintainers=false
 
       - name: Configure Git
         run: |
@@ -46,7 +52,7 @@ jobs:
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.1
         with:
-          charts_dir: ./helm/charts
+          charts_dir: helm/charts
           config: .cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
