@@ -61,7 +61,7 @@ global:
 
     ## Specify the tls certificate
     ##
-    #tlsSecret: "tls-cert"
+    # tlsSecret: "tls-cert"
 
     ## Enable cluster issuer for Let's encrypt
     ## This will enable resources to add Let's encrypt HTTP
@@ -127,9 +127,9 @@ bbk-coordinator:
     ## Change values below to enable your own instance
     ownInstance:
       enabled: false
-      #addr: "redis:6379"
-      #password: ""
-      #db: "0"
+      # addr: "redis:6379"
+      # password: ""
+      # db: "0"
 
 ## End of Bit-Broker Coordinator Values
 #######################################################################################
@@ -241,9 +241,9 @@ bbk-auth-service:
     ## Change values below to enable your own instance
     ownInstance:
       enabled: false
-      #addr: "redis:6379"
-      #password: ""
-      #db: "0"
+      # addr: "redis:6379"
+      # password: ""
+      # db: "0"
 
 ## End of Auth Service Values
 #######################################################################################
@@ -276,9 +276,9 @@ bbk-rate-service:
     ## Change values below to enable your own instance
     ownInstance:
       enabled: false
-      #addr: "redis:6379"
-      #password: ""
-      #db: "0"
+      # addr: "redis:6379"
+      # password: ""
+      # db: "0"
 
 ## End of Rate Service Values
 #######################################################################################
@@ -313,7 +313,7 @@ bbk-emissary-ingress:
             type: Utilization
             averageUtilization: 60
 
-  podDisruptionBudget: { }
+  podDisruptionBudget: {}
 
   ## Additional container environment variable
   ## Uncomment or add additional environment variables for the container here.
@@ -429,7 +429,7 @@ bbk-oathkeeper:
           enabled: true
           config:
             jwks_urls:
-              - http://dummy # Keep this here to avoid validation error
+              - http://dummy  # Keep this here to avoid validation error
         noop:
           enabled: true
       mutators:
@@ -454,7 +454,7 @@ bbk-oathkeeper:
   ## accessRules: {}
 
   deployment:
-    resources: { }
+    resources: {}
     ##  We usually recommend not to specify default resources and to leave this as a conscious
     ## choice for the user. This also increases chances charts run on environments with little
     ##  resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -476,12 +476,12 @@ bbk-oathkeeper:
       privileged: false
 
     ## Node labels for pod assignment.
-    nodeSelector: { }
+    nodeSelector: {}
     ## If you do want to specify node labels, uncomment the following
     ## lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
     #   foo: bar
 
-    extraEnv: [ ]
+    extraEnv: []
 
     ## Configuration for tracing providers. Only datadog is currently supported through this block.
     ## If you need to use a different tracing provider, please manually set the configuration values
@@ -508,21 +508,21 @@ bbk-oathkeeper:
         # useHostIP: true
 
     ## Configure node tolerations.
-    tolerations: [ ]
+    tolerations: []
 
-    labels: { }
+    labels: {}
     ##      If you do want to specify additional labels, uncomment the following
     ##     lines, adjust them as necessary, and remove the curly braces after 'labels:'.
     #      e.g.  type: app
 
-    annotations: { }
+    annotations: {}
     ##      If you do want to specify annotations, uncomment the following
     ##      lines, adjust them as necessary, and remove the curly braces after 'annotations:'.
     #      e.g.  sidecar.istio.io/rewriteAppHTTPProbers: "true"
 
 
   #
-  affinity: { }
+  affinity: {}
 
   ## Configures controller setup
   maester:
