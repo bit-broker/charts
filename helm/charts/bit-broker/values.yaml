@@ -15,7 +15,7 @@ global:
   docker:
     ## If private registry
     ##
-    registry: "registry.hub.docker.com"
+    registry: "docker.io"
 
   ## Token's issuer
   ##
@@ -116,7 +116,7 @@ bbk-coordinator:
 
   ## Docker Image values.
   docker:
-    imageTag: "latest"
+    imageTag: "1.0.0"
     imagePullPolicy: Always
     imagePullSecret: regcred
 
@@ -145,7 +145,7 @@ bbk-contributor:
 
   ## Docker Image values.
   docker:
-    imageTag: "latest"
+    imageTag: "1.0.0"
     imagePullPolicy: Always
     imagePullSecret: regcred
 
@@ -163,7 +163,7 @@ bbk-consumer:
 
   ## Docker Image values.
   docker:
-    imageTag: "latest"
+    imageTag: "1.0.0"
     imagePullPolicy: Always
     imagePullSecret: regcred
 
@@ -174,7 +174,7 @@ bbk-consumer:
 ## Bit-Broker Portal Values
 
 bbk-portal:
-  enabled: true
+  enabled: false
 
   ## Contributor instance count.
   replicaCount: 1
