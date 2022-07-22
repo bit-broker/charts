@@ -1,8 +1,8 @@
 apiVersion: v2
 name: bit-broker
-appVersion: v0.0.0
+appVersion: v1.0.0
 description: Charts for Bit-Broker deployment.
-version: v0.0.0
+version: v1.0.0
 home: https://www.bit-broker.io/
 icon: https://www.bit-broker.io/images/logo.png
 sources:
