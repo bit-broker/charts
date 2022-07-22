@@ -55,6 +55,8 @@ spec:
               value: "postgresql://CREDENTIALS@{{ .Release.Name }}-bbk-postgresql/bit_broker"
             - name: BOOTSTRAP_USER_EMAIL
               value: "{{ .Values.global.admin.email }}"
+            - name: BOOTSTRAP_USER_ORG
+              value: "{{ .Values.global.admin.organization }}"
             - name: BOOTSTRAP_USER_NAME
               value: "{{ .Values.global.admin.name }}"
             - name: BOOTSTRAP_USER_KEY_ID
