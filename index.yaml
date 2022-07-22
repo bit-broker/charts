@@ -63,5 +63,4 @@ entries:
     type: application
     urls:
     - https://github.com/bit-broker/charts/releases/download/bit-broker-v1.0.0-helm/bit-broker-v1.0.0.tgz
-    version: v1.0.0
 generated: "2022-06-10T15:00:56.082545448Z"
