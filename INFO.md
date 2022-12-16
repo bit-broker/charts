@@ -8,6 +8,11 @@
 
 This repository contains helm charts for Kubernetes.
 
+## Security Profile 
+
+This repository is designed to get-you-going with deploying BitBroker into Kubernetes. It is functional, but not complete. Specifically, it does not present a hardened security profile. Please take these charts as functionally instructive, but do apply a security level in your own charts which matches the requirements of your deployment.
+
+
 ## Deployment
 
 1. Generate your JSON Web Key Set (JWKS)
