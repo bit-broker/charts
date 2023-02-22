@@ -117,7 +117,7 @@ bbk-coordinator:
 
   ## Docker Image values.
   docker:
-    imageTag: "1.0.0"
+    imageTag: "1.0.1"
     imagePullPolicy: Always
     imagePullSecret: regcred
 
@@ -146,7 +146,7 @@ bbk-contributor:
 
   ## Docker Image values.
   docker:
-    imageTag: "1.0.0"
+    imageTag: "1.0.1"
     imagePullPolicy: Always
     imagePullSecret: regcred
 
@@ -164,7 +164,7 @@ bbk-consumer:
 
   ## Docker Image values.
   docker:
-    imageTag: "1.0.0"
+    imageTag: "1.0.1"
     imagePullPolicy: Always
     imagePullSecret: regcred
 
@@ -215,7 +215,7 @@ bbk-auth-service:
   enabled: true
 
   docker:
-    imageTag: "1.0.0"
+    imageTag: "1.0.1"
     imagePullPolicy: Always
     imagePullSecret: regcred
 
@@ -258,7 +258,7 @@ bbk-rate-service:
   ## Docker image
   ##
   docker:
-    imageTag: "1.0.0"
+    imageTag: "1.0.1"
     imagePullPolicy: "Always"
     imagePullSecret: "regcred"
 
