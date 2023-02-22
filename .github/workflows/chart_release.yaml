@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: "0"
+          fetch-depth: 0
 
       - name: Parse tag name
         run: echo "TAG_NAME=$(echo $GITHUB_REF | cut -d / -f 3 | cut -c2-)" >> $GITHUB_ENV
@@ -43,7 +43,7 @@ jobs:
         run: helm repo add ory https://k8s.ory.sh/helm/charts
 
       - name: Run chart-testing (lint)
-        run: ct lint --chart-dirs helm/charts --validate-maintainers=false
+        run: ct lint --chart-dirs helm/charts --target-branch v1.0.0 --validate-maintainers=false
 
       - name: Configure Git
         run: |
