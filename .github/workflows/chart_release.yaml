@@ -43,7 +43,7 @@ jobs:
         run: helm repo add ory https://k8s.ory.sh/helm/charts
 
       - name: Run chart-testing (lint)
-        run: ct lint --chart-dirs helm/charts --target-branch main --validate-maintainers=false
+        run: ct lint --chart-dirs helm/charts --validate-maintainers=false
 
       - name: Configure Git
         run: |
