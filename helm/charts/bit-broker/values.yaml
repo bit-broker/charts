@@ -205,7 +205,7 @@ bbk-postgresql:
 
     ## ConfigMap with scripts to be run at first boot
     initdb:
-      scripts: bbk-postgres-init
+      scriptsConfigMap: bbk-postgres-init
 
 # End of Bit-Broker Postgres Values
 #######################################################################################
