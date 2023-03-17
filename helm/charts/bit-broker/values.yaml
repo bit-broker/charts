@@ -196,14 +196,16 @@ bbk-portal:
 bbk-postgresql:
   enabled: true
 
-  ## Enable security context
-  containerSecurityContext:
-    enabled: true
-    runAsUser: 1001
-    runAsNonRoot: true
+  primary:
+    ## Enable security context
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsNonRoot: true
 
-  ## ConfigMap with scripts to be run at first boot
-  initdbScriptsConfigMap: bbk-postgres-init
+    ## ConfigMap with scripts to be run at first boot
+    initdb:
+      scripts: bbk-postgres-init
 
 # End of Bit-Broker Postgres Values
 #######################################################################################
