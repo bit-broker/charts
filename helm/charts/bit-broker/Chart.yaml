@@ -25,7 +25,7 @@ dependencies:
     condition: bbk-oathkeeper.enabled
     alias: bbk-oathkeeper
   - name: postgresql
-    version: "11.6.2"
+    version: "11.9.13"
     repository: https://charts.bitnami.com/bitnami
     condition: bbk-postgresql.enabled
     alias: bbk-postgresql
